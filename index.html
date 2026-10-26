@@ -1,483 +1,920 @@
-<!doctype html>
-
+<!DOCTYPE html>
 <html lang="zh-Hant">
-
 <head>
-
 <meta charset="utf-8">
-
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>外送大叔的逆襲</title>
-
 <style>
-
 *{box-sizing:border-box}
-
-body{margin:0;background:#101827;color:#fff;font-family:system-ui,"Noto Sans TC",sans-serif;overflow:hidden}
-
-#game{height:100dvh;position:relative}
-
+body{margin:0;background:#090d16;color:#fff;font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;overflow:hidden}
+#game{height:100dvh;position:relative;overflow:hidden}
 canvas{display:block;width:100%;height:100%;touch-action:manipulation}
 
-#hud{position:absolute;top:8px;left:8px;right:8px;display:flex;gap:5px;justify-content:space-between;flex-wrap:wrap;pointer-events:none}
+/* 頂部 HUD */
+#hud{position:absolute;top:6px;left:8px;right:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;pointer-events:none;z-index:20}
+.badge{background:#172337ee;color:white;border:1px solid #475569;border-radius:10px;padding:5px 8px;font-size:11px;font-weight:bold;display:inline-flex;align-items:center;gap:3px;pointer-events:auto}
+#clockBadge{background:#1e1b4bee;border-color:#818cf8;color:#c7d2fe}
 
-.badge,button{background:#172337ee;color:white;border:1px solid #64748b;border-radius:10px;padding:8px;font-weight:bold}
+/* 頂部按鈕列 */
+#topButtons{position:absolute;top:44px;left:8px;right:8px;display:flex;justify-content:space-between;pointer-events:none;z-index:20}
+#topButtons button{pointer-events:auto;background:#1e293bee;color:white;border:1px solid #64748b;border-radius:10px;padding:6px 10px;font-size:12px;font-weight:bold;cursor:pointer}
 
-.badge{font-size:12px}
+/* 精準導航指示 (含箭頭與公尺距離) */
+#nav{position:absolute;top:82px;left:50%;transform:translateX(-50%);background:#064e3bee;border:1.5px solid #34d399;color:#a7f3d0;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:bold;white-space:nowrap;display:none;align-items:center;gap:6px;z-index:20;box-shadow:0 4px 15px rgba(0,0,0,0.6)}
+#navArrow{display:inline-block;transition:transform 0.05s linear;font-size:14px}
 
-button{cursor:pointer;touch-action:manipulation}
+/* 左下虛擬搖桿 */
+#stick{position:absolute;bottom:16px;left:14px;width:96px;height:96px;border:2px dashed rgba(255,255,255,0.3);border-radius:50%;background:rgba(255,255,255,0.08);touch-action:none;z-index:30}
+#knob{position:absolute;left:50%;top:50%;width:38px;height:38px;background:#f59e0b;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 10px rgba(245,158,11,0.6)}
 
-#topButtons{position:absolute;top:57px;left:8px;right:8px;display:flex;justify-content:space-between}
+/* 右下操作按鍵 */
+#actions{position:absolute;right:10px;bottom:14px;display:grid;grid-template-columns:repeat(2,64px);gap:8px;z-index:30}
+#actions button{min-height:50px;border-radius:14px;background:#1e293bee;border:1.5px solid #64748b;color:#fff;font-size:11px;font-weight:bold;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+#actions button:active{transform:scale(0.92)}
+#interact{grid-column:span 2;background:linear-gradient(135deg,#059669,#10b981)!important;border-color:#34d399!important;height:46px;font-size:13px!important}
 
-#stick{position:absolute;bottom:15px;left:12px;width:100px;height:100px;border:2px dashed #ffffff88;border-radius:50%;background:#ffffff18;touch-action:none}
-
-#knob{position:absolute;left:50%;top:50%;width:40px;height:40px;background:#f59e0b;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
-
-#actions{position:absolute;right:8px;bottom:14px;display:grid;grid-template-columns:repeat(2,64px);gap:6px}
-
-#actions button{font-size:11px;min-height:48px;padding:5px}
-
-#interact{grid-column:span 2;background:#047857}
-
-#nav{position:absolute;top:103px;left:50%;transform:translateX(-50%);background:#064e3b;padding:7px 10px;border-radius:12px;font-size:12px;white-space:nowrap;display:none}
-
-.overlay{position:absolute;inset:0;background:#020617eF;display:none;align-items:center;justify-content:center;padding:12px;z-index:10}
-
+/* 彈窗遮罩 */
+.overlay{position:fixed;inset:0;background:rgba(2,6,23,0.85);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:14px;z-index:100}
 .overlay.show{display:flex}
+.card{width:min(100%,480px);max-height:86dvh;overflow-y:auto;background:#0f172a;border:2px solid #f59e0b;border-radius:20px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,0.8)}
+.card h2{color:#fbbf24;margin-top:0;font-size:18px}
+.card p{line-height:1.6;font-size:13px;color:#cbd5e1}
+.card button{width:100%;margin:6px 0;padding:10px;border-radius:12px;background:#1e293b;border:1px solid #475569;color:#fff;font-weight:bold;cursor:pointer}
+.card button.primary{background:#047857;border-color:#10b981}
 
-.card{width:min(100%,520px);max-height:88dvh;overflow:auto;background:#152238;border:1px solid #64748b;border-radius:16px;padding:18px}
+/* 提示通知條 */
+#toast{position:absolute;top:120px;left:50%;transform:translateX(-50%);background:#1e293bee;border:1.5px solid #f59e0b;color:#fde68a;padding:7px 16px;border-radius:12px;display:none;z-index:50;font-size:12px;font-weight:bold;white-space:nowrap;box-shadow:0 6px 20px rgba(0,0,0,0.8)}
 
-h2{color:#fbbf24;margin-top:0}
-
-p{line-height:1.7;font-size:14px;white-space:pre-line}
-
-.choice{width:100%;margin:5px 0;text-align:left}
-
-#toast{position:absolute;top:145px;left:50%;transform:translateX(-50%);background:#111c2eee;padding:10px;border-radius:10px;display:none;z-index:8;max-width:90%;font-size:13px}
-
-@media(max-width:420px){.badge{font-size:10px;padding:5px}#stick{width:88px;height:88px}#actions{grid-template-columns:repeat(2,57px)}#actions button{font-size:10px}#topButtons button{font-size:11px;padding:6px}}
-
+/* 新手教學任務引導卡 */
+#questCard{position:absolute;left:10px;top:82px;background:rgba(15,23,42,0.9);border:1.5px solid #fbbf24;border-radius:12px;padding:8px 12px;font-size:11px;z-index:20;max-width:180px;pointer-events:none}
 </style>
-
 </head>
-
 <body>
-
 <div id="game">
-
 <canvas id="world"></canvas>
 
+<!-- 頂部即時狀態列 (包含 年/月/日 時間) -->
 <div id="hud">
-
-<div>
-
-<span class="badge">💰 $<span id="money">200</span></span>
-
-<span class="badge">❤️ <span id="hp">100</span>%</span>
-
-<span class="badge">⛽ <span id="gas">100</span>%</span>
-
-<span class="badge">📦 <span id="orders">0</span>單</span>
-
+ <div>
+  <span class="badge">💰 $<span id="money">200</span></span>
+  <span class="badge">❤️ <span id="hp">100</span>%</span>
+  <span class="badge">🛵 車損 <span id="durability">100</span>%</span>
+  <span class="badge">⛽ <span id="gas">100</span>%</span>
+ </div>
+ <span class="badge" id="clockBadge">📅 <span id="dateText">2026/01/01</span> <span id="clock">08:00</span></span>
 </div>
 
-<span class="badge" id="clock">08:00</span>
-
+<!-- 新手教學任務追蹤 -->
+<div id="questCard">
+  <div style="font-weight:900;color:#f59e0b;margin-bottom:3px;">🎯 新手目標</div>
+  <div id="questDesc">1. 探索街頭並引開野狗</div>
 </div>
 
 <div id="topButtons">
-
-<button id="storyBtn">📖 故事</button>
-
-<div><button id="musicBtn">🔇 音樂</button><button id="helpBtn">❔操作</button></div>
-
+ <button id="storyBtn">🗺️ 關卡與故事</button>
+ <div>
+  <button id="musicBtn" onclick="toggleLoFiBGM()">🎵 輕音樂：關</button>
+  <button id="helpBtn">❔操作</button>
+ </div>
 </div>
 
-<div id="nav"></div>
-
+<!-- 精確指引導航 -->
+<div id="nav"><span id="navArrow">▲</span><span id="navText">導航中</span> <span id="navDist">0m</span></div>
 <div id="toast"></div>
 
+<!-- 觸控搖桿 -->
 <div id="stick"><div id="knob"></div></div>
 
+<!-- 操作按鈕 -->
 <div id="actions">
-
-<button id="bento">🍱 吃便當</button>
-
-<button id="food">🧋 投擲食物</button>
-
-<button id="interact">互動／取餐／送達 [E]</button>
-
+ <button id="bento" onclick="eatBento()">🍱 便當 ×<span id="bentoCount">2</span></button>
+ <button id="food" onclick="throwFood()">🧋 珍奶 ×<span id="foodCount">3</span></button>
+ <button id="interact" onclick="interact()">取餐／送達／進門 [E]</button>
 </div>
 
-
-
-<div class="overlay show" id="intro"><div class="card">
-
-<h2>🛵 外送大叔的逆襲</h2>
-
-<p>你是阿豪，一個努力靠外送撐起生活的大叔。這座城市有急躁的車潮、熱心的街坊、巷口野狗，還有一個總在凌晨 03:17 出現的謎團。
-
-
-
-完成外送、管理體力與油量，認識街坊，再決定是否追查時間異常。</p>
-
-<button id="start">開始遊戲</button>
-
-<button id="introHelp">查看控制說明</button>
-
+<!-- 1. 開場角色自訂（性別、生日、星座） -->
+<div class="overlay show" id="creatorModal"><div class="card">
+<h2>🛵 建立你的外送主角</h2>
+<p>歡迎來到樹林街頭！請先選擇你的角色性別與出生日期：</p>
+<div style="margin:10px 0;">
+  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">主角性別</label>
+  <div style="display:flex;gap:8px;">
+    <button type="button" id="genderM" class="primary" onclick="setGender('M')">👨 阿豪大叔 (男)</button>
+    <button type="button" id="genderF" onclick="setGender('F')">👩 妮野可 (女)</button>
+  </div>
+</div>
+<div style="margin:10px 0;">
+  <label style="font-size:12px;color:#94a3b8;display:block;margin-bottom:4px;">出生日期 (決定星座天賦)</label>
+  <input type="date" id="birthInput" value="1992-05-18" style="width:100%;padding:8px;border-radius:10px;background:#1e293b;border:1px solid #475569;color:#fff;">
+</div>
+<div id="zodiacHint" style="font-size:11px;color:#38bdf8;margin:8px 0;">金牛座天賦：體力消耗減緩 10%，耐摔耐撞。</div>
+<button class="primary" onclick="finishCreator()">開始送單生活！</button>
 </div></div>
 
-
-
-<div class="overlay" id="help"><div class="card">
-
-<h2>控制說明</h2>
-
-<p>手機：點擊地面移動，或拖曳左下搖桿。右下按鈕可以吃便當、投擲食物和互動。
-
-
-
-電腦：WASD／方向鍵移動；滑鼠點地面移動；E 或空白鍵互動；B 吃便當；J 投擲食物；Q 切換食物；M 開故事；Y 接單；N 拒單；Esc 關閉視窗。
-
-
-
-遊戲流程：接單 → 前往店家 → 互動取餐 → 前往顧客 → 互動送達。完成三單後解鎖快速回家。</p>
-
-<button data-close="help">返回遊戲</button>
-
-</div></div>
-
-
-
-<div class="overlay" id="story"><div class="card">
-
-<h2 id="storyTitle">還沒結束的一天</h2>
-
+<!-- 2. 故事與【直接選擇關卡】彈窗 -->
+<div class="overlay" id="storyModal"><div class="card">
+<h2 id="storyTitle">第一章：今天也要活下去</h2>
 <p id="storyBody"></p>
-
-<div id="choices"></div>
-
-<button id="prev">上一章</button>
-
-<button id="next">下一章 ▶</button>
-
-<button data-close="story">關閉故事</button>
-
+<div style="margin:12px 0;padding:10px;background:#1e293b;border-radius:12px;border:1px solid #334155;">
+  <div style="font-weight:bold;color:#38bdf8;margin-bottom:6px;">選擇你想進行的關卡：</div>
+  <div style="display:flex;flex-direction:column;gap:6px;">
+    <button onclick="selectLevel(0)">🟢 關卡 1：樹林新手村（基礎外送練習）</button>
+    <button onclick="selectLevel(1)">🟡 關卡 2：尖峰車潮突圍（避開三寶與車流）</button>
+    <button onclick="selectLevel(2)">🟣 關卡 3：03:17 時間異常（解鎖神祕收據）</button>
+  </div>
+</div>
+<div style="display:flex;gap:8px;">
+  <button id="prevBtn" onclick="prevChapter()">上一章</button>
+  <button id="nextBtn" onclick="nextChapter()">下一章 ▶</button>
+</div>
+<button data-close="storyModal">關閉視窗</button>
 </div></div>
 
-
-
+<!-- 3. 外送派單 -->
 <div class="overlay" id="orderModal"><div class="card">
-
-<h2>📲 新訂單</h2><p id="orderDesc"></p><p id="reward"></p>
-
-<button id="accept">接受訂單 [Y]</button>
-
-<button id="reject">拒絕訂單 [N]</button>
-
+<h2>📲 外送新訂單來了！</h2>
+<p id="orderDesc"></p>
+<p id="reward" style="font-size:16px;color:#34d399;font-weight:900;"></p>
+<button class="primary" onclick="accept()">接受訂單 [Y]</button>
+<button onclick="reject()">拒絕單 [N]</button>
 </div></div>
 
-
-
-<div class="overlay" id="home"><div class="card">
-
-<h2>🏠 阿豪的溫馨小窩</h2>
-
-<p>暫時放下安全帽，好好休息一下。</p>
-
-<button id="sleep">睡覺：恢復體力與汽油</button>
-
-<button id="cook">備餐：$35</button>
-
-<button id="lottery">刮刮樂</button>
-
-<button data-close="home">出門</button>
-
+<!-- 4. 阿豪小窩內部 -->
+<div class="overlay" id="homeModal"><div class="card">
+<h2>🏠 溫馨小窩</h2>
+<p>暫時放下安全帽，好好放鬆一下。</p>
+<button class="primary" onclick="sleepHome()">🛌 睡覺（體力、車損、汽油回滿）</button>
+<button onclick="cookHome()">🍳 備餐買便當（$35 補便當與珍奶）</button>
+<button onclick="playLottery()">🎰 玩刮刮樂</button>
+<button data-close="homeModal">出門繼續跑單</button>
 </div></div>
 
+<!-- 5. 改裝車行 (購買新車) -->
+<div class="overlay" id="garageModal"><div class="card">
+<h2>🔧 順發機車行</h2>
+<p>牽新車，速度與抗撞力大升級！</p>
+<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px;">
+  <button onclick="buyVehicle(1, 200)">🚲 升級 變速公路車 ($200) - 極速 +30%</button>
+  <button onclick="buyVehicle(2, 600)">🛵 升級 125cc 勁戰神車 ($600) - 極速 +80%、耐撞度翻倍</button>
+</div>
+<button data-close="garageModal">離開車行</button>
+</div></div>
 </div>
 
 <script>
-
 (()=>{
-
 const $=id=>document.getElementById(id);
-
 const canvas=$('world'),ctx=canvas.getContext('2d');
+let W,H,dpr=1,last=0;
 
-let W,H,dpr=1,last=0,minutes=480,offer=null,toastTimer;
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,2);
+  W=innerWidth;H=innerHeight;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+addEventListener('resize',resize);
+resize();
 
-function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+/* ================= 1. 耐聽、舒緩的無版權 Lo-Fi 背景音樂 (Web Audio API) ================= */
+let audioCtx = null;
+let bgmTimer = null;
+let isMusicOn = false;
 
-addEventListener('resize',resize);resize();
+function initAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
 
+// 柔和 Lo-Fi 和弦音符（低通濾波，溫暖不刺耳）
+const lofiChords = [
+  [261.63, 329.63, 392.00], // C
+  [220.00, 261.63, 329.63], // Am
+  [174.61, 220.00, 261.63], // F
+  [196.00, 246.94, 293.66]  // G
+];
+let chordIdx = 0;
 
+function playLoFiChord() {
+  if (!isMusicOn || !audioCtx) return;
+  const chord = lofiChords[chordIdx % lofiChords.length];
+  chordIdx++;
 
-const map={w:2200,h:1700};
+  chord.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
 
-const player={x:330,y:330,speed:170,angle:0,target:null,money:200,hp:100,gas:100,bento:2,done:0,order:null};
+    osc.type = 'sine'; // 柔和正弦波
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
-const places=[
+    // 溫暖低通濾波
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(450, audioCtx.currentTime);
 
-{x:180,y:220,w:130,h:80,name:'阿豪小窩',type:'home',icon:'🏠'},
+    // 輕柔淡入淡出
+    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.02, audioCtx.currentTime + 0.4 + i*0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 2.8);
 
-{x:430,y:650,w:130,h:75,name:'樹林麵線店',type:'shop',icon:'🍜'},
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
 
-{x:1050,y:300,w:130,h:75,name:'阿堂便當店',type:'shop',icon:'🍱'},
+    osc.start();
+    osc.stop(audioCtx.currentTime + 2.9);
+  });
+}
 
-{x:1390,y:850,w:130,h:80,name:'加油站',type:'gas',icon:'⛽'},
+function toggleLoFiBGM() {
+  initAudio();
+  isMusicOn = !isMusicOn;
+  if (isMusicOn) {
+    $('musicBtn').textContent = '🎵 輕音樂：開';
+    playLoFiChord();
+    bgmTimer = setInterval(playLoFiChord, 3000); // 每 3 秒切換一組柔和和弦
+  } else {
+    $('musicBtn').textContent = '🎵 輕音樂：關';
+    clearInterval(bgmTimer);
+  }
+}
+window.toggleLoFiBGM = toggleLoFiBGM;
 
-{x:770,y:1190,w:140,h:85,name:'文林公寓',type:'target',icon:'🏢'},
+// 撞擊沉悶音效
+function playHitSound() {
+  initAudio();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.25);
+  gain.gain.setValueAtTime(0.35, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+}
 
-{x:1770,y:1060,w:150,h:90,name:'帝寶豪宅',type:'target',icon:'🏙️'}
+/* ================= 2. 狀態與玩家設定 ================= */
+const map = { w: 2200, h: 1700 };
 
+const player = {
+  x: 330, y: 330,
+  speed: 175,
+  angle: 0,
+  gender: 'M',
+  target: null,
+  money: 200,
+  hp: 100,
+  durability: 100, // 車損 (耐久度)
+  gas: 100,
+  bento: 2,
+  done: 0,
+  order: null,
+  vehLvl: 0
+};
+
+// 年月日時鐘
+let gameYear = 2026, gameMonth = 1, gameDay = 1, gameMinutes = 480;
+
+// 新手教學任務步驟
+const quests = [
+  "1. 探索街頭並用【珍奶】引開野狗",
+  "2. 體驗一次擦撞車輛，感受車損與體力扣減",
+  "3. 按【B】吃便當補充體力",
+  "4. 接一張外送單並前往取餐送達",
+  "5. 騎到【加油站】將汽油加滿",
+  "6. 賺夠錢前往【順發機車行】換新車！"
+];
+let questStep = 0;
+function advanceQuest(step) {
+  if (questStep === step - 1) {
+    questStep = step;
+    if (questStep < quests.length) {
+      $('questDesc').textContent = quests[questStep];
+      toast('🎯 新手教學進度更新！');
+    } else {
+      $('questDesc').textContent = '🎉 已通關全部新手練習！';
+      toast('🏆 恭喜成為合格的街頭外送騎士！');
+    }
+  }
+}
+
+const places = [
+  { x: 180, y: 220, w: 130, h: 80, name: '阿豪小窩', type: 'home', icon: '🏠' },
+  { x: 430, y: 650, w: 130, h: 75, name: '樹林麵線店', type: 'shop', icon: '🍜' },
+  { x: 1050, y: 300, w: 130, h: 75, name: '阿堂便當店', type: 'shop', icon: '🍱' },
+  { x: 1390, y: 850, w: 130, h: 80, name: '加油站', type: 'gas', icon: '⛽' },
+  { x: 770, y: 1190, w: 140, h: 85, name: '文林公寓', type: 'target', icon: '🏢' },
+  { x: 1770, y: 1060, w: 150, h: 90, name: '帝寶豪宅', type: 'target', icon: '🏙️' },
+  { x: 1100, y: 1200, w: 130, h: 80, name: '順發機車行', type: 'garage', icon: '🔧' }
 ];
 
-const dogs=[{x:650,y:800,v:45,stun:0},{x:1460,y:580,v:-40,stun:0}];
-
-const cars=Array.from({length:7},(_,i)=>({x:100+i*300,y:520+i%2*45,v:(i%2?1:-1)*(90+i%3*15)}));
-
-const weapons=[{name:'珍奶',icon:'🧋',qty:3,stun:4},{name:'雞排',icon:'🍗',qty:2,stun:8},{name:'貢丸',icon:'🍢',qty:5,stun:3}];
-
-let wi=0,foods=[],keys={},joy={on:false,x:0,y:0},music=false,audio=null,musicTimer=null,musicStep=0;
-
-const chapters=[
-
-{title:'序章：還沒結束的一天',body:'阿豪四十多歲，曾經以為只要肯做，人生就會慢慢變好。後來公司縮編，家裡的開銷卻沒有停過。他整理好老機車，開始跑外送。\n\n手機震了一下，粉熊外送跳出新訂單。油表不太妙，冰箱裡只剩半盒便當。阿豪看著街口的紅燈，苦笑：「先把今天過完，明天再想辦法。」'},
-
-{title:'第一章：今天也要活下去',body:'樹林的早晨有早餐店的蒸氣、巷口的機車聲，還有趕著上班的人。店家說餐點還要兩分鐘，客人卻已經傳訊息催單。\n\n搶快可能多賺一點，也可能摔車、被客訴。跑單不只是比速度，更是選路、管理體力和油量的生活考驗。'},
-
-{title:'第二章：熟悉的陌生人',body:'跑久了，阿豪開始認得巷口買菜的阿嬤、機車行老闆阿賢，以及總在便利店外沉默抽菸的陌生人。\n\n幾個毫不相干的店家，都提到一張印著「03:17」的收據。沒有人承認開過那張單。'},
-
-{title:'第三章：03:17',body:'凌晨 03:17，阿豪的手機突然亮起，導航路線消失。路口的車彷彿被按下暫停，路燈的黃光像水面一樣晃動，遠處傳來一聲門鈴。\n\n手機跳出一句話：「你是在賺錢，還是在拿生活換錢？」下一秒，所有聲音回來了，導航卻多出一個不存在的目的地。'},
-
-{title:'第四章：逆襲的真正意義',body:'真相不會自動替他付房租，也不會讓生活一夜翻身。阿豪必須學會選擇工作、照顧身體、維持關係，並決定自己願意為什麼事情停下來。\n\n真正的逆襲，不是永遠不停，而是終於能決定什麼值得自己繼續努力。'}
-
+const dogs = [
+  { x: 650, y: 800, v: 45, stun: 0 },
+  { x: 1460, y: 580, v: -40, stun: 0 }
 ];
 
-let chapter=Number(localStorage.getItem('deliveryChapter')||0);
+// 馬路車潮
+const cars = Array.from({ length: 8 }, (_, i) => ({
+  x: 100 + i * 260,
+  y: 520 + (i % 2) * 50,
+  v: (i % 2 ? 1 : -1) * (85 + (i % 3) * 15),
+  w: 42, h: 20,
+  color: ['#38bdf8', '#f59e0b', '#ef4444', '#10b981'][i % 4]
+}));
 
-if(!Number.isFinite(chapter)||chapter<0||chapter>=chapters.length)chapter=0;
+const weapons = [
+  { name: '珍奶', icon: '🧋', qty: 3, stun: 4 },
+  { name: '雞排', icon: '🍗', qty: 2, stun: 8 },
+  { name: '貢丸', icon: '🍢', qty: 5, stun: 3 }
+];
+let wi = 0, foods = [], keys = {}, joy = { on: false, x: 0, y: 0 };
 
+/* ================= 3. 開場自訂與關卡篇章 ================= */
+function setGender(g) {
+  player.gender = g;
+  $('genderM').className = g === 'M' ? 'primary' : '';
+  $('genderF').className = g === 'F' ? 'primary' : '';
+}
+window.setGender = setGender;
 
+function finishCreator() {
+  initAudio();
+  $('creatorModal').classList.remove('show');
+  toast('🎮 角色建立完成！跟著左上方任務練習吧！');
+  setTimeout(spawnOrder, 1500);
+}
+window.finishCreator = finishCreator;
 
-function toast(s){$('toast').textContent=s;$('toast').style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').style.display='none',2200)}
+const chapters = [
+  { title: '第一章：今天也要活下去 (樹林新手村)', body: '樹林街頭充滿了急躁的車潮與人情味店家。先在新手村掌握打狗、補體、接單與避開碰撞的基本功！' },
+  { title: '第二章：尖峰車潮突圍', body: '上下班尖峰時刻，馬路上車水馬龍。考驗你的路線判斷與煞車技術！' },
+  { title: '第三章：03:17 時間異常', body: '深夜的街道突然安靜，周遭車輛彷彿凝固... 手機傳來神祕訊息：你是在賺錢，還是拿生活換錢？' }
+];
+let currentChapter = 0;
 
-function show(id){$(id).classList.add('show')}function hide(id){$(id).classList.remove('show')}
+function renderStory() {
+  const c = chapters[currentChapter];
+  $('storyTitle').textContent = c.title;
+  $('storyBody').textContent = c.body;
+  $('prevBtn').disabled = currentChapter === 0;
+  $('nextBtn').disabled = currentChapter === chapters.length - 1;
+}
+function prevChapter() { if (currentChapter > 0) { currentChapter--; renderStory(); } }
+function nextChapter() { if (currentChapter < chapters.length - 1) { currentChapter++; renderStory(); } }
+window.prevChapter = prevChapter; window.nextChapter = nextChapter;
 
-function updateHUD(){
+function selectLevel(lvl) {
+  currentChapter = lvl;
+  $('storyModal').classList.remove('show');
+  if (lvl === 0) {
+    player.x = 330; player.y = 330;
+    toast('🚀 已切換至【第一關：新手村】');
+  } else if (lvl === 1) {
+    player.x = 1000; player.y = 520;
+    toast('🚀 已切換至【第二關：尖峰車潮突圍】');
+  } else {
+    gameMinutes = 197; // 03:17
+    toast('⌛ 已切換至【第三關：03:17 時間異常】');
+  }
+}
+window.selectLevel = selectLevel;
 
-$('money').textContent=Math.floor(player.money);$('hp').textContent=Math.round(player.hp);
+/* ================= 4. 點擊地面移動 ＋ 【快點兩下直接確認/互動】 ================= */
+let lastTapTime = 0;
+let lastTapTarget = null;
 
-$('gas').textContent=Math.round(player.gas);$('orders').textContent=player.done;
+canvas.addEventListener('pointerdown', e => {
+  if (document.querySelector('.overlay.show')) return;
+  initAudio();
 
-$('bento').textContent='🍱 便當 ×'+player.bento;
+  const c = { x: player.x - W/2, y: player.y - H/2 };
+  const clickWorldX = e.clientX + c.x;
+  const clickWorldY = e.clientY + c.y;
 
-$('food').textContent=weapons[wi].icon+' '+weapons[wi].name+' ×'+weapons[wi].qty;
+  const now = Date.now();
+  // 檢測是否快點兩下（Double Tap / Double Click）在同一目的地周遭
+  if (now - lastTapTime < 350) {
+    // 檢查點擊處是否靠近當前目標點、店家、家或顧客
+    const activeTgt = activeTarget();
+    if (activeTgt) {
+      const dist = Math.hypot(clickWorldX - (activeTgt.x + activeTgt.w/2), clickWorldY - (activeTgt.y + activeTgt.h/2));
+      if (dist < 120) {
+        // 雙擊直接進行取送餐
+        interact();
+        lastTapTime = 0;
+        return;
+      }
+    }
+    // 檢查是否雙擊在小窩或加油站
+    for (const p of places) {
+      if (Math.hypot(clickWorldX - (p.x + p.w/2), clickWorldY - (p.y + p.h/2)) < 90) {
+        interact();
+        lastTapTime = 0;
+        return;
+      }
+    }
+  }
+  lastTapTime = now;
 
+  // 設定移動目標波紋
+  player.target = {
+    x: Math.max(20, Math.min(map.w - 20, clickWorldX)),
+    y: Math.max(20, Math.min(map.h - 20, clickWorldY))
+  };
+});
+
+/* ================= 5. 精準指引導航與公尺計算 ================= */
+function activeTarget() {
+  if (!player.order) return null;
+  return player.order.stage === 'pickup' ? player.order.shop : player.order.target;
 }
 
-function cam(){return{x:player.x-W/2,y:player.y-H/2}}
+function updateNavIndicator() {
+  const t = activeTarget();
+  if (!t) {
+    $('nav').style.display = 'none';
+    return;
+  }
+  $('nav').style.display = 'flex';
+  const tx = t.x + t.w / 2;
+  const ty = t.y + t.h / 2;
+  const dx = tx - player.x;
+  const dy = ty - player.y;
+  const dist = Math.round(Math.hypot(dx, dy));
 
-function worldPoint(x,y){const c=cam();return{x:x+c.x,y:y+c.y}}
+  const angleRad = Math.atan2(dy, dx);
+  const angleDeg = angleRad * (180 / Math.PI);
 
-function activeTarget(){if(!player.order)return null;return player.order.stage==='pickup'?player.order.shop:player.order.target}
-
-function updateNav(){
-
-const t=activeTarget();if(!t){$('nav').style.display='none';return}
-
-const d=Math.hypot(player.x-(t.x+t.w/2),player.y-(t.y+t.h/2));
-
-$('nav').style.display='block';$('nav').textContent='▲ '+(player.order.stage==='pickup'?'取餐：':'送達：')+t.name+' · '+Math.round(d)+'m';
-
+  // 精準旋轉箭頭
+  $('navArrow').style.transform = `rotate(${angleDeg - 90}deg)`;
+  $('navText').textContent = (player.order.stage === 'pickup' ? '前往取餐：' : '送往顧客：') + t.name;
+  $('navDist').textContent = `${dist}m (到達後快點兩下確認)`;
 }
 
-function openStory(){renderStory();show('story')}
+/* ================= 6. 車輛碰撞反應 (扣車損 + 扣體力) ================= */
+let hitCooldown = 0;
+function checkCarCollisions(dt) {
+  if (hitCooldown > 0) { hitCooldown -= dt; return; }
 
-function renderStory(){
+  cars.forEach(car => {
+    const dist = Math.hypot(player.x - car.x, player.y - car.y);
+    if (dist < 26) {
+      // 發生實質撞擊
+      player.hp = Math.max(0, player.hp - 12);
+      player.durability = Math.max(0, player.durability - 15);
+      hitCooldown = 0.8; // 0.8秒無敵防重複扣
 
-const c=chapters[chapter];$('storyTitle').textContent=c.title;$('storyBody').textContent=c.body;
+      // 彈開大叔
+      const ang = Math.atan2(player.y - car.y, player.x - car.x);
+      player.x += Math.cos(ang) * 45;
+      player.y += Math.sin(ang) * 45;
+      player.target = null; // 中斷點擊尋路
 
-$('choices').innerHTML='';
-
-const choices=['把線索記下來','先照顧眼前生活'];
-
-choices.forEach((v,i)=>{const b=document.createElement('button');b.className='choice';b.textContent='選擇 '+(i+1)+'：'+v;b.onclick=()=>{localStorage.setItem('deliveryChoice'+chapter,v);toast('已記錄選擇：'+v)};$('choices').appendChild(b)});
-
-$('prev').disabled=chapter===0;$('next').textContent=chapter===chapters.length-1?'回到序章 ↺':'下一章 ▶';
-
+      playHitSound();
+      updateHUD();
+      toast('💥 發生車禍！車損 -15%，體力 -12%！');
+      advanceQuest(2); // 完成撞車練習
+    }
+  });
 }
 
-function spawnOrder(){
+/* ================= 7. 外送派單流程 ================= */
+let offer = null;
+function spawnOrder() {
+  if (player.order || offer || document.querySelector('.overlay.show')) return;
+  const shop = Math.random() > 0.5 ? places[1] : places[2];
+  const target = Math.random() > 0.5 ? places[4] : places[5];
+  offer = { shop, target, reward: 75 + Math.floor(Math.random() * 40) };
+  $('orderDesc').textContent = `店家：${shop.name} ➔ 送至：${target.name}`;
+  $('reward').textContent = `配送工資：$${offer.reward}`;
+  $('orderModal').classList.add('show');
+}
+window.spawnOrder = spawnOrder;
 
-if(player.order||offer||document.querySelector('.overlay.show'))return;
+function accept() {
+  if (!offer) return;
+  player.order = { ...offer, stage: 'pickup' };
+  offer = null;
+  $('orderModal').classList.remove('show');
+  toast('📦 接單成功！請跟隨箭頭前往店家，到達後快點兩下取餐！');
+  updateNavIndicator();
+}
+function reject() {
+  offer = null;
+  $('orderModal').classList.remove('show');
+  toast('已拒絕訂單。');
+}
+window.accept = accept; window.reject = reject;
 
-const shop=Math.random()>.5?places[1]:places[2],target=Math.random()>.5?places[4]:places[5];
+/* ================= 8. 互動與取送餐 (支援按鈕與雙擊) ================= */
+function interact() {
+  // 檢查小窩
+  if (Math.hypot(player.x - (places[0].x + places[0].w/2), player.y - (places[0].y + places[0].h/2)) < 90) {
+    $('homeModal').classList.add('show');
+    return;
+  }
+  // 檢查加油站
+  if (Math.hypot(player.x - (places[3].x + places[3].w/2), player.y - (places[3].y + places[3].h/2)) < 90) {
+    player.gas = 100;
+    updateHUD();
+    toast('⛽ 汽油加滿！');
+    advanceQuest(5); // 完成加油練習
+    return;
+  }
+  // 檢查機車行
+  if (Math.hypot(player.x - (places[6].x + places[6].w/2), player.y - (places[6].y + places[6].h/2)) < 90) {
+    $('garageModal').classList.add('show');
+    return;
+  }
 
-offer={shop,target,reward:75+Math.floor(Math.random()*46)};
+  if (!player.order) {
+    toast('目前沒有正在進行的訂單。');
+    return;
+  }
 
-$('orderDesc').textContent=shop.name+' → '+target.name;
+  const t = activeTarget();
+  const d = Math.hypot(player.x - (t.x + t.w/2), player.y - (t.y + t.h/2));
+  if (d > 110) {
+    toast('📍 還沒到達目的地喔！靠近後再快點兩下！');
+    return;
+  }
 
-$('reward').textContent='完成報酬：$'+offer.reward;show('orderModal');
+  if (player.order.stage === 'pickup') {
+    player.order.stage = 'deliver';
+    toast(`📦 取餐成功！接著送往【${player.order.target.name}】！`);
+    updateNavIndicator();
+  } else {
+    player.money += player.order.reward;
+    player.done++;
+    player.order = null;
+    updateHUD();
+    updateNavIndicator();
+    toast('🎉 配送完成！工資已入帳！');
+    advanceQuest(4); // 完成接單送達練習
+    setTimeout(spawnOrder, 3500);
+  }
+}
+window.interact = interact;
 
+/* ================= 9. 道具、食物引狗與便當 ================= */
+function throwFood() {
+  const w = weapons[wi];
+  if (w.qty <= 0) {
+    wi = (wi + 1) % weapons.length;
+    updateHUD();
+    toast(`切換為【${weapons[wi].name}】`);
+    return;
+  }
+  w.qty--;
+  foods.push({
+    x: player.x, y: player.y,
+    vx: Math.cos(player.angle) * 260,
+    vy: Math.sin(player.angle) * 260,
+    life: 1.5,
+    stun: w.stun,
+    icon: w.icon
+  });
+  updateHUD();
+}
+window.throwFood = throwFood;
+
+function eatBento() {
+  if (player.bento <= 0) {
+    toast('便當吃光了！請回家備餐或去便當店購買。');
+    return;
+  }
+  if (player.hp >= 100) {
+    toast('體力滿格，現在吃不下。');
+    return;
+  }
+  player.bento--;
+  player.hp = Math.min(100, player.hp + 45);
+  updateHUD();
+  toast('🍱 大口吃便當！體力恢復 45%！');
+  advanceQuest(3); // 完成吃便當練習
+}
+window.eatBento = eatBento;
+
+/* ================= 10. 車行升級與小窩功能 ================= */
+function buyVehicle(lvl, cost) {
+  if (player.money >= cost) {
+    player.money -= cost;
+    player.vehLvl = lvl;
+    player.speed = lvl === 1 ? 220 : 280;
+    player.durability = 100;
+    updateHUD();
+    $('garageModal').classList.remove('show');
+    toast('🛵 恭喜換新車！速度飆升！');
+    advanceQuest(6); // 完成換車練習
+  } else {
+    alert('現金不足喔！多跑幾單再來吧！');
+  }
+}
+window.buyVehicle = buyVehicle;
+
+function sleepHome() {
+  player.hp = 100;
+  player.durability = 100;
+  player.gas = 100;
+  updateHUD();
+  $('homeModal').classList.remove('show');
+  toast('🛌 睡了大覺，體力、車況與汽油全數回滿！');
+}
+window.sleepHome = sleepHome;
+
+function cookHome() {
+  if (player.money >= 35) {
+    player.money -= 35;
+    player.bento++;
+    weapons[0].qty += 2;
+    updateHUD();
+    toast('🍳 備餐完成！便當 +1，珍珠奶茶 +2！');
+  } else toast('錢不夠買食材！');
+}
+window.cookHome = cookHome;
+
+function playLottery() {
+  if (player.money >= 50) {
+    player.money -= 50;
+    const win = Math.random() < 0.35 ? 150 : 0;
+    player.money += win;
+    updateHUD();
+    toast(win > 0 ? `🎉 刮中大獎 $${win}！` : '銘謝惠顧，再接再厲！');
+  } else toast('錢不夠買彩券！');
+}
+window.playLottery = playLottery;
+
+/* ================= 11. HUD 與通知 ================= */
+function toast(s) {
+  $('toast').textContent = s;
+  $('toast').style.display = 'block';
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => $('toast').style.display = 'none', 2400);
 }
 
-function accept(){if(!offer)return;player.order={...offer,stage:'pickup'};offer=null;hide('orderModal');toast('已接單！先到店家取餐。');updateNav()}
-
-function reject(){offer=null;hide('orderModal');toast('已拒絕訂單。')}
-
-function interact(){
-
-for(const p of places){
-
-if(Math.hypot(player.x-(p.x+p.w/2),player.y-(p.y+p.h/2))<90){
-
-if(p.type==='home'){show('home');return}
-
-if(p.type==='gas'){player.gas=100;updateHUD();toast('汽油已加滿！');return}
-
+function updateHUD() {
+  $('money').textContent = Math.floor(player.money);
+  $('hp').textContent = Math.round(player.hp);
+  $('durability').textContent = Math.round(player.durability);
+  $('gas').textContent = Math.round(player.gas);
+  $('bentoCount').textContent = player.bento;
+  $('foodCount').textContent = weapons[wi].qty;
+  $('food').innerHTML = `${weapons[wi].icon} ${weapons[wi].name} ×<span id="foodCount">${weapons[wi].qty}</span>`;
 }
 
+/* ================= 12. 虛擬搖桿與鍵盤事件 ================= */
+const stick = $('stick'), knob = $('knob');
+stick.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  joy.on = true;
+  player.target = null;
+  stick.setPointerCapture(e.pointerId);
+  moveJoy(e);
+});
+stick.addEventListener('pointermove', e => { if (joy.on) moveJoy(e); });
+function moveJoy(e) {
+  const r = stick.getBoundingClientRect();
+  const dx = e.clientX - r.left - r.width / 2;
+  const dy = e.clientY - r.top - r.height / 2;
+  const l = Math.hypot(dx, dy);
+  const cap = Math.min(32, l);
+  const x = l ? dx / l * cap : 0;
+  const y = l ? dy / l * cap : 0;
+  joy.x = x / 32; joy.y = y / 32;
+  knob.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+}
+function stopJoy() {
+  joy.on = false; joy.x = 0; joy.y = 0;
+  knob.style.transform = 'translate(-50%, -50%)';
+}
+stick.addEventListener('pointerup', stopJoy);
+stick.addEventListener('pointercancel', stopJoy);
+
+addEventListener('keydown', e => {
+  const k = e.key.toLowerCase();
+  keys[k] = true;
+  if (['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)) e.preventDefault();
+  if (k === 'e' || k === ' ') interact();
+  if (k === 'b') eatBento();
+  if (k === 'j') throwFood();
+  if (k === 'q') { wi = (wi + 1) % weapons.length; updateHUD(); toast(`切換為【${weapons[wi].name}】`); }
+  if (k === 'y') accept();
+  if (k === 'n') reject();
+  if (k === 'escape') document.querySelectorAll('.overlay.show').forEach(x => x.classList.remove('show'));
+});
+addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+$('helpBtn').onclick = () => alert('📱 手機：\n• 點擊地面移動\n• 到目的地後【快點兩下】即可確認取餐/送達！\n• 右下按鈕可吃便當、丟珍奶引狗。\n\n💻 電腦：\n• WASD/方向鍵移動\n• 空白鍵/E 互動\n• B 吃便當、J 丟食物、Q 切換武器');
+$('storyBtn').onclick = () => { renderStory(); $('storyModal').classList.add('show'); };
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => $(b.dataset.close).classList.remove('show'));
+
+/* ================= 13. 主更新與繪圖迴圈 ================= */
+function update(dt) {
+  // 時間推移 (年月日時分)
+  gameMinutes = (gameMinutes + dt * 2.5) % 1440;
+  if (gameMinutes < dt * 2.5) {
+    gameDay++;
+    if (gameDay > 30) { gameDay = 1; gameMonth++; }
+    if (gameMonth > 12) { gameMonth = 1; gameYear++; }
+  }
+  const hh = String(Math.floor(gameMinutes / 60)).padStart(2, '0');
+  const mm = String(Math.floor(gameMinutes % 60)).padStart(2, '0');
+  $('dateText').textContent = `${gameYear}/${String(gameMonth).padStart(2,'0')}/${String(gameDay).padStart(2,'0')}`;
+  $('clock').textContent = `${hh}:${mm}`;
+
+  // 車輛移動
+  cars.forEach(c => {
+    c.x += c.v * dt;
+    if (c.x > map.w + 40) c.x = -40;
+    if (c.x < -40) c.x = map.w + 40;
+  });
+
+  checkCarCollisions(dt);
+
+  // 野狗邏輯
+  dogs.forEach(d => {
+    if (d.stun > 0) { d.stun -= dt; return; }
+    d.x += d.v * dt;
+    if (d.x < 500 || d.x > 1650) d.v *= -1;
+    if (Math.hypot(player.x - d.x, player.y - d.y) < 28) {
+      player.hp = Math.max(0, player.hp - 12 * dt);
+      updateHUD();
+    }
+  });
+
+  // 投擲食物飛行
+  foods.forEach(f => {
+    f.x += f.vx * dt;
+    f.y += f.vy * dt;
+    f.life -= dt;
+    dogs.forEach(d => {
+      if (Math.hypot(d.x - f.x, d.y - f.y) < 32) {
+        d.stun = f.stun;
+        f.life = 0;
+        toast(`🍖 食物引開了野狗，定身 ${f.stun} 秒！`);
+        advanceQuest(1); // 完成打狗練習
+      }
+    });
+  });
+  foods = foods.filter(f => f.life > 0);
+
+  // 移動計算 (搖桿 優先於 點擊地面)
+  let mx = 0, my = 0;
+  if (joy.on) {
+    mx = joy.x; my = joy.y;
+  } else {
+    if (keys.w || keys.arrowup) my--;
+    if (keys.s || keys.arrowdown) my++;
+    if (keys.a || keys.arrowleft) mx--;
+    if (keys.d || keys.arrowright) mx++;
+  }
+
+  if (mx || my) {
+    const l = Math.hypot(mx, my);
+    player.angle = Math.atan2(my, mx);
+    player.target = null;
+    player.x += (mx / l) * player.speed * dt;
+    player.y += (my / l) * player.speed * dt;
+  } else if (player.target) {
+    const dx = player.target.x - player.x;
+    const dy = player.target.y - player.y;
+    const d = Math.hypot(dx, dy);
+    if (d < 8) {
+      player.target = null;
+    } else {
+      player.angle = Math.atan2(dy, dx);
+      player.x += Math.cos(player.angle) * player.speed * dt;
+      player.y += Math.sin(player.angle) * player.speed * dt;
+    }
+  }
+
+  player.x = Math.max(20, Math.min(map.w - 20, player.x));
+  player.y = Math.max(20, Math.min(map.h - 20, player.y));
+
+  // 汽油消耗
+  if (player.gas > 0 && (mx || my || player.target)) {
+    player.gas = Math.max(0, player.gas - dt * 0.12);
+  }
+
+  updateNavIndicator();
+  updateHUD();
 }
 
-if(!player.order){toast('目前沒有可交付的訂單。');return}
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  const cam = { x: player.x - W / 2, y: player.y - H / 2 };
 
-const t=activeTarget(),d=Math.hypot(player.x-(t.x+t.w/2),player.y-(t.y+t.h/2));
+  ctx.save();
+  ctx.translate(-cam.x, -cam.y);
 
-if(d>105){toast('請再靠近目的地。');return}
+  // 大地圖背景
+  ctx.fillStyle = '#0f172a';
+  ctx.fillRect(0, 0, map.w, map.h);
 
-if(player.order.stage==='pickup'){player.order.stage='deliver';toast('取餐成功！接著送到 '+player.order.target.name)}
+  // 道路網
+  ctx.fillStyle = '#1e293b';
+  ctx.fillRect(0, 500, map.w, 140);
+  ctx.fillRect(700, 0, 130, map.h);
+  ctx.fillRect(1500, 0, 130, map.h);
 
-else{
+  // 道路虛線
+  ctx.strokeStyle = '#f59e0b';
+  ctx.lineWidth = 3;
+  ctx.setLineDash([16, 16]);
+  ctx.beginPath();
+  ctx.moveTo(0, 570); ctx.lineTo(map.w, 570);
+  ctx.moveTo(765, 0); ctx.lineTo(765, map.h);
+  ctx.moveTo(1565, 0); ctx.lineTo(1565, map.h);
+  ctx.stroke();
+  ctx.setLineDash([]);
 
-player.money+=player.order.reward;player.done++;player.order=null;player.hp=Math.min(100,player.hp+5);player.gas=Math.max(0,player.gas-5);
+  // 地標設施
+  for (const p of places) {
+    ctx.fillStyle = p.type === 'home' ? '#2563eb' : (p.type === 'gas' ? '#059669' : (p.type === 'garage' ? '#7c3aed' : '#d97706'));
+    ctx.beginPath();
+    ctx.roundRect(p.x, p.y, p.w, p.h, 10);
+    ctx.fill();
+    ctx.fillStyle = 'white';
+    ctx.font = 'bold 13px system-ui';
+    ctx.fillText(p.icon + ' ' + p.name, p.x + 8, p.y + p.h / 2 + 5);
+  }
 
-toast('配送完成！獲得報酬。');if(player.done>=3)toast('完成三單！已解鎖快速回家。');
+  // 導航光圈
+  const tgt = activeTarget();
+  if (tgt) {
+    ctx.strokeStyle = player.order.stage === 'pickup' ? '#f59e0b' : '#10b981';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(tgt.x + tgt.w/2, tgt.y + tgt.h/2, 42 + Math.sin(performance.now() / 150) * 6, 0, Math.PI * 2);
+    ctx.stroke();
+  }
 
-updateHUD();updateNav();setTimeout(spawnOrder,2500);
+  // 車輛
+  for (const car of cars) {
+    ctx.fillStyle = car.color;
+    ctx.beginPath();
+    ctx.roundRect(car.x - car.w/2, car.y - car.h/2, car.w, car.h, 5);
+    ctx.fill();
+  }
 
+  // 野狗
+  for (const d of dogs) {
+    ctx.font = '22px sans-serif';
+    ctx.fillText(d.stun > 0 ? '💤' : '🐕', d.x - 10, d.y + 8);
+  }
+
+  // 投擲食物
+  for (const f of foods) {
+    ctx.font = '20px sans-serif';
+    ctx.fillText(f.icon, f.x - 10, f.y + 7);
+  }
+
+  // 點擊移動綠色波紋
+  if (player.target) {
+    ctx.strokeStyle = '#34d399';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(player.target.x, player.target.y, 14 + Math.sin(performance.now() / 120) * 4, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // 繪製主角車輛
+  ctx.save();
+  ctx.translate(player.x, player.y);
+  ctx.rotate(player.angle);
+
+  // 機車 (阿豪藍 / 妮野可粉紅)
+  ctx.fillStyle = player.gender === 'F' ? '#ec4899' : '#2563eb';
+  ctx.beginPath();
+  ctx.roundRect(-16, -10, 32, 20, 5);
+  ctx.fill();
+
+  // 保溫箱
+  ctx.fillStyle = player.order ? '#10b981' : '#f59e0b';
+  ctx.fillRect(-22, -12, 12, 24);
+
+  // 角色頭
+  ctx.fillStyle = player.gender === 'F' ? '#f472b6' : '#fed7aa';
+  ctx.beginPath();
+  ctx.arc(4, 0, 8, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+  ctx.restore();
 }
 
+function loop(t) {
+  const dt = Math.min(0.04, (t - last) / 1000 || 0);
+  last = t;
+  if (!$('creatorModal').classList.contains('show')) update(dt);
+  draw();
+  requestAnimationFrame(loop);
 }
-
-function throwFood(){
-
-const w=weapons[wi];if(w.qty<=0){toast('這種食物用完了，按 Q 切換。');return}
-
-w.qty--;foods.push({x:player.x,y:player.y,vx:Math.cos(player.angle)*250,vy:Math.sin(player.angle)*250,life:1.4,stun:w.stun,icon:w.icon});updateHUD();
-
-}
-
-function eatBento(){if(player.bento<=0){toast('便當用完了，回家備餐。');return}if(player.hp>=100){toast('體力已滿。');return}player.bento--;player.hp=Math.min(100,player.hp+42);updateHUD();toast('體力恢復！')}
-
-function draw(){
-
-ctx.clearRect(0,0,W,H);const c=cam();ctx.save();ctx.translate(-c.x,-c.y);
-
-ctx.fillStyle='#152235';ctx.fillRect(0,0,map.w,map.h);
-
-ctx.fillStyle='#263447';ctx.fillRect(0,500,map.w,145);ctx.fillRect(700,0,120,map.h);ctx.fillRect(1500,0,120,map.h);
-
-ctx.strokeStyle='#fbbf24';ctx.lineWidth=3;ctx.setLineDash([18,18]);ctx.beginPath();ctx.moveTo(0,572);ctx.lineTo(map.w,572);ctx.moveTo(760,0);ctx.lineTo(760,map.h);ctx.moveTo(1560,0);ctx.lineTo(1560,map.h);ctx.stroke();ctx.setLineDash([]);
-
-for(let x=30;x<map.w;x+=240)for(let y=50;y<map.h;y+=230){ctx.fillStyle='#1c3440';ctx.fillRect(x,y,105,76)}
-
-for(const p of places){ctx.fillStyle=p.type==='home'?'#2563eb':p.type==='gas'?'#047857':p.type==='shop'?'#b45309':'#6d28d9';ctx.beginPath();ctx.roundRect(p.x,p.y,p.w,p.h,9);ctx.fill();ctx.fillStyle='white';ctx.font='bold 13px system-ui';ctx.fillText(p.icon+' '+p.name,p.x+5,p.y+p.h/2+5)}
-
-for(const car of cars){ctx.fillStyle='#38bdf8';ctx.fillRect(car.x-20,car.y-9,40,18)}
-
-for(const d of dogs){ctx.font='23px sans-serif';ctx.fillText(d.stun>0?'💤':'🐕',d.x-10,d.y+8)}
-
-for(const f of foods){ctx.font='20px sans-serif';ctx.fillText(f.icon,f.x-10,f.y+7)}
-
-if(player.target){ctx.strokeStyle='#34d399';ctx.lineWidth=3;ctx.beginPath();ctx.arc(player.target.x,player.target.y,15+Math.sin(performance.now()/120)*3,0,Math.PI*2);ctx.stroke()}
-
-ctx.save();ctx.translate(player.x,player.y);ctx.rotate(player.angle);ctx.fillStyle='#2563eb';ctx.beginPath();ctx.roundRect(-18,-10,36,20,5);ctx.fill();ctx.fillStyle='#fed7aa';ctx.beginPath();ctx.arc(4,0,7,0,Math.PI*2);ctx.fill();ctx.restore();
-
-ctx.restore();
-
-}
-
-function update(dt){
-
-minutes=(minutes+dt*2)%1440;const hh=String(Math.floor(minutes/60)).padStart(2,'0'),mm=String(Math.floor(minutes%60)).padStart(2,'0');$('clock').textContent=hh+':'+mm;
-
-const rush=(minutes>=450&&minutes<=570)||(minutes>=1050&&minutes<=1170);
-
-cars.forEach(c=>{c.x+=c.v*dt*(rush?1.4:1);if(c.x>map.w+30)c.x=-30;if(c.x< -30)c.x=map.w+30});
-
-dogs.forEach(d=>{if(d.stun>0){d.stun-=dt;return}d.x+=d.v*dt;if(d.x<500||d.x>1650)d.v*=-1;if(Math.hypot(player.x-d.x,player.y-d.y)<30){player.hp=Math.max(0,player.hp-10*dt);$('hp').textContent=Math.round(player.hp)}});
-
-foods.forEach(f=>{f.x+=f.vx*dt;f.y+=f.vy*dt;f.life-=dt;dogs.forEach(d=>{if(Math.hypot(d.x-f.x,d.y-f.y)<30){d.stun=f.stun;f.life=0;toast('食物引開了野狗！')}})});foods=foods.filter(f=>f.life>0);
-
-let mx=0,my=0;if(joy.on){mx=joy.x;my=joy.y}else{if(keys.w||keys.arrowup)my--;if(keys.s||keys.arrowdown)my++;if(keys.a||keys.arrowleft)mx--;if(keys.d||keys.arrowright)mx++}
-
-if(mx||my){const l=Math.hypot(mx,my);mx/=l;my/=l;player.angle=Math.atan2(my,mx);player.target=null;player.x+=mx*player.speed*dt;player.y+=my*player.speed*dt}
-
-else if(player.target){const dx=player.target.x-player.x,dy=player.target.y-player.y,d=Math.hypot(dx,dy);if(d<8)player.target=null;else{player.angle=Math.atan2(dy,dx);player.x+=Math.cos(player.angle)*player.speed*dt;player.y+=Math.sin(player.angle)*player.speed*dt}}
-
-player.x=Math.max(15,Math.min(map.w-15,player.x));player.y=Math.max(15,Math.min(map.h-15,player.y));
-
-if(player.gas>0&&(mx||my||player.target))player.gas=Math.max(0,player.gas-dt*.15);player.speed=player.gas>0?170:95;
-
-updateNav();updateHUD();
-
-}
-
-function loop(t){const dt=Math.min(.04,(t-last)/1000||0);last=t;if(!$('intro').classList.contains('show'))update(dt);draw();requestAnimationFrame(loop)}requestAnimationFrame(loop);
-
-
-
-canvas.addEventListener('pointerdown',e=>{if(document.querySelector('.overlay.show'))return;const p=worldPoint(e.clientX,e.clientY);player.target={x:Math.max(15,Math.min(map.w-15,p.x)),y:Math.max(15,Math.min(map.h-15,p.y))}});
-
-const stick=$('stick'),knob=$('knob');
-
-stick.addEventListener('pointerdown',e=>{e.preventDefault();joy.on=true;player.target=null;stick.setPointerCapture(e.pointerId);moveJoy(e)});
-
-stick.addEventListener('pointermove',e=>{if(joy.on)moveJoy(e)});
-
-function moveJoy(e){const r=stick.getBoundingClientRect(),dx=e.clientX-r.left-r.width/2,dy=e.clientY-r.top-r.height/2,l=Math.hypot(dx,dy),cap=Math.min(30,l),x=l?dx/l*cap:0,y=l?dy/l*cap:0;joy.x=x/30;joy.y=y/30;knob.style.transform=`translate(calc(-50% + ${x}px),calc(-50% + ${y}px)`}
-
-function stopJoy(){joy.on=false;joy.x=joy.y=0;knob.style.transform='translate(-50%,-50%)'}
-
-stick.addEventListener('pointerup',stopJoy);stick.addEventListener('pointercancel',stopJoy);
-
-addEventListener('keydown',e=>{const k=e.key.toLowerCase();keys[k]=true;if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k))e.preventDefault();if(k==='e'||k===' ')interact();if(k==='b')eatBento();if(k==='j')throwFood();if(k==='q'){wi=(wi+1)%weapons.length;updateHUD();toast('切換成 '+weapons[wi].name)}if(k==='y')accept();if(k==='n')reject();if(k==='m')openStory();if(k==='escape')document.querySelectorAll('.overlay.show').forEach(x=>x.classList.remove('show'))});
-
-addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
-
-function playMusic(){try{audio=audio||new(window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();if(music){music=false;clearInterval(musicTimer);$('musicBtn').textContent='🔇 音樂';return}music=true;$('musicBtn').textContent='🔊 音樂';musicTimer=setInterval(()=>{if(!music)return;const o=audio.createOscillator(),g=audio.createGain();o.type='square';o.frequency.value=[262,330,392,440,392,330,294,330][musicStep++%8];g.gain.value=.025;o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+.13)},260)}catch(e){toast('瀏覽器無法播放音樂。')}}
-
-$('start').onclick=()=>{hide('intro');toast('準備上路，稍後會有新訂單。');setTimeout(spawnOrder,1000)};
-
-$('helpBtn').onclick=()=>show('help');$('introHelp').onclick=()=>show('help');$('storyBtn').onclick=openStory;
-
-$('prev').onclick=()=>{if(chapter>0)chapter--;localStorage.setItem('deliveryChapter',chapter);renderStory()};
-
-$('next').onclick=()=>{chapter=chapter===chapters.length-1?0:chapter+1;localStorage.setItem('deliveryChapter',chapter);renderStory()};
-
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>hide(b.dataset.close));
-
-$('interact').onclick=interact;$('bento').onclick=eatBento;$('food').onclick=throwFood;$('accept').onclick=accept;$('reject').onclick=reject;$('musicBtn').onclick=playMusic;
-
-$('sleep').onclick=()=>{player.hp=100;player.gas=100;updateHUD();hide('home');toast('休息完成！')};
-
-$('cook').onclick=()=>{if(player.money<35){toast('金額不足。');return}player.money-=35;player.bento++;weapons[0].qty+=2;updateHUD();toast('備餐完成！')};
-
-$('lottery').onclick=()=>{const win=Math.random()<.25?80:0;player.money+=win;updateHUD();toast(win?'刮中 $80！':'沒中獎，再接再厲。')};
-
-document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>hide(b.dataset.close));
-
-setInterval(()=>{if(!$('intro').classList.contains('show')&&!player.order&&!offer&&!document.querySelector('.overlay.show'))spawnOrder()},18000);
+requestAnimationFrame(loop);
 
 updateHUD();
-
 })();
-
 </script>
-
 </body>
-
 </html>
