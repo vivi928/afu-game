@@ -1,542 +1,852 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>外送大叔的逆襲 - 手機真流暢版</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: none !important;
-      -webkit-touch-callout: none;
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      position: fixed;
-      background: #0f172a;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", sans-serif;
-      color: #fff;
-    }
-    #game-container {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>外送大叔的逆襲｜完整手機修復版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@600;800;900&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
 
-    /* 頂部極簡 HUD */
-    #top-hud {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      pointer-events: none;
-      z-index: 20;
-    }
-    .hud-col {
-      display: flex;
-      gap: 6px;
-      pointer-events: auto;
-    }
-    .pill {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 5px 12px;
-      font-size: 14px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-    .gold-txt { color: #f59e0b; }
-    .green-txt { color: #10b981; }
+        html, body {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            overflow: hidden;
+            background-color: #050b14;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
 
-    /* 導航提示卡 */
-    #nav-toast {
-      position: absolute;
-      top: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(16, 185, 129, 0.95);
-      color: #fff;
-      font-weight: 900;
-      font-size: 13px;
-      padding: 6px 16px;
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-      z-index: 25;
-      display: none;
-      white-space: nowrap;
-      pointer-events: none;
-    }
+        #gameContainer {
+            width: 100vw;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* 派單彈窗 */
-    #order-card {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 86%;
-      max-width: 320px;
-      background: #1e293b;
-      border: 3px solid #f59e0b;
-      border-radius: 20px;
-      padding: 18px;
-      z-index: 50;
-      display: none;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.9);
-    }
-    #order-card h3 {
-      font-size: 18px;
-      color: #f59e0b;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .order-content {
-      font-size: 14px;
-      line-height: 1.5;
-      color: #cbd5e1;
-      margin-bottom: 16px;
-    }
-    .btn-row {
-      display: flex;
-      gap: 10px;
-    }
-    .btn-ui {
-      flex: 1;
-      padding: 12px;
-      border-radius: 12px;
-      border: none;
-      font-size: 15px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-    .btn-yes { background: #10b981; color: white; }
-    .btn-no { background: #475569; color: #cbd5e1; }
+        /* 彈窗全螢幕響應自適應 */
+        .modal-mask {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            box-sizing: border-box;
+        }
+        .modal-card {
+            background: #0f172a;
+            border: 2px solid #f59e0b;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 480px;
+            max-height: calc(100dvh - 30px);
+            overflow-y: auto;
+            padding: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-sizing: border-box;
+        }
 
-    /* 右下角大按鈕組（防誤觸、支援多點觸控） */
-    #action-zone {
-      position: absolute;
-      bottom: 24px;
-      right: 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      z-index: 30;
-      pointer-events: auto;
-    }
-    .action-btn {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      border: 3px solid #64748b;
-      background: rgba(30, 41, 59, 0.92);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.6);
-      font-weight: 900;
-      font-size: 13px;
-    }
-    .action-btn:active {
-      transform: scale(0.92);
-      filter: brightness(1.2);
-    }
-    .btn-interact {
-      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      border-color: #fbbf24;
-      width: 80px;
-      height: 80px;
-      font-size: 15px;
-    }
+        /* 右下角獨立動作操作盤 */
+        #mobileActionPad {
+            position: absolute;
+            bottom: 16px;
+            right: 14px;
+            z-index: 40;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            pointer-events: auto;
+        }
+        .action-circle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(30, 41, 59, 0.95);
+            border: 2px solid #64748b;
+            color: white;
+            font-size: 11px;
+            font-weight: 900;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .action-circle-btn:active {
+            transform: scale(0.92);
+        }
+        .action-btn-main {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            border-color: #34d399;
+            grid-column: span 2;
+            width: 100%;
+            height: 50px;
+            border-radius: 25px;
+            font-size: 15px;
+        }
 
-    /* 手指拖曳視覺圓圈 */
-    #touch-indicator {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid rgba(245, 158, 11, 0.8);
-      background: rgba(245, 158, 11, 0.2);
-      pointer-events: none;
-      display: none;
-      transform: translate(-50%, -50%);
-      z-index: 15;
-    }
-  </style>
+        /* 虛擬搖桿 */
+        #virtualJoystick {
+            position: absolute;
+            bottom: 16px;
+            left: 14px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            z-index: 40;
+            touch-action: none !important;
+            pointer-events: auto;
+        }
+        #virtualKnob {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #f59e0b;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(245,158,11,0.6);
+        }
+
+        /* 滾動條美化 */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+    </style>
 </head>
 <body>
 
-<div id="game-container">
-  <!-- 頂部 HUD -->
-  <div id="top-hud">
-    <div class="hud-col">
-      <div class="pill">💰 <span id="txt-money" class="gold-txt">200</span></div>
-      <div class="pill">⚡ <span id="txt-hp" class="green-txt">100%</span></div>
-    </div>
-    <div class="hud-col">
-      <div class="pill"><span id="txt-timer">12:00</span></div>
-      <div class="pill"><span id="txt-sound" onclick="toggleAudio()">🔊</span></div>
-    </div>
-  </div>
+<div id="gameContainer">
+    <!-- 頂部精簡 HUD 狀態列 (自適應防擠壓) -->
+    <header class="w-full bg-slate-950/95 border-b border-slate-800 px-3 py-2 flex items-center justify-between z-30 shrink-0">
+        <div class="flex items-center space-x-2">
+            <div id="avatarContainer" onclick="openAvatarModal()" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-400 border-2 border-amber-300 flex items-center justify-center overflow-hidden shrink-0 cursor-pointer shadow">
+                <span class="text-xl">👨🏻‍🦱</span>
+            </div>
+            <div>
+                <div class="flex items-center space-x-1.5">
+                    <span id="playerNameText" class="text-sm sm:text-base font-black text-amber-300">阿豪</span>
+                    <span id="vehicleBadge" class="text-[10px] sm:text-xs bg-emerald-700 text-white font-black px-1.5 py-0.2 rounded-full">Lv.1 淑女車</span>
+                </div>
+                <div class="flex items-center space-x-2 text-xs font-black mt-0.5">
+                    <span class="text-emerald-400">⚡<span id="staminaVal">100%</span></span>
+                    <span class="text-amber-400">⛽<span id="fuelVal">100%</span></span>
+                </div>
+            </div>
+        </div>
 
-  <div id="nav-toast">📍 請前往【紅麵線】取餐！</div>
-  <div id="touch-indicator"></div>
+        <div class="flex items-center space-x-2">
+            <!-- 錢包 -->
+            <div class="bg-slate-900 border border-amber-500/60 rounded-lg px-2.5 py-1 flex items-center space-x-1">
+                <span class="text-amber-400 text-xs">💰</span>
+                <span id="walletText" class="text-sm sm:text-base font-black text-amber-400 leading-tight">$ 180</span>
+            </div>
+            <!-- 工具選單展開按鈕 -->
+            <button onclick="toggleQuickMenu()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-xl border border-slate-700 text-xs font-black">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
 
-  <!-- 畫布 -->
-  <canvas id="gameCanvas"></canvas>
+    <!-- 遊戲主畫布 -->
+    <main class="relative flex-1 w-full h-full bg-slate-950 overflow-hidden">
+        <canvas id="gameCanvas" class="w-full h-full block"></canvas>
 
-  <!-- 派單彈窗 -->
-  <div id="order-card">
-    <h3>
-      <span id="order-brand">🛵 粉熊外送</span>
-      <span id="order-pay" class="gold-txt">+NT$ 85</span>
-    </h3>
-    <div class="order-content">
-      <div>店家：<b id="order-store">樹林紅麵線</b></div>
-      <div>送往：<b id="order-addr">文林街公寓</b></div>
-      <div style="font-size: 12px; color: #38bdf8; margin-top: 5px;">⏱️ 限時 45 秒！提早送達多給小費！</div>
+        <!-- 頂部指引導航 -->
+        <div id="guideCompass" class="pointer-events-none absolute top-3 left-1/2 -translate-x-1/2 bg-slate-950/90 border-2 border-cyan-400 px-4 py-1.5 rounded-full shadow-xl flex items-center space-x-2 z-20 hidden">
+            <span id="arrowNeedle" class="text-cyan-400 text-lg font-black inline-block transform origin-center">
+                <i class="fa-solid fa-location-arrow"></i>
+            </span>
+            <span id="guideText" class="text-xs sm:text-sm font-black text-white whitespace-nowrap">前往：取餐點</span>
+            <span id="deliveryTimeLeftText" class="text-xs sm:text-sm font-black text-rose-400 ml-1">45s</span>
+        </div>
+
+        <!-- 虛擬搖桿 (左下角) -->
+        <div id="virtualJoystick">
+            <div id="virtualKnob"></div>
+        </div>
+
+        <!-- 手機操作按鍵 (右下角) -->
+        <div id="mobileActionPad">
+            <button class="action-circle-btn" onclick="eatBento()">
+                <span>🍱</span>
+                <span>便當(<span id="bentoCountText">2</span>)</span>
+            </button>
+            <button class="action-circle-btn" onclick="shootBoba()">
+                <span>🧋</span>
+                <span>波霸[J]</span>
+            </button>
+            <button class="action-circle-btn action-btn-main" onclick="tryInteract()">
+                <span id="interactLabel">取餐 / 交付 [E]</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- 1. 開場平台選擇彈窗 (第一優先開啟，確保能接單) -->
+    <div id="platformPickOverlay" class="modal-mask">
+        <div class="modal-card text-center">
+            <div class="text-4xl mb-2">📱🛵</div>
+            <h2 class="text-xl font-black text-white">大叔，請先選擇今天的主力外送平台</h2>
+            <p class="text-slate-300 text-xs mt-1 mb-4">平台決定了訂單節奏與報酬特性，隨時可在設定中重切換。</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onclick="selectPlatform('panda')" class="p-4 rounded-xl border-2 border-rose-500 bg-rose-950 text-white font-black text-left">
+                    <div class="text-base">🐼 粉熊外送</div>
+                    <div class="text-xs text-rose-300 font-normal mt-1">單量密集、短單多、高尖峰小費</div>
+                </button>
+                <button onclick="selectPlatform('uber')" class="p-4 rounded-xl border-2 border-emerald-500 bg-emerald-950 text-white font-black text-left">
+                    <div class="text-base">🟢 U來快送</div>
+                    <div class="text-xs text-emerald-300 font-normal mt-1">跨區遠單多、基礎加成高</div>
+                </button>
+            </div>
+        </div>
     </div>
-    <div class="btn-row">
-      <button class="btn-ui btn-no" onclick="onRejectOrder(event)">拒絕</button>
-      <button class="btn-ui btn-yes" onclick="onAcceptOrder(event)">接單</button>
-    </div>
-  </div>
 
-  <!-- 操作按鈕 -->
-  <div id="action-zone">
-    <button class="action-btn" onclick="onEatBento(event)">
-      <span>🍱</span>
-      <span>便當 (<span id="bento-qty">2</span>)</span>
-    </button>
-    <button class="action-btn btn-interact" onclick="onInteract(event)">
-      <span>取 / 送</span>
-      <span style="font-size: 10px; opacity: 0.8;">[點我]</span>
-    </button>
-  </div>
+    <!-- 2. 外送 APP 跳單通知視窗 (響應式防破版，接單按鈕清晰) -->
+    <div id="orderAppModal" class="modal-mask hidden">
+        <div class="modal-card">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-2 mb-2">
+                <span id="orderPlatformTag" class="text-xs font-black px-2 py-0.5 rounded bg-rose-600 text-white">粉熊外送</span>
+                <span id="orderQualityTag" class="text-xs font-black text-amber-300">✨ 好單</span>
+            </div>
+            
+            <div class="flex items-center space-x-3 my-2">
+                <div id="orderFoodIcon" class="text-4xl">🍱</div>
+                <div>
+                    <h4 id="orderRestaurantName" class="text-base font-black text-white">阿堂排骨便當</h4>
+                    <p id="orderFoodItem" class="text-xs text-amber-300">厚切排骨便當 x2</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 rounded-xl p-2.5 my-2 text-xs space-y-1 border border-slate-800">
+                <div class="flex justify-between">
+                    <span class="text-slate-400">送達目的地：</span>
+                    <span id="orderDropLoc" class="font-bold text-cyan-300">文林公寓</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-400">預估報酬：</span>
+                    <span id="orderPayText" class="font-black text-emerald-400 text-sm">$ 75</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mt-3">
+                <button onclick="rejectCurrentOrder()" class="py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-black rounded-xl text-sm border border-slate-600">
+                    拒絕單 [N]
+                </button>
+                <button onclick="acceptCurrentOrder()" class="py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-sm border border-emerald-400 shadow-lg">
+                    接單出發 [Y]
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. NPC 對話視窗 (大按鈕，可一鍵關閉) -->
+    <div id="dialogueBox" class="modal-mask hidden">
+        <div class="modal-card">
+            <div class="flex items-start space-x-3 mb-3">
+                <div id="dialogueAvatar" class="text-4xl shrink-0">🏪</div>
+                <div class="flex-1">
+                    <h4 id="dialogueSpeaker" class="text-base font-black text-amber-300">樹林在地店家</h4>
+                    <p id="dialogueContent" class="text-sm text-slate-200 mt-1 leading-relaxed">對話內容載入中...</p>
+                </div>
+            </div>
+            <div id="dialogueChoices" class="space-y-2 mt-2"></div>
+            <button onclick="closeDialogue()" class="w-full mt-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 font-black rounded-xl text-xs">
+                ✕ 關閉對話 [Esc / 空白]
+            </button>
+        </div>
+    </div>
+
+    <!-- 4. 側邊/快捷功能抽屜面板 (把原本擠在畫面的雜亂按鈕全收納進來) -->
+    <div id="quickMenuModal" class="modal-mask hidden">
+        <div class="modal-card">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-2 mb-3">
+                <h3 class="font-black text-amber-300 text-base">📦 生活設施與功能導航</h3>
+                <button onclick="toggleQuickMenu()" class="text-slate-400 text-lg font-bold">✕</button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs font-bold">
+                <button onclick="openAvatarModal()" class="p-3 bg-slate-800 rounded-xl border border-slate-700 hover:bg-slate-700">🎭 更換頭像 [C]</button>
+                <button onclick="openGarageModal()" class="p-3 bg-slate-800 rounded-xl border border-slate-700 hover:bg-slate-700">🛵 改裝車行</button>
+                <button onclick="openScratchModal()" class="p-3 bg-slate-800 rounded-xl border border-slate-700 hover:bg-slate-700">🎰 夜市刮刮樂</button>
+                <button onclick="openPlatformSelect()" class="p-3 bg-slate-800 rounded-xl border border-slate-700 hover:bg-slate-700">📱 切換外送平台</button>
+                <button onclick="toggleAudio()" class="p-3 bg-slate-800 rounded-xl border border-slate-700 hover:bg-slate-700 col-span-2">
+                    <span id="soundLabel">🔊 音效狀態：開啟</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 改裝車行彈窗 -->
+    <div id="garageModal" class="modal-mask hidden">
+        <div class="modal-card">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-2 mb-3">
+                <h3 class="font-black text-amber-300 text-base">🛵 順發外送改裝車行</h3>
+                <button onclick="closeGarageModal()" class="text-slate-400 font-bold">✕</button>
+            </div>
+            <div class="space-y-2 text-xs">
+                <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center border border-slate-800">
+                    <div>
+                        <div class="font-black text-white text-sm">Lv.2 變速公路車</div>
+                        <div class="text-slate-400">極速 +35%，體力消耗減緩</div>
+                    </div>
+                    <button onclick="buyVehicle(1, 200)" class="px-3 py-1.5 bg-emerald-600 rounded-lg text-white font-black">$200</button>
+                </div>
+                <div class="p-3 bg-slate-900 rounded-xl flex justify-between items-center border border-slate-800">
+                    <div>
+                        <div class="font-black text-white text-sm">Lv.3 125cc 外送神車 勁戰</div>
+                        <div class="text-slate-400">免耗大叔體力，極速 +100%</div>
+                    </div>
+                    <button onclick="buyVehicle(3, 800)" class="px-3 py-1.5 bg-emerald-600 rounded-lg text-white font-black">$800</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. 刮刮樂彈窗 -->
+    <div id="scratchModal" class="modal-mask hidden">
+        <div class="modal-card text-center">
+            <h3 class="text-lg font-black text-amber-300 mb-2">🎰 夜市金牌刮刮樂</h3>
+            <p class="text-xs text-slate-300 mb-3">每張 $50！刮開 3 個相同圖案獨得 $400 大獎！</p>
+            <div class="grid grid-cols-3 gap-2 my-3">
+                <button id="sc0" onclick="scratchItem(0)" class="h-16 bg-amber-600 rounded-xl text-2xl font-black text-white">❓</button>
+                <button id="sc1" onclick="scratchItem(1)" class="h-16 bg-amber-600 rounded-xl text-2xl font-black text-white">❓</button>
+                <button id="sc2" onclick="scratchItem(2)" class="h-16 bg-amber-600 rounded-xl text-2xl font-black text-white">❓</button>
+            </div>
+            <p id="scResult" class="text-xs font-black text-emerald-400 min-h-[1.5rem] mb-3"></p>
+            <div class="flex gap-2">
+                <button onclick="resetScratch()" class="flex-1 py-2 bg-amber-500 rounded-xl text-slate-950 font-black text-xs">再來一張 ($50)</button>
+                <button onclick="closeScratchModal()" class="flex-1 py-2 bg-slate-800 rounded-xl text-slate-200 font-black text-xs">離開</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. 頭像切換彈窗 -->
+    <div id="avatarModal" class="modal-mask hidden">
+        <div class="modal-card text-center">
+            <h3 class="text-lg font-black text-amber-300 mb-2">🎭 選擇外送員風格</h3>
+            <div class="grid grid-cols-3 gap-2 my-3">
+                <button onclick="setAvatarPreset('uncle')" class="p-2.5 bg-slate-900 rounded-xl border border-amber-400">
+                    <span class="text-3xl">👨🏻‍🦱</span>
+                    <span class="block text-[10px] text-amber-300 mt-1 font-bold">阿豪大叔</span>
+                </button>
+                <button onclick="setAvatarPreset('panda')" class="p-2.5 bg-slate-900 rounded-xl border border-rose-500">
+                    <span class="text-3xl">🐼</span>
+                    <span class="block text-[10px] text-rose-300 mt-1 font-bold">粉紅熊貓</span>
+                </button>
+                <button onclick="setAvatarPreset('king')" class="p-2.5 bg-slate-900 rounded-xl border border-yellow-400">
+                    <span class="text-3xl">👑</span>
+                    <span class="block text-[10px] text-yellow-300 mt-1 font-bold">黃金外送王</span>
+                </button>
+            </div>
+            <button onclick="closeAvatarModal()" class="w-full py-2 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold mt-2">關閉</button>
+        </div>
+    </div>
 </div>
 
 <script>
-  /* 阻止手機原生拖曳縮放 */
-  document.addEventListener('touchmove', function(e) { e.preventDefault(); }, { passive: false });
-
-  /* 簡易原生音效 */
-  let actx = null;
-  let soundEnabled = true;
-  function initAudio() {
-    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
-    if (actx.state === 'suspended') actx.resume();
-  }
-  function toggleAudio() {
-    soundEnabled = !soundEnabled;
-    document.getElementById('txt-sound').innerText = soundEnabled ? '🔊' : '🔇';
-  }
-  function playBeep(freq, type = 'sine', duration = 0.15) {
-    if (!soundEnabled) return;
-    initAudio();
-    const osc = actx.createOscillator();
-    const g = actx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, actx.currentTime);
-    g.gain.setValueAtTime(0.2, actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + duration);
-    osc.connect(g); g.connect(actx.destination);
-    osc.start(); osc.stop(actx.currentTime + duration);
-  }
-
-  /* 畫布適配 */
-  const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  /* 狀態 */
-  const state = { money: 200, hp: 100, bento: 2, time: 720 };
-  const player = { x: 1000, y: 1000, r: 22, angle: 0, speed: 4.2, vx: 0, vy: 0, order: null };
-
-  const places = {
-    station: { x: 740, y: 780, w: 130, h: 70, name: '樹林車站', type: 'landmark', icon: '🚉' },
-    noodle: { x: 920, y: 880, w: 70, h: 70, name: '紅麵線', type: 'shop', icon: '🍜' },
-    bento: { x: 1140, y: 920, w: 70, h: 70, name: '阿堂便當', type: 'shop', icon: '🍱' },
-    apt: { x: 820, y: 1250, w: 80, h: 80, name: '文林公寓', type: 'target', icon: '🏢' },
-    home: { x: 1250, y: 1220, w: 75, h: 75, name: '溫馨小窩', type: 'home', icon: '🏠' }
-  };
-
-  /* 手機任意處觸控移動 */
-  let moveTouchId = null;
-  let moveOrigin = { x: 0, y: 0 };
-  const touchDot = document.getElementById('touch-indicator');
-
-  canvas.addEventListener('touchstart', (e) => {
-    initAudio();
-    if (moveTouchId !== null) return;
-    const t = e.changedTouches[0];
-    moveTouchId = t.identifier;
-    moveOrigin = { x: t.clientX, y: t.clientY };
-    touchDot.style.left = `${t.clientX}px`;
-    touchDot.style.top = `${t.clientY}px`;
-    touchDot.style.display = 'block';
-  }, { passive: false });
-
-  canvas.addEventListener('touchmove', (e) => {
-    for (let i = 0; i < e.changedTouches.length; i++) {
-      const t = e.changedTouches[i];
-      if (t.identifier === moveTouchId) {
-        const dx = t.clientX - moveOrigin.x;
-        const dy = t.clientY - moveOrigin.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist > 10) {
-          const angle = Math.atan2(dy, dx);
-          player.vx = Math.cos(angle) * player.speed;
-          player.vy = Math.sin(angle) * player.speed;
-          player.angle = angle;
-          touchDot.style.left = `${t.clientX}px`;
-          touchDot.style.top = `${t.clientY}px`;
+    /* ================= 1. Web Audio 原生立體音效引擎 ================= */
+    class AudioEngine {
+        constructor() { this.ctx = null; this.muted = false; }
+        init() {
+            if (!this.ctx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioCtx();
+            }
+            if (this.ctx.state === 'suspended') this.ctx.resume();
         }
-      }
+        play(freq, type = 'sine', dur = 0.15, vol = 0.15) {
+            if (this.muted) return;
+            this.init();
+            const now = this.ctx.currentTime;
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, now);
+            gain.gain.setValueAtTime(vol, now);
+            gain.gain.linearRampToValueAtTime(0.001, now + dur);
+            osc.connect(gain); gain.connect(this.ctx.destination);
+            osc.start(now); osc.stop(now + dur);
+        }
+        bell() { this.play(880, 'sine', 0.2); setTimeout(() => this.play(1320, 'sine', 0.25), 100); }
+        coin() { [523, 659, 783, 1046].forEach((f, i) => setTimeout(() => this.play(f, 'triangle', 0.12), i * 60)); }
+        shoot() { this.play(500, 'square', 0.08); }
     }
-  }, { passive: false });
-
-  function stopTouch(e) {
-    for (let i = 0; i < e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier === moveTouchId) {
-        moveTouchId = null;
-        touchDot.style.display = 'none';
-        player.vx = 0;
-        player.vy = 0;
-      }
+    const audio = new AudioEngine();
+    function toggleAudio() {
+        audio.muted = !audio.muted;
+        document.getElementById('soundLabel').innerText = audio.muted ? '🔇 音效狀態：已靜音' : '🔊 音效狀態：開啟';
     }
-  }
-  canvas.addEventListener('touchend', stopTouch);
-  canvas.addEventListener('touchcancel', stopTouch);
 
-  /* 電腦鍵盤相容 */
-  const keys = {};
-  window.addEventListener('keydown', (e) => {
-    initAudio();
-    keys[e.key.toLowerCase()] = true;
-    if (e.key === 'y' || e.key === 'Y') onAcceptOrder();
-    if (e.key === 'n' || e.key === 'N') onRejectOrder();
-    if (e.key === 'b' || e.key === 'B') onEatBento();
-    if (e.key === 'e' || e.key === 'E' || e.key === ' ') onInteract();
-  });
-  window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+    /* ================= 2. 畫布視窗自適應 ================= */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
-  /* 外送派單循環 */
-  let pending = null;
-  function tryNewOrder() {
-    if (pending || player.order) return;
-    pending = {
-      brand: Math.random() > 0.5 ? '🛵 粉熊外送' : '🟢 U 外送',
-      shop: places.noodle,
-      target: places.apt,
-      reward: 80,
-      timer: 45
+    const MAP_W = 2800;
+    const MAP_H = 2200;
+
+    const VEHICLES = [
+        { id: 0, name: 'Lv.1 淑女車', speed: 3.4, isMotor: false, color: '#64748b' },
+        { id: 1, name: 'Lv.2 公路車', speed: 4.6, isMotor: false, color: '#0ea5e9' },
+        { id: 2, name: 'Lv.3 125cc勁戰', speed: 6.8, isMotor: true, color: '#e11d48' }
+    ];
+
+    const player = {
+        x: 520,
+        y: 520,
+        angle: 0,
+        speed: 0,
+        vehLevel: 0,
+        stamina: 100,
+        fuel: 100,
+        money: 180,
+        bentoCount: 2,
+        bentoBoostTimer: 0,
+        activeOrder: null,
+        carryingFood: false,
+        targetX: null,
+        targetY: null,
+        avatarType: 'uncle'
     };
-    document.getElementById('order-brand').innerText = pending.brand;
-    document.getElementById('order-store').innerText = pending.shop.name;
-    document.getElementById('order-addr').innerText = pending.target.name;
-    document.getElementById('order-pay').innerText = `+NT$ ${pending.reward}`;
-    document.getElementById('order-card').style.display = 'block';
-    playBeep(600, 'triangle', 0.2);
-  }
-  setInterval(tryNewOrder, 10000);
 
-  function onAcceptOrder(e) {
-    if (e) e.stopPropagation();
-    if (!pending) return;
-    player.order = { ...pending, stage: 'pickup' };
-    pending = null;
-    document.getElementById('order-card').style.display = 'none';
-    showToast(`📦 請前往【${player.order.shop.name}】取餐！`);
-    playBeep(880, 'sine', 0.2);
-  }
+    const facilities = [
+        { id: 'home', name: '溫馨小窩', icon: '🏠', x: 420, y: 420, w: 140, h: 100, color: '#3b82f6', type: 'home' },
+        { id: 'gas', name: '中油加油站', icon: '⛽', x: 1300, y: 900, w: 140, h: 100, color: '#059669', type: 'gas' },
+        { id: 'lottery', name: '夜市彩券行', icon: '🎰', x: 1750, y: 400, w: 140, h: 100, color: '#eab308', type: 'lottery' }
+    ];
 
-  function onRejectOrder(e) {
-    if (e) e.stopPropagation();
-    pending = null;
-    document.getElementById('order-card').style.display = 'none';
-  }
+    const restaurants = [
+        { id: 'boba', name: '樹林果都飲', icon: '🧋', x: 450, y: 880, w: 130, h: 90, color: '#f59e0b', talk: '「大杯波霸搖好囉！微糖微冰，騎車小心！」' },
+        { id: 'bento', name: '極黑腿庫便當', icon: '🍱', x: 1250, y: 380, w: 130, h: 90, color: '#ef4444', talk: '「剛起鍋的厚切腿庫，香氣逼人，趕快送去吧！」' },
+        { id: 'noodle', name: '博愛紅麵線', icon: '🍜', x: 1950, y: 800, w: 130, h: 90, color: '#dc2626', talk: '「紅麵線兩碗，湯汁封得很緊，小心燙喔！」' }
+    ];
 
-  function showToast(txt) {
-    const t = document.getElementById('nav-toast');
-    t.innerText = txt;
-    t.style.display = 'block';
-  }
+    const customers = [
+        { id: 'c1', name: '帝寶尊爵豪宅 (有電梯)', icon: '🏢', x: 400, y: 1750, w: 150, h: 110, hasElevator: true },
+        { id: 'c2', name: '文林公寓 5樓 (無電梯)', icon: '🏠', x: 1450, y: 1650, w: 140, h: 100, hasElevator: false }
+    ];
 
-  function onEatBento(e) {
-    if (e) e.stopPropagation();
-    if (state.bento > 0 && state.hp < 100) {
-      state.bento--;
-      state.hp = Math.min(100, state.hp + 40);
-      document.getElementById('bento-qty').innerText = state.bento;
-      document.getElementById('txt-hp').innerText = `${state.hp}%`;
-      playBeep(440, 'triangle', 0.1);
-      showToast('🍱 體力恢復 40%！');
+    const streetNPCs = [
+        { id: 'grandma', x: 750, y: 920, icon: '👵', name: '迷路阿嬤', text: '「少年仔，阿嬤找不到捷運站，你可以跟阿嬤說怎麼走嗎？」' },
+        { id: 'senior', x: 1600, y: 950, icon: '🛵', name: '老鳥老高', text: '「跑單不要急著衝，看清備註跟路線才能穩穩賺！」' }
+    ];
+
+    let bobaBullets = [];
+    let selectedPlatform = null;
+
+    /* ================= 3. 平台選擇與開場邏輯 ================= */
+    function selectPlatform(plat) {
+        audio.init();
+        selectedPlatform = plat;
+        document.getElementById('platformPickOverlay').classList.add('hidden');
+        showDialogue('🛵', '外送大叔阿豪', '「平台已經上線！現在可以推動左下搖桿、按鍵盤 WASD，或直接【點擊地面任意處】自動騎乘！到達目標光圈後點右下角取送餐！」');
     }
-  }
-
-  function onInteract(e) {
-    if (e) e.stopPropagation();
-    if (!player.order) {
-      showToast('⚠️ 目前沒有正在進行的訂單！');
-      return;
+    function openPlatformSelect() {
+        toggleQuickMenu();
+        document.getElementById('platformPickOverlay').classList.remove('hidden');
     }
-    const ord = player.order;
-    if (ord.stage === 'pickup') {
-      const d = Math.hypot(player.x - (ord.shop.x + ord.shop.w / 2), player.y - (ord.shop.y + ord.shop.h / 2));
-      if (d < 80) {
-        ord.stage = 'deliver';
-        playBeep(900, 'sine', 0.2);
-        showToast(`🚀 已取餐！請送往【${ord.target.name}】！`);
-      } else {
-        showToast('📍 還沒到達店家取餐點喔！');
-      }
-    } else if (ord.stage === 'deliver') {
-      const d = Math.hypot(player.x - (ord.target.x + ord.target.w / 2), player.y - (ord.target.y + ord.target.h / 2));
-      if (d < 80) {
-        state.money += ord.reward;
-        player.order = null;
-        document.getElementById('txt-money').innerText = state.money;
-        document.getElementById('nav-toast').style.display = 'none';
-        playBeep(1046, 'sine', 0.3);
-        alert(`🎉 配送成功！獲得 NT$ ${ord.reward}！`);
-      } else {
-        showToast('📍 還沒到達顧客位置喔！');
-      }
-    }
-  }
 
-  /* 主迴圈 */
-  function loop() {
-    if (moveTouchId === null) {
-      let kx = 0, ky = 0;
-      if (keys['w'] || keys['arrowup']) ky -= 1;
-      if (keys['s'] || keys['arrowdown']) ky += 1;
-      if (keys['a'] || keys['arrowleft']) kx -= 1;
-      if (keys['d'] || keys['arrowright']) kx += 1;
-      if (kx !== 0 || ky !== 0) {
-        const ang = Math.atan2(ky, kx);
-        player.vx = Math.cos(ang) * player.speed;
-        player.vy = Math.sin(ang) * player.speed;
+    /* ================= 4. 外送跳單系統 ================= */
+    let pendingOrder = null;
+    function tryGenerateOrder() {
+        if (!selectedPlatform || player.activeOrder || pendingOrder) return;
+        const rest = restaurants[Math.floor(Math.random() * restaurants.length)];
+        const cust = customers[Math.floor(Math.random() * customers.length)];
+        const basePay = cust.hasElevator ? 70 : 90;
+
+        pendingOrder = {
+            platform: selectedPlatform === 'panda' ? '粉熊外送' : 'U來快送',
+            restaurant: rest,
+            customer: cust,
+            item: rest.name === '樹林果都飲' ? '波霸奶茶 x2' : '招牌排骨便當',
+            icon: rest.icon,
+            basePay: basePay,
+            timer: cust.hasElevator ? 55 : 45
+        };
+
+        document.getElementById('orderPlatformTag').innerText = pendingOrder.platform;
+        document.getElementById('orderPlatformTag').className = selectedPlatform === 'panda' ? 'text-xs font-black px-2 py-0.5 rounded bg-rose-600 text-white' : 'text-xs font-black px-2 py-0.5 rounded bg-emerald-600 text-white';
+        document.getElementById('orderRestaurantName').innerText = rest.name;
+        document.getElementById('orderFoodItem').innerText = pendingOrder.item;
+        document.getElementById('orderDropLoc').innerText = cust.name;
+        document.getElementById('orderPayText').innerText = `$ ${basePay}`;
+        document.getElementById('orderAppModal').classList.remove('hidden');
+        audio.bell();
+    }
+    setInterval(tryGenerateOrder, 8000);
+
+    function acceptCurrentOrder() {
+        if (!pendingOrder) return;
+        player.activeOrder = pendingOrder;
+        player.carryingFood = false;
+        pendingOrder = null;
+        document.getElementById('orderAppModal').classList.add('hidden');
+        audio.coin();
+        updateGuide();
+    }
+    function rejectCurrentOrder() {
+        pendingOrder = null;
+        document.getElementById('orderAppModal').classList.add('hidden');
+    }
+
+    /* ================= 5. 四合一移動操作核心 ================= */
+    let joystickActive = false;
+    let joyCenter = { x: 0, y: 0 };
+    let joyVec = { x: 0, y: 0 };
+    const stickZone = document.getElementById('virtualJoystick');
+    const stickKnob = document.getElementById('virtualKnob');
+
+    stickZone.addEventListener('pointerdown', (e) => {
+        audio.init();
+        player.targetX = null; player.targetY = null; // 手動操作立刻接管自動移動
+        joystickActive = true;
+        const r = stickZone.getBoundingClientRect();
+        joyCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+        stickZone.setPointerCapture(e.pointerId);
+    });
+
+    window.addEventListener('pointermove', (e) => {
+        if (!joystickActive) return;
+        const dx = e.clientX - joyCenter.x;
+        const dy = e.clientY - joyCenter.y;
+        const dist = Math.hypot(dx, dy);
+        const maxR = 32;
+        const ang = Math.atan2(dy, dx);
+        const cap = Math.min(dist, maxR);
+
+        stickKnob.style.transform = `translate(calc(-50% + ${Math.cos(ang) * cap}px), calc(-50% + ${Math.sin(ang) * cap}px))`;
+        joyVec = { x: Math.cos(ang) * (cap / maxR), y: Math.sin(ang) * (cap / maxR) };
         player.angle = ang;
-      } else {
-        player.vx *= 0.8;
-        player.vy *= 0.8;
-      }
+    });
+
+    function stopJoy() {
+        joystickActive = false;
+        stickKnob.style.transform = 'translate(-50%, -50%)';
+        joyVec = { x: 0, y: 0 };
+    }
+    window.addEventListener('pointerup', stopJoy);
+    window.addEventListener('pointercancel', stopJoy);
+
+    // 點擊地面自動騎乘 (手機與滑鼠完全支援)
+    canvas.addEventListener('click', (e) => {
+        audio.init();
+        const rect = canvas.getBoundingClientRect();
+        const sx = e.clientX - rect.left;
+        const sy = e.clientY - rect.top;
+        const camX = player.x - canvas.width / 2;
+        const camY = player.y - canvas.height / 2;
+        player.targetX = camX + sx;
+        player.targetY = camY + sy;
+    });
+
+    // 鍵盤相容
+    const keys = {};
+    window.addEventListener('keydown', (e) => {
+        audio.init();
+        player.targetX = null; player.targetY = null; // 鍵盤接管
+        keys[e.key.toLowerCase()] = true;
+        if (e.key === 'y' || e.key === 'Y') acceptCurrentOrder();
+        if (e.key === 'n' || e.key === 'N') rejectCurrentOrder();
+        if (e.key === 'b' || e.key === 'B') eatBento();
+        if (e.key === 'j' || e.key === 'J') shootBoba();
+        if (e.key === 'e' || e.key === 'E' || e.key === ' ') tryInteract();
+        if (e.key === 'Escape') closeDialogue();
+    });
+    window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+    /* ================= 6. 互動與取送餐 ================= */
+    function tryInteract() {
+        closeDialogue();
+
+        // 檢查設施
+        for (let f of facilities) {
+            if (Math.hypot(player.x - (f.x + f.w / 2), player.y - (f.y + f.h / 2)) < 90) {
+                if (f.type === 'home') {
+                    player.stamina = 100; player.fuel = 100;
+                    updateHUD();
+                    showDialogue('🏠', '溫馨小窩', '「在大床上好好睡了一覺！體力與精神 100% 回滿！」');
+                } else if (f.type === 'gas') {
+                    player.fuel = 100;
+                    updateHUD();
+                    showDialogue('⛽', '中油加油站', '「95 加滿完成！機車油箱已滿，祝你單單順利！」');
+                } else if (f.type === 'lottery') {
+                    openScratchModal();
+                }
+                return;
+            }
+        }
+
+        // 檢查 NPC
+        for (let npc of streetNPCs) {
+            if (Math.hypot(player.x - npc.x, player.y - npc.y) < 70) {
+                showDialogue(npc.icon, npc.name, npc.text);
+                return;
+            }
+        }
+
+        // 外送取餐與交付
+        if (!player.activeOrder) return;
+        const ord = player.activeOrder;
+
+        if (!player.carryingFood) {
+            const r = ord.restaurant;
+            if (Math.hypot(player.x - (r.x + r.w / 2), player.y - (r.y + r.h / 2)) < 90) {
+                player.carryingFood = true;
+                audio.bell();
+                showDialogue(r.icon, r.name, r.talk);
+                updateGuide();
+            }
+        } else {
+            const c = ord.customer;
+            if (Math.hypot(player.x - (c.x + c.w / 2), player.y - (c.y + c.h / 2)) < 100) {
+                player.money += ord.basePay;
+                player.activeOrder = null;
+                player.carryingFood = false;
+                audio.coin();
+                updateHUD();
+                updateGuide();
+                showDialogue(c.icon, c.name, `「準時送達！餐點很熱，給五星好評！獲得運費 $${ord.basePay}！」`);
+            }
+        }
     }
 
-    player.x += player.vx;
-    player.y += player.vy;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const camX = canvas.width / 2 - player.x;
-    const camY = canvas.height / 2 - player.y;
-
-    ctx.save();
-    ctx.translate(camX, camY);
-
-    // 道路底圖
-    ctx.fillStyle = '#1e293b';
-    ctx.fillRect(500, 500, 1100, 1100);
-
-    ctx.strokeStyle = '#334155';
-    ctx.lineWidth = 60;
-    ctx.beginPath();
-    ctx.moveTo(600, 920); ctx.lineTo(1500, 920);
-    ctx.moveTo(1000, 600); ctx.lineTo(1000, 1500);
-    ctx.stroke();
-
-    // 建築物
-    for (let k in places) {
-      const p = places[k];
-      ctx.fillStyle = p.type === 'shop' ? '#d97706' : (p.type === 'home' ? '#2563eb' : '#059669');
-      ctx.beginPath();
-      ctx.roundRect(p.x, p.y, p.w, p.h, 10);
-      ctx.fill();
-
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 13px sans-serif';
-      ctx.fillText(`${p.icon} ${p.name}`, p.x + 6, p.y + p.h / 2 + 5);
+    function showDialogue(icon, speaker, text) {
+        document.getElementById('dialogueAvatar').innerText = icon;
+        document.getElementById('dialogueSpeaker').innerText = speaker;
+        document.getElementById('dialogueContent').innerText = text;
+        document.getElementById('dialogueBox').classList.remove('hidden');
+    }
+    function closeDialogue() {
+        document.getElementById('dialogueBox').classList.add('hidden');
     }
 
-    // 引導光圈
-    if (player.order) {
-      const tgt = player.order.stage === 'pickup' ? player.order.shop : player.order.target;
-      ctx.strokeStyle = '#10b981';
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.arc(tgt.x + tgt.w / 2, tgt.y + tgt.h / 2, 40 + Math.sin(Date.now() / 200) * 8, 0, Math.PI * 2);
-      ctx.stroke();
+    function updateGuide() {
+        const compass = document.getElementById('guideCompass');
+        if (!player.activeOrder) {
+            compass.classList.add('hidden');
+            document.getElementById('interactLabel').innerText = '取餐 / 交付 [E]';
+            return;
+        }
+        compass.classList.remove('hidden');
+        const target = player.carryingFood ? player.activeOrder.customer : player.activeOrder.restaurant;
+        const tx = target.x + target.w / 2;
+        const ty = target.y + target.h / 2;
+        const ang = Math.atan2(ty - player.y, tx - player.x) * (180 / Math.PI);
+        document.getElementById('arrowNeedle').style.transform = `rotate(${ang + 45}deg)`;
+        document.getElementById('guideText').innerText = (player.carryingFood ? '送達：' : '取餐：') + target.name;
+        document.getElementById('interactLabel').innerText = (player.carryingFood ? '交餐' : '取餐') + ' [E]';
     }
 
-    // 大叔繪製 (含轉向)
-    ctx.save();
-    ctx.translate(player.x, player.y);
-    ctx.rotate(player.angle);
+    function eatBento() {
+        if (player.bentoCount > 0 && player.stamina < 100) {
+            player.bentoCount--;
+            player.stamina = Math.min(100, player.stamina + 45);
+            player.bentoBoostTimer = 30; // 30秒加速
+            updateHUD();
+            audio.bell();
+            showDialogue('🍱🔥', '大叔阿豪', '「狂嗑了一顆便當！體力恢復，獲得 30 秒暴走加速 (+40% 跑速)！」');
+        }
+    }
 
-    // 機車輪子與車身
-    ctx.fillStyle = '#0f172a';
-    ctx.fillRect(-20, -7, 12, 14);
-    ctx.fillRect(12, -7, 10, 14);
+    function shootBoba() {
+        audio.shoot();
+        bobaBullets.push({
+            x: player.x + Math.cos(player.angle) * 25,
+            y: player.y + Math.sin(player.angle) * 25,
+            vx: Math.cos(player.angle) * 10,
+            vy: Math.sin(player.angle) * 10,
+            life: 40
+        });
+    }
 
-    ctx.fillStyle = '#2563eb';
-    ctx.beginPath();
-    ctx.roundRect(-14, -10, 30, 20, 5);
-    ctx.fill();
+    function updateHUD() {
+        document.getElementById('walletText').innerText = '$ ' + player.money;
+        document.getElementById('staminaVal').innerText = Math.round(player.stamina) + '%';
+        document.getElementById('fuelVal').innerText = Math.round(player.fuel) + '%';
+        document.getElementById('bentoCountText').innerText = player.bentoCount;
+        document.getElementById('vehicleBadge').innerText = VEHICLES[player.vehLevel].name;
+    }
 
-    // 保溫箱
-    ctx.fillStyle = player.order ? '#10b981' : '#f59e0b';
-    ctx.beginPath();
-    ctx.roundRect(-22, -12, 14, 24, 3);
-    ctx.fill();
+    /* ================= 7. 物理迴圈與畫面繪製 ================= */
+    let lastTime = performance.now();
+    function loop(now) {
+        const delta = Math.min((now - lastTime) / 1000, 0.1);
+        lastTime = now;
 
-    // 黑背心大叔
-    ctx.fillStyle = '#1e293b';
-    ctx.beginPath();
-    ctx.arc(2, 0, 12, 0, Math.PI * 2);
-    ctx.fill();
+        const maxSpd = (VEHICLES[player.vehLevel].speed + (player.bentoBoostTimer > 0 ? 2.5 : 0));
+        let mx = 0, my = 0;
 
-    // 頭與黑框眼鏡
-    ctx.fillStyle = '#fed7aa';
-    ctx.beginPath();
-    ctx.arc(4, 0, 8, 0, Math.PI * 2);
-    ctx.fill();
+        // 搖桿或鍵盤
+        if (joystickActive) {
+            mx = joyVec.x; my = joyVec.y;
+        } else if (player.targetX !== null) {
+            const dx = player.targetX - player.x;
+            const dy = player.targetY - player.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist > 10) {
+                player.angle = Math.atan2(dy, dx);
+                mx = Math.cos(player.angle);
+                my = Math.sin(player.angle);
+            } else {
+                player.targetX = null; player.targetY = null;
+            }
+        } else {
+            if (keys['w'] || keys['arrowup']) my -= 1;
+            if (keys['s'] || keys['arrowdown']) my += 1;
+            if (keys['a'] || keys['arrowleft']) mx -= 1;
+            if (keys['d'] || keys['arrowright']) mx += 1;
+            if (mx !== 0 || my !== 0) player.angle = Math.atan2(my, mx);
+        }
 
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(6, -5, 4, 3);
-    ctx.strokeRect(6, 2, 4, 3);
+        const mag = Math.hypot(mx, my);
+        if (mag > 0.05) {
+            player.x = Math.max(40, Math.min(MAP_W - 40, player.x + (mx / mag) * maxSpd));
+            player.y = Math.max(40, Math.min(MAP_H - 40, player.y + (my / mag) * maxSpd));
+        }
 
-    ctx.restore();
-    ctx.restore();
+        if (player.bentoBoostTimer > 0) player.bentoBoostTimer -= delta;
 
+        // 繪製畫面
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const camX = canvas.width / 2 - player.x;
+        const camY = canvas.height / 2 - player.y;
+
+        ctx.save();
+        ctx.translate(camX, camY);
+
+        // 背景柏油馬路
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, MAP_W, MAP_H);
+
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(0, 550, MAP_W, 140);
+        ctx.fillRect(0, 1450, MAP_W, 140);
+        ctx.fillRect(650, 0, 140, MAP_H);
+        ctx.fillRect(1750, 0, 140, MAP_H);
+
+        // 點擊移動波紋
+        if (player.targetX !== null) {
+            ctx.strokeStyle = '#34d399';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(player.targetX, player.targetY, 14 + Math.sin(Date.now() / 150) * 4, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        // 設施與店家
+        [...facilities, ...restaurants, ...customers].forEach(p => {
+            ctx.fillStyle = p.color || '#334155';
+            ctx.beginPath();
+            ctx.roundRect(p.x, p.y, p.w, p.h, 12);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 13px sans-serif';
+            ctx.fillText(p.icon + ' ' + p.name, p.x + 8, p.y + p.h / 2 + 5);
+        });
+
+        // 導航光圈
+        if (player.activeOrder) {
+            const tgt = player.carryingFood ? player.activeOrder.customer : player.activeOrder.restaurant;
+            ctx.strokeStyle = player.carryingFood ? '#10b981' : '#f59e0b';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(tgt.x + tgt.w / 2, tgt.y + tgt.h / 2, 45 + Math.sin(Date.now() / 180) * 8, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+
+        // 大叔機車主體
+        ctx.save();
+        ctx.translate(player.x, player.y);
+        ctx.rotate(player.angle);
+
+        ctx.fillStyle = VEHICLES[player.vehLevel].color;
+        ctx.beginPath();
+        ctx.roundRect(-16, -10, 32, 20, 5);
+        ctx.fill();
+
+        ctx.fillStyle = player.carryingFood ? '#10b981' : '#f59e0b';
+        ctx.fillRect(-22, -12, 12, 24); // 外送箱
+
+        ctx.fillStyle = '#0f172a';
+        ctx.beginPath();
+        ctx.arc(2, 0, 11, 0, Math.PI * 2); // 黑背心
+        ctx.fill();
+
+        ctx.fillStyle = '#fed7aa';
+        ctx.beginPath();
+        ctx.arc(4, 0, 8, 0, Math.PI * 2); // 頭
+        ctx.fill();
+
+        ctx.restore();
+        ctx.restore();
+
+        requestAnimationFrame(loop);
+    }
     requestAnimationFrame(loop);
-  }
-  requestAnimationFrame(loop);
+
+    /* ================= 8. 功能彈窗輔助函式 ================= */
+    function toggleQuickMenu() { document.getElementById('quickMenuModal').classList.toggle('hidden'); }
+    function openGarageModal() { toggleQuickMenu(); document.getElementById('garageModal').classList.remove('hidden'); }
+    function closeGarageModal() { document.getElementById('garageModal').classList.add('hidden'); }
+    function buyVehicle(lvl, cost) {
+        if (player.money >= cost) {
+            player.money -= cost; player.vehLevel = lvl;
+            updateHUD(); closeGarageModal();
+            showDialogue('🎉', '順發車行', '「恭喜大叔座駕升級！極速大幅提升！」');
+        } else {
+            alert('現金不足喔！');
+        }
+    }
+    function openScratchModal() { document.getElementById('scratchModal').classList.remove('hidden'); resetScratch(); }
+    function closeScratchModal() { document.getElementById('scratchModal').classList.add('hidden'); }
+    function resetScratch() {
+        if (player.money < 50) return alert('錢不夠買彩券喔！');
+        player.money -= 50; updateHUD();
+        for (let i = 0; i < 3; i++) document.getElementById('sc' + i).innerText = '❓';
+        document.getElementById('scResult').innerText = '';
+    }
+    function scratchItem(idx) {
+        const pool = ['💎', '🍗', '💰'];
+        document.getElementById('sc' + idx).innerText = pool[Math.floor(Math.random() * pool.length)];
+        const v0 = document.getElementById('sc0').innerText;
+        const v1 = document.getElementById('sc1').innerText;
+        const v2 = document.getElementById('sc2').innerText;
+        if (v0 !== '❓' && v1 !== '❓' && v2 !== '❓') {
+            if (v0 === v1 && v1 === v2) {
+                player.money += 400; updateHUD();
+                document.getElementById('scResult').innerText = '🎉 獨得頭獎 $400！';
+            } else {
+                document.getElementById('scResult').innerText = '再接再厲！';
+            }
+        }
+    }
+    function openAvatarModal() { document.getElementById('avatarModal').classList.remove('hidden'); }
+    function closeAvatarModal() { document.getElementById('avatarModal').classList.add('hidden'); }
+    function setAvatarPreset(type) { player.avatarType = type; closeAvatarModal(); }
 </script>
 </body>
 </html>
