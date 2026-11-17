@@ -33,11 +33,10 @@ body.title #titleBtnsTop .hudBtn{position:static}
 #jumpBtn{position:fixed;right:calc(124px + env(safe-area-inset-right));bottom:calc(22px + env(safe-area-inset-bottom));width:82px;height:82px;border-radius:50%;border:3px solid #7dd3fc;background:radial-gradient(circle at 35% 30%,#38bdf8,#0284c7);color:#fff;font-weight:900;font-size:13px;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:20;box-shadow:0 6px 18px rgba(0,0,0,.5);cursor:pointer;padding:0;line-height:1.15;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 #jumpBtn .ic{font-size:26px}
 #jumpBtn:active{transform:scale(.92)}
-#vehSwitchBtn{position:fixed;left:calc(16px + env(safe-area-inset-left));bottom:calc(20px + env(safe-area-inset-bottom));padding:10px 14px;border-radius:16px;border:2.5px solid #34d399;background:rgba(6,78,59,.92);color:#ecfdf5;font-weight:900;font-size:14px;display:none;align-items:center;gap:6px;z-index:20;box-shadow:0 6px 18px rgba(0,0,0,.55);cursor:pointer;line-height:1.2}
-#vehSwitchBtn:active{transform:scale(.93)}
+#vehSwitchBtn{display:none!important}
 body.dev-mobile #throwBtn{width:106px;height:106px;font-size:16px}
 body.dev-mobile #jumpBtn{right:calc(134px + env(safe-area-inset-right));width:92px;height:92px;font-size:14.5px}
-body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
+body.dev-mobile #vehSwitchBtn{display:none!important}
 
 .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:10px;background:rgba(5,8,20,.72);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:50;touch-action:pan-y}
 .overlay.show{display:flex}
@@ -250,15 +249,36 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 .devChkBar{display:inline-flex;align-items:center;gap:10px;background:rgba(11,18,34,0.85);border:1px solid #334155;border-radius:999px;padding:3px 12px;margin:2px auto 4px;font-size:12.5px;color:#cbd5e1;font-weight:800}
 .devChkItem{display:inline-flex;align-items:center;gap:4px;cursor:pointer;padding:2px 6px;border-radius:6px;border:1px solid transparent;background:transparent;color:#94a3b8;font-family:inherit;font-size:12.5px;font-weight:800}
 .devChkItem.sel{color:#fde047;border-color:rgba(250,204,21,0.45);background:rgba(250,204,21,0.12)}
+/* 商店分頁標籤與卡片樣式（不一直往下滑，精準分頁） */
+.storeTabRow{display:flex;gap:6px;justify-content:center;margin:6px 0 8px;flex-wrap:wrap}
+.storeTab{padding:7px 14px;border-radius:10px;font-size:13.5px;font-weight:900;background:#1e293b;color:#94a3b8;border:1.5px solid #334155;cursor:pointer;font-family:inherit;transition:all .14s}
+.storeTab:hover{border-color:#64748b;color:#fff}
+.storeTab.active{background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-color:#34d399;box-shadow:0 3px 10px rgba(16,185,129,0.35)}
+.storePane{display:none;min-height:240px;max-height:46vh;overflow-y:auto;padding:2px}
+.storePane.active{display:block}
+.transSubTab{padding:5px 11px;border-radius:8px;font-size:12.5px;font-weight:800;background:#1e293b;color:#cbd5e1;border:1px solid #475569;cursor:pointer;font-family:inherit}
+.transSubTab.active{background:#0284c7;color:#fff;border-color:#38bdf8}
+.storeGiftGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.storeGiftGrid{grid-template-columns:1fr}}
+.storeGiftCard{background:#0b1222;border:1.5px solid #334155;border-radius:10px;padding:9px 11px;text-align:left;display:flex;flex-direction:column;gap:4px}
+.storeGiftCard.claimable{border-color:#10b981;background:linear-gradient(145deg,#064e3b,#0b1222)}
+.storeGiftCard.claimed{opacity:0.65;border-color:#475569}
+.storeMotoGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:520px){.storeMotoGrid{grid-template-columns:1fr}}
+.storeMotoCard{background:#0b1222;border:1.5px solid #334155;border-radius:10px;padding:9px 11px;text-align:left;display:flex;flex-direction:column;gap:5px}
+.storeMotoCard.cur{border-color:#fbbf24;background:linear-gradient(145deg,#3b2e10,#0b1222)}
 /* 藍色小屋子按鈕與 66 格收集圖鑑 */
 #hudHomeBtn,#titleBlueHouseBtn{background:linear-gradient(135deg,#0284c7,#1e40af) !important;border-color:#7dd3fc !important;color:#fff !important;box-shadow:0 0 12px rgba(56,189,248,0.55) !important}
-#codexModal .card{max-width:680px;border-color:#38bdf8;background:linear-gradient(160deg,#0c1930,#090f1d);padding:14px 18px}
-.codexStatBar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0 10px}
+#codexModal .card{max-width:680px;border-color:#38bdf8;background:linear-gradient(160deg,#0c1930,#090f1d);padding:12px 16px}
+.codexStatBar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 8px}
 @media (max-width:520px){.codexStatBar{grid-template-columns:repeat(2,1fr)}}
-.codexStatBox{background:#0b1222;border:1.5px solid #1e3a8a;border-radius:10px;padding:6px 8px;text-align:center}
-.codexStatBox .v{font-size:17px;font-weight:900;color:#fde047}
-.codexStatBox .k{font-size:11.5px;color:#93c5fd}
-.codexGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;max-height:48vh;overflow-y:auto;padding:4px 2px;margin-bottom:10px}
+.codexStatBox{background:#0b1222;border:1.5px solid #1e3a8a;border-radius:10px;padding:5px 8px;text-align:center}
+.codexStatBox .v{font-size:16px;font-weight:900;color:#fde047}
+.codexStatBox .k{font-size:11px;color:#93c5fd}
+.codexTabRow{display:flex;gap:6px;margin:4px 0 8px;justify-content:center;flex-wrap:wrap}
+.codexTab{padding:5px 12px;border-radius:8px;font-size:12.5px;font-weight:900;border:1px solid #475569;background:#1e293b;color:#cbd5e1;cursor:pointer;font-family:inherit}
+.codexTab.active{border-color:#38bdf8;background:#0284c7;color:#fff}
+.codexGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;max-height:44vh;overflow-y:auto;padding:4px 2px;margin-bottom:8px}
 @media (max-width:560px){.codexGrid{grid-template-columns:repeat(2,1fr)}}
 .codexCell{background:#0b1222;border:1.5px solid #1e293b;border-radius:10px;padding:8px 9px;text-align:left;display:flex;flex-direction:column;gap:3px;transition:transform .12s}
 .codexCell.unlocked{border-color:#38bdf8;background:linear-gradient(145deg,#102342,#0b1324)}
@@ -267,10 +287,15 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 .codexCell.locked .codexHead{color:#64748b}
 .codexBody{font-size:11.5px;color:#bae6fd;line-height:1.4}
 .codexCell.locked .codexBody{color:#475569}
+/* 遍地小遊戲手機橫向 6:19 視野自適應與防遮擋 */
+@media (max-height:500px){
+  #sevenGameModal .card{max-width:620px;padding:6px 12px;max-height:98vh}
+  #sevenCanvas{max-height:46vh;aspect-ratio:16/9}
+}
 </style>
 </head>
 <body class="title dev-mobile">
-<canvas id="cv" width="1921" height="901"></canvas>
+<canvas id="cv" width="1921" height="1081"></canvas>
 <div id="safe"></div>
 
 <!-- 遊戲中右上角快捷按鈕（💙🏠 藍色小屋收集狀態 ＋ ⚙️ 螺絲設定選單［內含 📖書本教學 ＆ 🗂️收集圖鑑］） -->
@@ -284,7 +309,7 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
     <button class="hudBtn" id="hudMenuHomeBtn" aria-label="回主大廳" title="離開回主大廳">🚪</button>
     <button class="hudBtn" id="vibBtn" aria-label="震動開關" title="震動：開啟">📳</button>
     <button class="hudBtn" id="muteBtn" aria-label="靜音" title="聲音：開啟">🔊</button>
-    <button class="hudBtn" id="fullBtn" aria-label="全螢幕" title="全螢幕"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+    <button class="hudBtn" id="fullBtn" aria-label="退出全螢幕" title="退出全螢幕"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg></button>
   </div>
 </div>
 <!-- 主畫面專用獨立頂部按鈕（含 💙🏠 藍色小屋 ＆ 📖 教學書本） -->
@@ -293,21 +318,21 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
   <button class="hudBtn" id="titleBookBtn" aria-label="教學書本" title="📖 玩法教學指南" style="border-color:#fde047;color:#fde047">📖</button>
   <button class="hudBtn" id="vibBtnTitle" aria-label="震動開關" title="震動：開啟">📳</button>
   <button class="hudBtn" id="muteBtnTitle" aria-label="靜音" title="聲音：開啟">🔊</button>
-  <button class="hudBtn" id="fullBtnTitle" aria-label="全螢幕" title="全螢幕" style="color:#38bdf8"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></button>
+  <button class="hudBtn" id="fullBtnTitle" aria-label="退出全螢幕" title="退出全螢幕" style="color:#38bdf8"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg></button>
 </div>
 
 <button id="vehSwitchBtn" aria-label="切換走路或腳踏車" style="display: none;">🚶 走路中(可切西瓜) [點此切換]</button>
 <button id="jumpBtn" aria-label="跳躍" style="display: none;"><span class="ic">🦘</span><span id="jumpBtnTxt">跳躍</span></button>
-<button id="throwBtn" aria-label="丟雞腿" style="display: none;"><span class="ic">🍗</span><span id="ammoTxt">×4</span></button>
+<button id="throwBtn" aria-label="丟雞腿" style="display: none;"><span class="ic">🍗</span><span id="ammoTxt">×9</span></button>
 
 <!-- 開始畫面 -->
-<div class="overlay show" id="title"><div class="card">
+<div class="overlay" id="title"><div class="card">
   <div class="logo">🛵💨</div>
   <div class="gname">瘋狂外送員</div>
   <div class="gsub">閃過車流・跳過路障・記住備註準時送達！</div>
-  <div class="best">🏆 最高紀錄：<span id="bestTitle">0</span>　｜　💵 存款：NT$<span id="coinsTitle">1280</span>　｜　📘 收集：<span id="unlockTxt">1/66</span></div>
+  <div class="best">🏆 最高紀錄：<span id="bestTitle">3371</span>　｜　💵 存款：NT$<span id="coinsTitle">2485</span>　｜　📘 收集：<span id="unlockTxt">23/66</span></div>
   <button type="button" id="profileBtn" style="font-size:12px;color:#bae6fd;background:rgba(15,23,42,0.85);border:1px solid #38bdf8;border-radius:999px;padding:5px 14px;margin:2px auto 4px;display:inline-block;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;font-family:inherit;" title="點擊設定出生年月日與生肖星座天賦">
-    🎂 主角天賦：<b id="titleHeroTxt" style="color:#fde047">兔兔好吃 (🎓學生兼差)</b> ｜ 🤝 夥伴：<b id="titleFriendsTxt" style="color:#6ee7b7">阿哲、小琳、陳伯伯｜🏪阿豪爆汁雞排</b> ｜ 📖 <b id="titleStoryProgTxt" style="color:#f472b6">五股沁象篇</b> ✎
+    🎂 主角天賦：<b id="titleHeroTxt" style="color:#fde047">妮野可 (🎓學生兼差)</b> ｜ 🤝 夥伴：<b id="titleFriendsTxt" style="color:#6ee7b7">阿哲、小琳、陳伯伯｜🏪阿豪爆汁雞排</b> ｜ 📖 <b id="titleStoryProgTxt" style="color:#f472b6">五股沁象篇・🕒1</b> ✎
   </button>
   <div>
     <div class="modes" role="group" aria-label="遊戲模式">
@@ -316,7 +341,7 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
     </div>
   </div>
   <div class="chars">
-    <div class="char sel" data-char="M" role="button" tabindex="0">
+    <div class="char" data-char="M" role="button" tabindex="0">
       <canvas id="prevM" width="376" height="196"></canvas>
       <span class="cn"><span class="roleTag m">男主角</span><span id="charNameM">兔兔好吃</span></span>
       <span class="cd">耐撞減傷 20%・藍勁速車</span>
@@ -325,7 +350,7 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
         <button type="button" id="saveQuickNameM" style="padding:3px 8px;border-radius:6px;border:1px solid #fde047;background:#1e293b;color:#fde047;font-size:11px;font-weight:900;cursor:pointer;">儲存</button>
       </div>
     </div>
-    <div class="char" data-char="F" role="button" tabindex="0">
+    <div class="char sel" data-char="F" role="button" tabindex="0">
       <canvas id="prevF" width="376" height="196"></canvas>
       <span class="cn"><span class="roleTag f">女主角</span><span id="charNameF">妮野可</span></span>
       <span class="cd">極速 +15・粉紅貓耳快車</span>
@@ -337,13 +362,13 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
   </div>
   <div class="titleBtns">
     <button class="btn primary" id="startBtn">🚀 開始外送</button>
-    <button class="btn" id="garageBtn" style="border-color:#34d399;color:#6ee7b7">🏪 商店／設定</button>
+    <button class="btn" id="garageBtn" style="border-color:#34d399;color:#6ee7b7">🏪 商店</button>
     <button class="btn" id="blueHouseLobbyBtn" style="border-color:#38bdf8;color:#7dd3fc">🏠 收集小屋</button>
     <button class="btn" id="howBtn">📖 玩法說明</button>
     <button class="btn" id="storyBtn" style="padding:9px 12px;border-color:#f472b6;color:#fbcfe8">📜 故事／小遊戲</button>
-    <button class="btn" id="dlHtmlBtn" style="border-color:#38bdf8;color:#7dd3fc;padding:9px 12px" title="一鍵下載完整單機 HTML 檔案到電腦／桌面">📥 下載遊戲檔</button>
+    <button class="btn" id="dlHtmlBtn" style="border-color:#38bdf8;color:#7dd3fc;padding:9px 12px" title="加到手機桌面或下載單機 HTML">📥 下載／加到桌面</button>
   </div>
-  <div class="small">單機遊戲・支援純鍵盤 ↑↓＋空白鍵選單 <span class="verTap" style="display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;background:#1e293b;border:1px solid #475569;color:#38bdf8;font-weight:bold;">v1.5.6</span></div>
+  <div class="small">單機遊戲・支援純鍵盤 ↑↓＋空白鍵選單 <span class="verTap" style="display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;background:#1e293b;border:1px solid #475569;color:#38bdf8;font-weight:bold;">v1.5.8</span></div>
 </div></div>
 
 <!-- 開場身分與生肖星座設定視窗（選生日、自動推算星座與生肖・起步固定走路） -->
@@ -365,20 +390,23 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
     <div class="profSecTitle">📅 請選擇你的出生年月日（推算生肖＆星座天賦）</div>
     <div style="background:#0b1222;border:1.5px solid #38bdf8;border-radius:12px;padding:14px;margin-bottom:12px;">
       <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;">
-        <select id="birthYear" style="padding:8px 10px;border-radius:8px;background:#1e293b;color:#fde047;border:1px solid #475569;font-size:15px;font-weight:900;"><option value="1970">1970</option><option value="1971">1971</option><option value="1972">1972</option><option value="1973">1973</option><option value="1974">1974</option><option value="1975">1975</option><option value="1976">1976</option><option value="1977">1977</option><option value="1978">1978</option><option value="1979">1979</option><option value="1980">1980</option><option value="1981">1981</option><option value="1982">1982</option><option value="1983">1983</option><option value="1984">1984</option><option value="1985">1985</option><option value="1986">1986</option><option value="1987">1987</option><option value="1988">1988</option><option value="1989">1989</option><option value="1990">1990</option><option value="1991">1991</option><option value="1992">1992</option><option value="1993">1993</option><option value="1994">1994</option><option value="1995">1995</option><option value="1996">1996</option><option value="1997">1997</option><option value="1998">1998</option><option value="1999">1999</option><option value="2000">2000</option><option value="2001">2001</option><option value="2002">2002</option><option value="2003">2003</option><option value="2004">2004</option><option value="2005">2005</option><option value="2006">2006</option><option value="2007">2007</option><option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option></select>
+        <select id="birthYear" style="padding:8px 10px;border-radius:8px;background:#1e293b;color:#fde047;border:1px solid #475569;font-size:15px;font-weight:900;"></select>
         <span style="font-weight:900;color:#94a3b8">年</span>
-        <select id="birthMonth" style="padding:8px 10px;border-radius:8px;background:#1e293b;color:#fde047;border:1px solid #475569;font-size:15px;font-weight:900;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+        <select id="birthMonth" style="padding:8px 10px;border-radius:8px;background:#1e293b;color:#fde047;border:1px solid #475569;font-size:15px;font-weight:900;"></select>
         <span style="font-weight:900;color:#94a3b8">月</span>
-        <select id="birthDay" style="padding:8px 10px;border-radius:8px;background:#1e293b;color:#fde047;border:1px solid #475569;font-size:15px;font-weight:900;"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option></select>
+        <select id="birthDay" style="padding:8px 10px;border-radius:8px;background:#1e293b;color:#fde047;border:1px solid #475569;font-size:15px;font-weight:900;"></select>
         <span style="font-weight:900;color:#94a3b8">日</span>
       </div>
-      <div id="birthZodiacTxt" style="text-align:center;margin-top:10px;font-size:14.5px;font-weight:900;color:#6ee7b7;line-height:1.6;">✨ 命中特質：生肖【狗】・【天秤座】（幸運外送靈氣）</div>
+      <div id="birthZodiacTxt" style="text-align:center;margin-top:10px;font-size:14.5px;font-weight:900;color:#6ee7b7;line-height:1.6;">
+        ✨ 命中特質：生肖【龍】・【射手座】（幸運外送靈氣）
+      </div>
     </div>
 
     <div style="background:#0f172a;border:1.5px solid #334155;border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13.5px;color:#cbd5e1;line-height:1.6;text-align:left;">
-      🚶 <b>起步方式</b>：固定為【雙腿走路（切西瓜抄近路）】・初始存款 <b>NT$ 0</b><br>
-      💬 <b>取名方式</b>：在地圖上遇到第一位 NPC 對話後即可首次自訂大名！<br>
-      📱💻 <b>操作設備切換</b>：隨時可至【🏪 商店／設定】自由切換手機或電腦模式！
+      🚶 <b>起步方式</b>：固定為【雙腿走路（切西瓜抄近路）】・送滿 2 單自動配發升級【🚲 外送腳踏車】！<br>
+      🏡 <b>更換載具</b>：想變回走路切西瓜，隨時回到地圖起點【🏡 溫馨老家整備站】即可換裝！<br>
+      🎂 <b>生日天賦</b>：依年齡動態微調初始體力與積蓄（長輩自帶積蓄、年輕人體力充沛）！<br>
+      💬 <b>取名方式</b>：在地圖上遇到第一位 NPC 對話後即可正式登記專屬大名！
     </div>
 
     <div style="display:flex;gap:10px;justify-content:center;">
@@ -391,22 +419,20 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 <!-- 開頭派單故事 -->
 <div class="overlay" id="story"><div class="card">
   <div class="storyTop">
-    <span class="storyTag" id="storyTag">📜 外送大叔・人生奮鬥傳奇</span>
-    <button class="storySkip" id="storySkip">✕ 關閉</button>
+    <span class="storyTag" id="storyTag">📱 外送系統派單中</span>
+    <button class="storySkip" id="storySkip">略過 ⏭</button>
   </div>
   <div class="storyBox" id="storyBox">
-    <div class="storyAva" id="storyAva">😂</div>
+    <div class="storyAva" id="storyAva">📱</div>
     <div class="storyBody">
-      <div class="storySpeaker" id="storySpeaker">死黨【阿哲】vs 兔兔好吃</div>
-      <div class="storyText" id="storyText">死黨【阿哲】：「外送員最討厭哪個朝代？『遼代』，因為全都是契丹（棄單）人！」
-
-我（兔兔好吃）：「滾！！！！少廢話，我去【🏪 阿豪爆汁雞排】接單賺外快了！」</div>
+      <div class="storySpeaker" id="storySpeaker">系統通知</div>
+      <div class="storyText" id="storyText"></div>
     </div>
   </div>
   <div class="storyFoot">
-    <div class="storyDots" id="storyDots"><span class="on"></span><span class=""></span><span class=""></span></div>
+    <div class="storyDots" id="storyDots"></div>
     <div class="storyActions" style="flex-wrap:wrap;">
-      <button class="btn" id="storyBack" style="margin: 0px; min-width: 110px; padding: 10px 12px; display: inline-flex;">🏠 返回大廳</button>
+      <button class="btn" id="storyBack" style="margin:0;min-width:110px;padding:10px 12px;display:none">🏠 返回大廳</button>
       <button class="btn green" id="storySevenBtn" style="margin:0;min-width:140px;padding:10px 14px;" title="純好玩練習模式（不串接主線金幣與裝備）">🎮 遍地商店小遊戲</button>
       <button class="btn primary" id="storyNext" style="margin:0;min-width:140px">下一句 ▶</button>
     </div>
@@ -415,8 +441,8 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 
 <!-- 選擇地圖（台灣地圖：先開放北部・五股沁象遊戲公司商圈） -->
 <div class="overlay" id="mapSel"><div class="card">
-  <h2 id="mapSelTitle">🗺️ 台灣外送地圖（北部開放中）</h2>
-  <p id="mapSelSub" style="margin:0 0 6px;color:#94a3b8;font-size:13.5px">目前搶先開放【北部：五股・沁象遊戲公司商圈】，先把第一關玩到極致刺激！</p>
+  <h2 id="mapSelTitle">🗺️ 台灣外送地圖（北部：五股・沁象遊戲商圈開放中）</h2>
+  <p id="mapSelSub" style="margin:0 0 6px;color:#94a3b8;font-size:13.5px">目前搶先開放【北部首發：1. 新北五股・沁象遊戲公司商圈】・已收集 ⭐ 0 星！</p>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 10px;background:#090f1d;border:1.5px solid #334155;border-radius:12px;padding:8px;">
     <div style="background:linear-gradient(135deg,#065f46,#047857);border:2px solid #34d399;border-radius:10px;padding:6px 4px;color:#ecfdf5;font-weight:900;font-size:13px;">
       🟢 北部地區<br><span style="font-size:11.5px;color:#fde047;">📍五股・沁象總部</span>
@@ -431,7 +457,7 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
       🔒 東部地區<br><span style="font-size:11px;">🚧 尚未開放</span>
     </div>
   </div>
-  <div class="mapGrid" id="mapGrid"></div>
+  <div class="mapGrid" id="mapGrid"><button class="mapCard sel"><div class="mapIc">🎮</div><div class="mapInfo"><div class="mapName"><span>1. 新北五股・沁象遊戲公司商圈</span><span style="color:#34d399;font-size:11.5px;font-weight:900">🟢 北部開放中</span></div><div class="mapDesc">北部首發開放・五工路【沁象遊戲總部】與五股真實排隊美食（過關送5單領 NT$2,000 新手獎金）！</div><div class="mapMeta">🎯 過關：5單＋🦘跳躍跨過路障(或定住野狗)2次 ・ 最高 962</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🌅</div><div class="mapInfo"><div class="mapName"><span>2. 新北・淡水金色河岸（未開放）</span><span>🔒未開放</span></div><div class="mapDesc">北西出海口・雙跨河紅拱橋與北岸山坡環道</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🌾</div><div class="mapInfo"><div class="mapName"><span>3. 台中・高美風車濕地（中部未開放）</span><span>🔒未開放</span></div><div class="mapDesc">中部西岸・大風車濕地外環道與交錯木棧支線</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🌸</div><div class="mapInfo"><div class="mapName"><span>4. 嘉義・阿里山櫻花鐵道（南部未開放）</span><span>🔒未開放</span></div><div class="mapDesc">中南山區・蜿蜒盤山之字道與森林雙環鐵路線</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">⛩️</div><div class="mapInfo"><div class="mapName"><span>5. 台南・安平古堡古都</span><span>🔒未開放</span></div><div class="mapDesc">南部古都・交錯 T 字古街巷弄與廟會封路繞行</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🚢</div><div class="mapInfo"><div class="mapName"><span>6. 高雄・愛河85港灣夜色</span><span>🔒未開放</span></div><div class="mapDesc">南台灣大港・三橋跨運河與南港貨櫃支線</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🌴</div><div class="mapInfo"><div class="mapName"><span>7. 屏東・墾丁南國大道</span><span>🔒未開放</span></div><div class="mapDesc">台灣最南端・海濱雙線快速道與四條沙灘巷弄</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🎈</div><div class="mapInfo"><div class="mapName"><span>8. 台東・鹿野熱氣球縱谷</span><span>🔒未開放</span></div><div class="mapDesc">東岸北上・縱谷雙長直高速幹線與高台環狀線</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">⛰️</div><div class="mapInfo"><div class="mapName"><span>9. 花蓮・太魯閣山海峽谷</span><span>🔒未開放</span></div><div class="mapDesc">東部斷崖・之字盤山險道與蘇花臨海長廊</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🏮</div><div class="mapInfo"><div class="mapName"><span>10. 新北・平溪十分天燈夜</span><span>🔒未開放</span></div><div class="mapDesc">山谷鐵道夜色・滿天祈福天燈緩升與三座平交橋</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🏮</div><div class="mapInfo"><div class="mapName"><span>11. 新北・九份燈籠山城</span><span>🔒未開放</span></div><div class="mapDesc">東北角山城・階梯錯層最窄山巷與夜間閃黃急送</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button><button class="mapCard locked" disabled=""><div class="mapIc">🏙️</div><div class="mapInfo"><div class="mapName"><span>12. 台北・信義跨夜摩天城</span><span>🔒未開放</span></div><div class="mapDesc">終點回北・中央台北101大圓環與四向快速大道</div><div class="mapMeta">🚧 尚未開放（目前優先進化第一關：五股・沁象遊戲商圈）</div></div></button></div>
   <div style="margin-top:4px">
     <button class="btn" id="mapBack">⬅ 返回大廳</button>
   </div>
@@ -488,11 +514,11 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
   <div style="position:relative;width:100%;height:38px;background:#090f1d;border:2px solid #475569;border-radius:19px;overflow:hidden;margin:12px 0;">
     <div style="position:absolute;left:36%;width:28%;top:0;bottom:0;background:rgba(16,185,129,0.32);border-left:2px dashed #34d399;border-right:2px dashed #34d399;"></div>
     <div style="position:absolute;left:45%;width:10%;top:0;bottom:0;background:rgba(250,204,21,0.48);border-left:2px solid #fde047;border-right:2px solid #fde047;"></div>
-    <div id="qteCursor" style="position:absolute;left:10%;top:3px;bottom:3px;width:12px;margin-left:-6px;border-radius:6px;background:#f43f5e;box-shadow:0 0 12px #f43f5e;"></div>
+    <div id="qteCursor" style="position: absolute; left: 56.8954%; top: 3px; bottom: 3px; width: 12px; margin-left: -6px; border-radius: 6px; background: rgb(244, 63, 94); box-shadow: rgb(244, 63, 94) 0px 0px 12px;"></div>
   </div>
-  <div id="qteResultTxt" style="min-height:22px;font-weight:900;font-size:15px;color:#fde047;margin-bottom:8px;">看準中央黃金／綠色區域按下！</div>
+  <div id="qteResultTxt" style="min-height: 22px; font-weight: 900; font-size: 15px; color: rgb(110, 231, 183); margin-bottom: 8px;">✨ 精準投進綠色得分區！獲得：+90分、+NT$80、4秒加速衝刺！</div>
   <div style="display:flex;gap:8px;justify-content:center;">
-    <button class="btn primary" id="qteStrikeBtn" style="flex:1;margin:0;">🏀 看準出手！(空白鍵)</button>
+    <button class="btn primary" id="qteStrikeBtn" style="flex:1;margin:0;" disabled="">🏀 抓準時機・立即投籃！(空白鍵)</button>
     <button class="btn" id="qteSkipBtn" style="min-width:90px;margin:0;padding:10px;">略過</button>
   </div>
 </div></div>
@@ -501,12 +527,14 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 <div class="overlay" id="custQuizModal"><div class="card" style="max-width:480px;border-color:#f472b6;">
   <div class="tutTag" style="border-color:#f472b6;color:#f9a8d4;">🧠 外送員記憶力考驗・遊戲已暫停</div>
   <h2 id="custQuizTitle" style="margin:4px 0 8px;color:#fde047;font-size:22px;">📦 已抵達客人門口！</h2>
-  <p id="custQuizQuestion" style="color:#f8fafc;font-size:16.5px;font-weight:800;line-height:1.65;text-align:left;background:#0b1222;padding:12px 14px;border-radius:12px;border:1.5px solid #334155;white-space:pre-line;">
-    還記得剛才客人備註的要求嗎？
-  </p>
+  <p id="custQuizQuestion" style="color:#f8fafc;font-size:16.5px;font-weight:800;line-height:1.65;text-align:left;background:#0b1222;padding:12px 14px;border-radius:12px;border:1.5px solid #334155;white-space:pre-line;">📦 已送達【沁象研發一部】門口！
+💬 剛才客人備註提示：
+「🕒03:17暗號：沁象機房爆肝急單！請放機房門口小桌子，千萬別按鈴！」
+
+🧠 請問：請問【03:17 神秘客】剛才要求如何交件？</p>
   <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
-    <button class="btn green" id="custQuizOptA" style="width:100%;margin:0;font-size:16px;padding:12px 14px;">選項 A</button>
-    <button class="btn primary" id="custQuizOptB" style="width:100%;margin:0;font-size:16px;padding:12px 14px;">選項 B</button>
+    <button class="btn green" id="custQuizOptA" style="width: 100%; margin: 0px; font-size: 16px; padding: 12px 14px; opacity: 1;">🅰️ 放機房門口小桌子，千萬別按鈴！</button>
+    <button class="btn primary" id="custQuizOptB" style="width: 100%; margin: 0px; font-size: 16px; padding: 12px 14px; opacity: 1;">🅱️ 按門鈴請守衛代收！</button>
   </div>
   <div style="font-size:13px;color:#fca5a5;margin-top:8px;font-weight:800;">⚠️ 答錯客人生氣值會上升（😡 生氣滿 5 次直接闖關失敗！）｜⌨️ 按 <b>↑ / ↓</b> 切換、<b>空白鍵</b> 決定</div>
 </div></div>
@@ -533,11 +561,17 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
   <p style="font-size:13px;color:#bae6fd;margin:2px 0 6px;">只要在外送途中遇到新 NPC、特殊客人、路障或神祕蘑菇，就會自動點亮下方 `???` 圖鑑並解鎖攻略秘笈！</p>
   <div class="codexStatBar">
     <div class="codexStatBox"><div class="v" id="cdxBestTxt">0</div><div class="k">🏆 最高紀錄</div></div>
-    <div class="codexStatBox"><div class="v" id="cdxCoinsTxt">NT$1280</div><div class="k">💵 目前存款</div></div>
-    <div class="codexStatBox"><div class="v" id="cdxOrdersTxt">1</div><div class="k">📦 累積送達</div></div>
-    <div class="codexStatBox"><div class="v" id="cdxProgTxt">1 / 66</div><div class="k">📘 奇遇收集</div></div>
+    <div class="codexStatBox"><div class="v" id="cdxCoinsTxt">NT$0</div><div class="k">💵 目前存款</div></div>
+    <div class="codexStatBox"><div class="v" id="cdxOrdersTxt">0</div><div class="k">📦 累積送達</div></div>
+    <div class="codexStatBox"><div class="v" id="cdxProgTxt">0 / 66</div><div class="k">📘 奇遇收集</div></div>
   </div>
-  <div class="codexGrid" id="codexGrid"><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#01 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#02 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#03 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#04 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#05 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#06 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#07 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#08 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#09 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#10 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell unlocked"><div class="codexHead"><span>🚔</span><span>#11 五工路巡邏警車</span></div><div class="codexBody">闖紅燈、逆向或私吞錢包會追你！被抓時 5 秒連按 5 下空白鍵可掙脫！</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#12 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#13 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#14 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#15 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#16 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#17 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#18 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#19 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#20 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#21 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#22 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#23 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#24 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#25 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#26 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#27 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#28 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#29 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#30 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#31 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#32 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#33 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#34 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#35 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#36 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#37 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#38 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#39 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#40 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#41 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#42 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#43 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#44 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#45 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#46 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#47 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#48 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#49 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#50 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#51 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#52 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#53 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#54 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#55 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#56 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#57 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#58 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#59 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#60 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#61 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#62 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#63 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#64 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#65 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div><div class="codexCell locked"><div class="codexHead"><span>❓</span><span>#66 ???</span></div><div class="codexBody">尚未在遊戲中遭遇此奇遇或角色…</div></div></div>
+  <div class="codexTabRow" id="codexTabRow">
+    <button type="button" class="codexTab active" data-cat="all">🌟 全部 (66)</button>
+    <button type="button" class="codexTab" data-cat="person">👥 人物 (<span id="cdxCatPerson">0/22</span>)</button>
+    <button type="button" class="codexTab" data-cat="event">⚡ 事件 (<span id="cdxCatEvent">0/21</span>)</button>
+    <button type="button" class="codexTab" data-cat="food">🍱 美食 (<span id="cdxCatFood">0/23</span>)</button>
+  </div>
+  <div class="codexGrid" id="codexGrid"></div>
   <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
     <button type="button" class="btn primary" id="codexCloseBtn" style="flex:1;margin:0;">▶ 關閉圖鑑（返回）</button>
     <button type="button" class="btn" id="codexGoLobbyBtn" style="margin:0;background:#334155;border-color:#64748b;display:none;">🚪 結束本局回主大廳</button>
@@ -565,24 +599,25 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 <!-- 🏪 遍地商店兼職：BLADE ORBIT（刀刃軌跡・極速雙子避障）小遊戲視窗 -->
 <div class="overlay" id="sevenGameModal"><div class="card" style="max-width:520px;padding:12px 14px;border-color:#38bdf8;background:rgba(9,14,26,0.98);">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;">
-    <span class="pmBadge" id="sevenModeTag" style="background: rgb(3, 105, 161); border-color: rgb(56, 189, 248); color: rgb(186, 230, 253);">🏪 故事小遊戲模式（純好玩・不累積至主線）</span>
-    <span id="sevenStageTxt" style="font-size: 13.5px; font-weight: 900; color: rgb(253, 224, 71);">🌟 金色無敵雙刃 (1.0s)</span>
+    <span class="pmBadge" id="sevenModeTag" style="background: rgb(3, 105, 161); border-color: rgb(16, 185, 129); color: rgb(110, 231, 183);">🏪 遍地商店（薪資＆回血 100% 存入主線！）</span>
+    <span id="sevenStageTxt" style="font-size: 13.5px; font-weight: 900; color: rgb(226, 232, 240);">🍄⚫ 黑蘑菇高速狂飆旋轉 (3.9s)</span>
     <button type="button" class="btn" id="sevenQuitBtn" style="margin:0;padding:4px 10px;font-size:12.5px;border-radius:8px;background:#334155;border-color:#94a3b8;">🚪 結算退出</button>
   </div>
   <div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;border:1px solid #334155;border-radius:10px;padding:6px 10px;margin-bottom:6px;font-size:13.5px;font-weight:900;">
-    <span style="color:#4ade80;">❤️ HP：<b id="sevenHpTxt">100</b>/100</span>
-    <span style="color:#fde047;">💵 薪資：NT$ <b id="sevenMoneyTxt">3065</b></span>
-    <span style="color:#f472b6;">🔥 擦邊倍率：<b id="sevenComboTxt">×3</b></span>
+    <span style="color:#4ade80;">❤️ HP：<b id="sevenHpTxt">0</b>/100</span>
+    <span style="color:#fde047;">💵 薪資：NT$ <b id="sevenMoneyTxt">853</b></span>
+    <span style="color:#f472b6;">🔥 擦邊倍率：<b id="sevenComboTxt">×1</b></span>
   </div>
   <div style="position:relative;width:100%;max-width:460px;margin:0 auto;border:2px solid #38bdf8;border-radius:14px;overflow:hidden;background:#030712;touch-action:none;box-shadow:0 0 20px rgba(56,189,248,0.35);">
     <canvas id="sevenCanvas" width="420" height="440" style="width:100%;height:auto;max-height:56vh;display:block;touch-action:none;"></canvas>
     <div id="sevenResultOverlay" style="display: flex; position: absolute; inset: 0px; background: rgba(9, 13, 22, 0.92); flex-direction: column; align-items: center; justify-content: center; padding: 18px; text-align: center;">
       <div style="font-size:38px;margin-bottom:4px;">🏪🎉</div>
-      <div id="sevenResTitle" style="font-size:22px;font-weight:900;color:#fde047;margin-bottom:6px;">🚪 已手動結算收工！</div>
-      <div id="sevenResDesc" style="font-size:14.5px;color:#e2e8f0;line-height:1.65;margin-bottom:14px;white-space:pre-line;">💵 本趟練習成績：NT$ 3065
-🏆 到達階段：STAGE 2 ｜ 極限閃避：×3
-💡 提示：故事／小遊戲頁面入口為「純好玩練習模式」，不會串接主線劇情與存檔；想賺錢買車請在地圖中騎去【🏪 遍地商店 兼職打工】！</div>
-      <button type="button" class="btn green" id="sevenFinishBtn" style="width:85%;font-size:16px;padding:12px;">🏠 返回主畫面大廳</button>
+      <div id="sevenResTitle" style="font-size:22px;font-weight:900;color:#fde047;margin-bottom:6px;">💀 體力歸零！打工收工結算！</div>
+      <div id="sevenResDesc" style="font-size:14.5px;color:#e2e8f0;line-height:1.65;margin-bottom:14px;white-space:pre-line;">💵 本趟打工實領薪資：+NT$ 853
+🍱 吃補給同步恢復外送員體力：+50 HP
+🏆 最高極限閃避倍率：×1
+（已準備將薪資與體力存入本局外送進度！）</div>
+      <button type="button" class="btn green" id="sevenFinishBtn" style="width:85%;font-size:16px;padding:12px;">💰 領取 NT$853 ＆ 回血繼續送餐 ▶</button>
     </div>
   </div>
   <div style="font-size:12.5px;color:#bae6fd;margin-top:6px;line-height:1.45;">
@@ -626,57 +661,94 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 </div></div>
 
 <!-- 首次教學暫停提示 -->
-<div class="overlay" id="tutModal"><div class="card" id="tutCard">
-  <div class="tutTag" id="tutTag">💡 首次遇到・遊戲已暫停</div>
-  <div class="tutTitle" id="tutTitle">外送小提醒</div>
-  <div class="tutMsg" id="tutMsg"></div>
-  <button class="btn primary" id="tutOkBtn">▶ 我知道了，繼續外送</button>
+<div class="overlay" id="tutModal"><div class="card" id="tutCard" style="border-color: rgb(253, 224, 71);">
+  <div class="tutTag" id="tutTag" style="border-color: rgb(253, 224, 71); color: rgb(253, 224, 71);">💡 首次遇到・遊戲已暫停</div>
+  <div class="tutTitle" id="tutTitle">🕵️ 神祕客突襲登場【強制換騎腳踏車！】</div>
+  <div class="tutMsg" id="tutMsg">🕵️ 【突發事件：神祕客現身！】
+神祕客：「同學！看你骨骼驚奇，刚送完 2 單還在慢慢晃？
+這台【🚲 特製外送腳踏車】強制交給你騎（已幫你補滿 100 體力）！
+接下來的單全面鎖定騎腳踏車熱血衝刺，送滿 5 單過關直接領 NT$ 2,000 新手獎金！」</div>
+  <button class="btn primary" id="tutOkBtn" style="opacity: 1;">▶ 我知道了，繼續外送</button>
   <div class="tutHint">訂單計時與車流已暫停・按空白鍵 / Enter 或點擊繼續</div>
 </div></div>
 
-<!-- 商店／設定與改裝車庫 -->
-<div class="overlay" id="garageModal"><div class="card" style="max-width:600px">
-  <h2>🏪 商店／設定 ＆ 改裝車庫</h2>
-  <div class="garageCoins">💵 目前外送存款：NT$ <span id="garageCoinsTxt">1280</span></div>
+<!-- 🏪 外送員裝備商店 -->
+<div class="overlay" id="garageModal"><div class="card" style="max-width:620px;padding:12px 16px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">
+    <h2 style="margin:0;font-size:22px;color:#34d399;">🏪 外送員商店</h2>
+    <div class="garageCoins" style="margin:0;padding:4px 10px;font-size:13.5px;">💵 目前存款：NT$ <span id="garageCoinsTxt">0</span></div>
+  </div>
 
   <!-- 操作設備切換（手機玩 vs 電腦玩） -->
-  <div style="background:#0b1222;border:1.5px solid #38bdf8;border-radius:12px;padding:10px 14px;margin-bottom:12px;">
-    <div style="font-size:13.5px;font-weight:900;color:#7dd3fc;margin-bottom:6px;">📱💻 遊玩設備設定（手機／電腦切換）</div>
-    <div class="devChkBar" role="group" aria-label="選擇遊玩設備" style="margin:4px 0;">
-      <span>設備模式：</span>
+  <div style="display:flex;justify-content:space-between;align-items:center;background:#0b1222;border:1.5px solid #38bdf8;border-radius:10px;padding:6px 12px;margin:6px 0;">
+    <span style="font-size:13px;font-weight:900;color:#7dd3fc;">📱💻 操作設備：</span>
+    <div class="devChkBar" role="group" aria-label="選擇遊玩設備" style="margin:0;">
       <button type="button" class="devChkItem" id="garageDevDesktopBtn"><span id="garageChkD">☐</span> 💻 電腦版</button>
       <button type="button" class="devChkItem sel" id="garageDevMobileBtn"><span id="garageChkM">☑️</span> 📱 手機版</button>
     </div>
-    <div style="font-size:12px;color:#94a3b8;margin-top:4px;">手機版會放大右下觸控按鈕；電腦版支援方向鍵、空白鍵丟雞腿、Shift/F跳躍。</div>
   </div>
 
-  <!-- 0元限時免費神裝區 -->
-  <div class="freeShopBox">
-    <div class="freeShopTitle">
-      <span>🎁 開局鎮店之寶（限時 NT$ 0 免費領取！）</span>
-      <span style="font-size:12px;color:#a7f3d0;">每人限領一套</span>
-    </div>
-    <div class="freeShopGrid" id="freeShopGrid"><div class="freeItemCard"><div class="freeItemTop"><span>⚡ 阿嬤防曬袖套＆開光保溫袋</span><span style="background:#065f46;color:#a7f3d0;padding:2px 8px;border-radius:999px;font-size:12px;">✔ 已裝備</span></div><div class="freeItemDesc">鎮店神裝！所有訂單時限 +10%、送達運費收入 +10%！</div><button class="upgBuy" disabled="" style="margin-top: 4px;">✔ 已免費領取並裝備中</button></div><div class="freeItemCard"><div class="freeItemTop"><span>👟 五股夜市・防滑氣墊飛毛腿布鞋</span><span style="background:#065f46;color:#a7f3d0;padding:2px 8px;border-radius:999px;font-size:12px;">✔ 已裝備</span></div><div class="freeItemDesc">超狂氣墊推進！全載具與走路速度永久 +12、跳躍冷卻縮短！</div><button class="upgBuy" disabled="" style="margin-top: 4px;">✔ 已免費領取並裝備中</button></div></div>
+  <!-- 四大主要分頁標籤（禮包、交通、配件、其他） -->
+  <div class="storeTabRow" id="storeTabRow">
+    <button type="button" class="storeTab active" data-tab="gift">🎁 禮包</button>
+    <button type="button" class="storeTab" data-tab="trans">🚲 交通</button>
+    <button type="button" class="storeTab" data-tab="parts">🎒 配件</button>
+    <button type="button" class="storeTab" data-tab="more">⚙️ 其他</button>
   </div>
 
-  <div class="garageVehBox" id="garageVehBox">
-    <div style="width:100%">
-      <div class="garageVehTitle" id="garageVehTitle">🚶 目前方式：雙腿走路（可切西瓜穿建築！）</div>
-      <div class="garageVehSub" id="garageVehSub">速度 132 px/s・不怕紅燈、可直接切西瓜穿越建築物！但體力扣最快（每秒 -3~4.5）！</div>
+  <!-- 內容卡片區域（固定高度切換，不一直往下滑） -->
+  <div class="storeContentBox" style="background:#0a0f1d;border:1.5px solid #1e293b;border-radius:12px;padding:10px;min-height:270px;max-height:48vh;overflow-y:auto;margin-bottom:10px;">
+    <!-- 1. 禮包分頁 -->
+    <div class="storePane active" id="storePane_gift">
+      <div style="font-size:13px;font-weight:900;color:#a7f3d0;margin-bottom:8px;">🎁 免費裝備＆跑單里程碑禮包（依累積分數解鎖領取）</div>
+      <div class="storeGiftGrid" id="storeGiftList"></div>
     </div>
-    <div class="garageVehBtns" id="garageVehBtns" style="flex-wrap:wrap;width:100%"><button class="upgBuy" disabled="" style="margin: 3px;">✔ 🚶 走路(切西瓜) (使用中)</button><button class="upgBuy" style="margin: 3px;">切換 🚲 腳踏車</button><button class="upgBuy" disabled="" style="margin: 3px;">🔒 🛵 二手機車 (需送滿3單畢業＋NT$5000)</button><button class="upgBuy" disabled="" style="margin: 3px;">購買 🐗 狂暴山豬 (NT$ 6800)</button><button class="upgBuy" disabled="" style="margin: 3px;">購買 🐕 閃電黑狗 (NT$ 8500)</button><button class="upgBuy" disabled="" style="margin: 3px;">購買 ✈️ 噴射飛機 (NT$ 15000)</button></div>
-  </div>
-  <div class="garageSkinBox" id="garageSkinBox">
-    <div class="garageSkinTitle">
-      <span>🎨 外送保溫箱專屬塗裝</span>
-      <span style="font-size:12px;color:#94a3b8;font-weight:normal;">更換外觀</span>
+
+    <!-- 2. 交通分頁 -->
+    <div class="storePane" id="storePane_trans">
+      <div style="display:flex;gap:6px;margin-bottom:8px;justify-content:center;flex-wrap:wrap;">
+        <button type="button" class="transSubTab active" data-vcat="walk">🚶 走路</button>
+        <button type="button" class="transSubTab" data-vcat="bike">🚲 腳踏車</button>
+        <button type="button" class="transSubTab" data-vcat="moto">🛵 機車 (4款)</button>
+        <button type="button" class="transSubTab" data-vcat="mount">✨ 特殊坐騎</button>
+      </div>
+      <div id="storeTransContent"></div>
     </div>
-    <div class="skinGrid" id="skinGrid"><div class="skinCard active"><div class="skinPreview" style="background: linear-gradient(135deg, rgb(251, 191, 36), rgb(217, 119, 6));">✔ 裝備</div><div class="skinName">經典小黃</div><div class="skinStatus" style="color: rgb(52, 211, 153);">使用中</div></div><div class="skinCard"><div class="skinPreview" style="background: linear-gradient(135deg, rgb(244, 114, 182), rgb(219, 39, 119));">BOX</div><div class="skinName">萌粉貓熊</div><button class="skinBuyBtn">NT$ 250</button></div><div class="skinCard"><div class="skinPreview" style="background: linear-gradient(135deg, rgb(52, 211, 153), rgb(5, 150, 105));">BOX</div><div class="skinName">極光翠綠</div><button class="skinBuyBtn">NT$ 250</button></div><div class="skinCard"><div class="skinPreview" style="background: linear-gradient(135deg, rgb(56, 189, 248), rgb(30, 41, 59));">BOX</div><div class="skinName">暗夜幽靈</div><button class="skinBuyBtn">NT$ 490</button></div><div class="skinCard"><div class="skinPreview" style="background: linear-gradient(135deg, rgb(253, 224, 71), rgb(180, 83, 9));">BOX</div><div class="skinName">尊爵金牌</div><button class="skinBuyBtn">NT$ 880</button></div></div>
+
+    <!-- 3. 配件分頁 -->
+    <div class="storePane" id="storePane_parts">
+      <div style="font-size:13px;font-weight:900;color:#fde047;margin-bottom:8px;">🎒 外送性能升級零件</div>
+      <div class="upgGrid" id="upgGrid"></div>
+      <div style="font-size:13px;font-weight:900;color:#f472b6;margin:12px 0 6px;">🎨 保溫箱塗裝更換</div>
+      <div class="skinGrid" id="skinGrid"></div>
+    </div>
+
+    <!-- 4. 其他分頁 -->
+    <div class="storePane" id="storePane_more">
+      <div style="font-size:13px;font-weight:900;color:#38bdf8;margin-bottom:8px;">⚙️ 遊戲設定與外送員檔案</div>
+      <div id="storeMoreContent" style="display:flex;flex-direction:column;gap:8px;text-align:left;"></div>
+    </div>
   </div>
-  <div class="upgGrid" id="upgGrid"><div class="upgCard"><div class="upgTop"><span>🍗 現炸大雞腿補充箱</span><span class="upgLv">Lv.0/5</span></div><div class="upgDesc">開場雞腿 4 支 (上限 8)</div><button class="upgBuy">購買升級 (NT$ 120)</button></div><div class="upgCard"><div class="upgTop"><span>📱 五金行防震手機架</span><span class="upgLv">Lv.0/5</span></div><div class="upgDesc">手搖飲／熱湯被撞 0% 機率防震不灑出！</div><button class="upgBuy">購買升級 (NT$ 290)</button></div><div class="upgCard"><div class="upgTop"><span>🎒 加厚大容量保溫外送箱</span><span class="upgLv">Lv.0/5</span></div><div class="upgDesc">訂單時限 +0%・順路雙拼獎金提升</div><button class="upgBuy">購買升級 (NT$ 590)</button></div><div class="upgCard"><div class="upgTop"><span>🛡️ 機車行強化防撞鐵保桿</span><span class="upgLv">Lv.0/5</span></div><div class="upgDesc">撞車減傷 -0・體力消耗減緩 0%</div><button class="upgBuy">購買升級 (NT$ 1200)</button></div><div class="upgCard"><div class="upgTop"><span>⚡ 傳動與渦輪改裝套件</span><span class="upgLv">Lv.0/5</span></div><div class="upgDesc">全載具極速 +0・加速爆發更強</div><button class="upgBuy" disabled="">購買升級 (NT$ 2000)</button></div></div>
+
   <div style="display:flex;gap:8px;justify-content:center;">
-    <button class="btn primary" id="garageGoPlayBtn" style="flex:1;margin:0;">🚀 裝備完畢！立即出發外送</button>
-    <button class="btn" id="garageCloseBtn" style="margin:0;">🏠 返回主畫面</button>
+    <button class="btn primary" id="garageGoPlayBtn" style="flex:1;margin:0;padding:10px;">🚀 裝備完畢・出發外送</button>
+    <button class="btn" id="garageCloseBtn" style="margin:0;padding:10px 16px;">🏠 返回</button>
+  </div>
+</div></div>
+
+<!-- 📥 下載／加到手機桌面彈窗 -->
+<div class="overlay show" id="downloadModal"><div class="card" style="max-width:480px;border-color:#38bdf8;">
+  <div class="tutTag" style="border-color:#38bdf8;color:#7dd3fc;">📥 遊戲存檔 ＆ 加到手機桌面</div>
+  <h2 style="margin:4px 0 8px;color:#fde047;font-size:22px;">📲 一鍵將遊戲加到手機桌面！</h2>
+  <div style="background:#0b1222;border:1.5px solid #38bdf8;border-radius:12px;padding:12px 14px;margin-bottom:12px;text-align:left;font-size:13.5px;line-height:1.65;color:#e2e8f0;">
+    <b style="color:#7dd3fc;">📱 手機專用（無網址列・全螢幕獨立 App 體驗）：</b><br>
+    • <b>蘋果 iPhone (Safari)</b>：點擊瀏覽器下方「<b>分享</b>」圖示（帶箭頭方塊）➔ 往下滑選擇「<b>加入主畫面</b>」➔ 點擊右上角「<b>新增</b>」！<br>
+    • <b>安卓 Android (Chrome)</b>：點擊瀏覽器右上角「<b>三個點 ⋮</b>」➔ 點擊「<b>安裝應用程式</b>」或「<b>新增至主螢幕</b>」！<br>
+    <span style="color:#6ee7b7;font-size:12.5px;">完成後手機桌面將出現專屬圖示，點開就像原生 App 一樣超順暢！</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <button type="button" class="btn primary" id="btnDownloadSingleHtml" style="width:100%;margin:0;padding:12px;font-size:15.5px;">📥 下載單機完整 HTML 檔（電腦／本機離線遊玩）</button>
+    <button type="button" class="btn" id="dlCloseBtn" style="width:100%;margin:0;padding:10px;background:#334155;border-color:#64748b;">✔ 我知道了・返回</button>
   </div>
 </div></div>
 
@@ -707,9 +779,9 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
 
 <!-- 結束畫面 -->
 <div class="overlay" id="over"><div class="card">
-  <h2 id="overTitle">🏁 今日收工</h2>
-  <div class="reason" id="overReason">體力耗盡</div>
-  <div class="starStage" id="overStars">
+  <h2 id="overTitle" style="color: rgb(251, 191, 36);">🏁 今日收工</h2>
+  <div class="reason" id="overReason">💀 體力耗盡累倒在路邊！記得吃便當 🍱 或存錢換機車省體力！　(本次賺取 +2421 🪙)</div>
+  <div class="starStage" id="overStars" style="display: none;">
     <div class="starRow">
       <span class="starSlot" id="overS1">☆</span>
       <span class="starSlot" id="overS2">☆</span>
@@ -717,17 +789,17 @@ body.dev-mobile #vehSwitchBtn{padding:12px 16px;font-size:15.5px}
     </div>
     <div class="starColl"><span id="overStarTotal">⭐ 總星星收集：0 / 36</span><span class="starNew" id="overStarNew" style="display:none"></span><span class="starNew" id="overCleanBadge" style="display:none;background:linear-gradient(135deg,#38bdf8,#0284c7);color:#f0f9ff;"></span></div>
   </div>
-  <div class="bigScore" id="overScore">0</div>
-  <span class="newRec" id="newRec">🎉 新紀錄！</span>
+  <div class="bigScore" id="overScore">3371</div>
+  <span class="newRec" id="newRec" style="display: inline-block;">🎉 刷新全服最高分紀錄！歡呼慶賀！</span>
   <div class="stats">
-    <div class="stat"><div class="v" id="stDel">0</div><div class="k">送達單數</div></div>
-    <div class="stat"><div class="v" id="stCombo">0</div><div class="k">最高連擊</div></div>
-    <div class="stat"><div class="v" id="stLv">1</div><div class="k" id="stLvLbl">到達關卡</div></div>
-    <div class="stat"><div class="v" id="stNear">0</div><div class="k">驚險閃過</div></div>
-    <div class="stat"><div class="v" id="stDog">0</div><div class="k">定住野狗</div></div>
-    <div class="stat"><div class="v" id="stTime">0s</div><div class="k">跑單時間</div></div>
+    <div class="stat"><div class="v" id="stDel">3</div><div class="k">送達單數</div></div>
+    <div class="stat"><div class="v" id="stCombo">2</div><div class="k">最高連擊</div></div>
+    <div class="stat"><div class="v" id="stLv">1/12</div><div class="k" id="stLvLbl">完成區域</div></div>
+    <div class="stat"><div class="v" id="stNear">2</div><div class="k">驚險閃過</div></div>
+    <div class="stat"><div class="v" id="stDog">8</div><div class="k">定住野狗</div></div>
+    <div class="stat"><div class="v" id="stTime">139s</div><div class="k">跑單時間</div></div>
   </div>
-  <p>🏆 歷史最高分：<b id="bestOver" style="color:#fbbf24">0</b>　(最高紀錄：Stage <b id="bestStageTxt" style="color:#6ee7b7">1</b>)</p>
+  <p>🏆 歷史最高分：<b id="bestOver" style="color:#fbbf24">3371</b>　(最高紀錄：Stage <b id="bestStageTxt" style="color:#6ee7b7">1</b>)</p>
   <button class="btn green" id="nextStageBtn" style="display:none">➡ 挑戰下一關</button>
   <button class="btn primary" id="againBtn">🔄 再玩一次</button>
   <button class="btn" id="mapBtn">🗺️ 換地圖</button>
@@ -1135,7 +1207,9 @@ const BGM_THEMES={
   }
 };
 
+let curVinylTheme = null;
 function getBgmTheme(){
+  if(curVinylTheme && BGM_THEMES[curVinylTheme]) return BGM_THEMES[curVinylTheme];
   const key=(G.state==='title') ? 'title' : (curMap.theme||'dadaocheng');
   return BGM_THEMES[key] || BGM_THEMES.title;
 }
@@ -1808,6 +1882,26 @@ function setDeviceType(dev){
   profile.deviceMode = profile.deviceType;
   saveProfile();
   applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true });
   if(G.state==='play') setBodyState('play');
 }
 function applyDeviceUI(){
@@ -1865,6 +1959,26 @@ function updateProfileUI(){
   if(pTxt) pTxt.textContent = '五股沁象篇' + ((profile.orders317||0)>0 ? ('・🕒'+profile.orders317) : '');
   if(ppTxt) ppTxt.textContent = '🎓 身分：'+getJobLabel(profile.mainJob)+' ｜ 🏪 招牌店：'+(profile.customShopName||'阿豪爆汁雞排');
   applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true });
 }
 
 /* 《美少女夢工廠》式分段互動創角精靈與 10 秒連按 10 下快速跳過 */
@@ -1964,11 +2078,23 @@ function calcZodiac(m,d){
 function calcChineseZodiac(y){
   return CHINESE_ZODIAC[((y%12)+12)%12];
 }
+function getBirthTalent(y){
+  const yr = y || (profile && profile.birthYear) || 2000;
+  if(yr < 1970){
+    return { bonusCoins: 800, maxHp: 80, label: '【長輩人生歷練】體力上限 80 HP・自帶開局積蓄 +NT$ 800' };
+  } else if(yr <= 1985){
+    return { bonusCoins: 300, maxHp: 92, label: '【中生代沉穩】體力上限 92 HP・自帶開局積蓄 +NT$ 300' };
+  } else if(yr <= 1999){
+    return { bonusCoins: 100, maxHp: 100, label: '【青年黃金世代】體力均衡 100 HP・自帶開局積蓄 +NT$ 100' };
+  } else {
+    return { bonusCoins: 0, maxHp: 115, label: '【超新星世代】體力充沛 115 HP・爆發力強' };
+  }
+}
 function initBirthSelects(){
   const ySel=$('birthYear'), mSel=$('birthMonth'), dSel=$('birthDay');
   if(!ySel||!mSel||!dSel) return;
   ySel.innerHTML=''; mSel.innerHTML=''; dSel.innerHTML='';
-  for(let y=1970; y<=2010; y++){
+  for(let y=1945; y<=2012; y++){
     const opt=document.createElement('option'); opt.value=y; opt.textContent=y;
     if(y===(profile.birthYear||2000)) opt.selected=true;
     ySel.appendChild(opt);
@@ -1993,8 +2119,9 @@ function initBirthSelects(){
   function syncZodiacDisplay(){
     const y=parseInt(ySel.value)||2000, m=parseInt(mSel.value)||6, d=parseInt(dSel.value)||15;
     const cz=calcChineseZodiac(y), zd=calcZodiac(m,d);
+    const talent=getBirthTalent(y);
     const zt=$('birthZodiacTxt');
-    if(zt) zt.innerHTML='✨ 命中特質：生肖【'+cz+'】・【'+zd+'】（幸運外送靈氣）';
+    if(zt) zt.innerHTML='✨ 命中特質：生肖【'+cz+'】・【'+zd+'】<br><span style="color:#fbbf24;font-size:12.5px;">🌟 年齡天賦：'+talent.label+'</span>';
   }
   ySel.addEventListener('change', updateDays);
   mSel.addEventListener('change', updateDays);
@@ -2016,6 +2143,12 @@ function saveProfileFromModal(openShopAfter){
     profile.birthDay=parseInt(dSel.value)||15;
     profile.chineseZodiac=calcChineseZodiac(profile.birthYear);
     profile.zodiac=calcZodiac(profile.birthMonth, profile.birthDay);
+  }
+  const talent = getBirthTalent(profile.birthYear);
+  if(!profile.talentGranted){
+    profile.talentGranted = true;
+    coins = (coins || 0) + talent.bonusCoins;
+    store.set('dug_coins', coins);
   }
   vehicleType='walk';
   store.set('dug_vehicle', 'walk');
@@ -2084,6 +2217,26 @@ function switchWalkBike(){
   }
   store.set('dug_vehicle', vehicleType);
   applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true });
 }
 let gameMode=store.get('dug_mode','story');
 let unlockedMap=clamp(store.get('dug_unlock',1),1,MAPS.length);
@@ -2105,7 +2258,8 @@ const UPG_DEFS=[
   {key:'engine', icon:'⚡', name:'傳動與渦輪改裝套件', max:5, costs:[2000,3600,5500,7800,10500], desc:lv=>'全載具極速 +'+(lv*12)+'・加速爆發更強'}
 ];
 function getMaxHp(){
-  return 100; // 體力上限固定 100！
+  const t = getBirthTalent();
+  return t.maxHp;
 }
 function getMaxAmmo(){return 8+Math.floor((upg.box||0)/2);}
 function getBaseSpeed(){
@@ -2172,76 +2326,77 @@ function renderAch(){
 
 /* ===================== 💙🏠 藍色小屋：66 格 ??? 奇遇收集圖鑑系統 ===================== */
 const CODEX_66_DEFS = [
-  {id:'dog', icon:'🐕', name:'街頭野狗', desc:'聞到外送便當香會追你！按空白鍵或 X 丟雞腿給牠吃就沒事！'},
-  {id:'cust_eng', icon:'👨‍💻', name:'五股工程師', desc:'沁象工程師偷訂雞排怕被抓，規定放 1 樓警衛室、千萬不能外送上樓！'},
-  {id:'mush_black', icon:'🍄⚫', name:'神秘黑蘑菇', desc:'路邊野生黑菇，吃了之後雙腳跟發瘋一樣超高速狂飆 20 秒！'},
-  {id:'mush_green', icon:'🍄🟢', name:'迷幻綠蘑菇', desc:'路邊野生綠菇，吃了之後頭暈目眩上下左右要反著操作 20 秒！'},
-  {id:'mush_white', icon:'🍄⚪', name:'傳說白蘑菇', desc:'稀有白菇，吃了之後超快狂飆＋上下左右反著走 20 秒！'},
-  {id:'mush_yellow', icon:'🍄🟡', name:'黃金無敵蘑菇', desc:'閃耀金菇，吃了之後獲得 10 秒金光無敵護盾，撞什麼都沒事！'},
-  {id:'obs_cone', icon:'🚧', name:'紅白施工護欄', desc:'馬路施工護欄，按 Shift 或 F 跳過去！沒跳過這餐直接撞爛丟失！'},
-  {id:'obs_pothole', icon:'🕳️', name:'柏油大坑洞', desc:'五工路大坑洞，按 Shift 或 F 飛越拿加分，沒跳過餐點直接飛走！'},
-  {id:'obs_barrel', icon:'🛢️', name:'防撞施工路障', desc:'黃黑防撞桶與三角錐，按 Shift 或 F 跳躍跨過可獲渦輪加速！'},
-  {id:'boso', icon:'🔥', name:'五股街頭爆走族', desc:'每關出沒 1 次的惡煞，被追上砸車直接失敗！丟雞腿可擊退他！'},
-  {id:'cop_car', icon:'🚔', name:'五工路巡邏警車', desc:'闖紅燈、逆向或私吞錢包會追你！被抓時 5 秒連按 5 下空白鍵可掙脫！'},
-  {id:'amb_car', icon:'🚑', name:'119 緊急救護車', desc:'聽到後方鳴笛主動靠邊禮讓，可獲 +35 分優良騎士獎勵！'},
-  {id:'wallet', icon:'💼', name:'遺失真皮錢包', desc:'選送警局需 30 秒內送達；逾時或私吞拿 $1,000 會被警察狂追 30 秒！'},
-  {id:'seven_job', icon:'🏪', name:'便利商店兼職打工', desc:'路邊 32px 內觸發雙盾旋轉小遊戲（每關限 1 次），薪資與回血存入主線！'},
-  {id:'seven_laser', icon:'⚡', name:'雙盾雷射覺醒', desc:'便利店打工賺滿 $350 晉級第 2 關，雙光盾自動連發脈衝雷射轟碎貨車！'},
-  {id:'mystery_guest', icon:'🕵️', name:'熱血神祕客', desc:'送完第 2 單突襲登場！幫你補滿體力並強制換騎腳踏車熱血衝刺！'},
-  {id:'star_skip', icon:'🌟', name:'開局無敵星星', desc:'設定頁 10 秒連按 10 下跳過彩蛋，開局 10 秒碰到任何東西都沒關係！'},
-  {id:'order_317', icon:'🕒', name:'凌晨 3:17 神秘單', desc:'都市傳說暗號急單，準時送達直接領 3 倍超高薪資！'},
-  {id:'cust_mom', icon:'🤱', name:'五股地方媽媽', desc:'寶寶剛睡著，備註千叮萬囑到門口時絕對不要按電鈴！'},
-  {id:'cust_boss', icon:'👔', name:'晶冠大樓主管', desc:'開會趕時間，備註要求直接送上 3 樓會議室門口，不要放警衛室！'},
-  {id:'cust_plan', icon:'🧋', name:'沁象遊戲企劃', desc:'珍奶微糖微冰，備註要求掛在大門左邊掛鉤，千萬不要放地上！'},
-  {id:'cust_soup', icon:'🍲', name:'伍股鹹粥熟客', desc:'鹹粥配紅燒肉，備註規定放門口紅色鞋櫃上，不要敲門！'},
-  {id:'shop_custom', icon:'🍗', name:'自訂街角招牌店', desc:'你親手命名的巷口神店，外送員傳奇的起點！'},
-  {id:'shop_thai', icon:'🌶️', name:'蓮花泰式小吃', desc:'五工路人氣排隊泰式美食，酸辣開胃工程師最愛！'},
-  {id:'shop_drink', icon:'🥤', name:'五工路手搖飲', desc:'滿杯封膜手搖飲，小心平穩騎乘別撞破封膜！'},
-  {id:'shop_porridge', icon:'🥣', name:'伍股鹹粥老店', desc:'五股在地 40 年必吃鹹粥配炸紅燒肉！'},
-  {id:'shop_beef', icon:'🍜', name:'新九九牛肉麵', desc:'濃郁紅燒牛肉湯頭，送餐途中小心別灑出來！'},
-  {id:'place_igs', icon:'🎮', name:'沁象遊戲總部', desc:'五股最知名遊戲研發大樓，日夜爆單的黃金地標！'},
-  {id:'place_rd1', icon:'💻', name:'沁象研發一部', desc:'程式設計師聚集地，最愛半夜偷叫雞排配珍奶！'},
-  {id:'place_art', icon:'🎨', name:'沁象美術動畫部', desc:'對細節極度講究，連手搖飲波霸都不能搖亂！'},
-  {id:'place_mrt', icon:'🚇', name:'機捷產業園區站', desc:'新北產業園區高架捷運站，通勤族取餐熱點！'},
-  {id:'place_crown', icon:'🏢', name:'五股晶冠廣場', desc:'結合商場與辦公的五股複合式地標大樓！'},
-  {id:'place_market', icon:'🥟', name:'五股公有市場', desc:'充滿人情味的傳統市場，小心門口貪吃小黑狗！'},
-  {id:'place_police', icon:'🚓', name:'五工路派出所', desc:'拾金不昧 30 秒內送達錢包的正義據點！'},
-  {id:'place_tech', icon:'🏭', name:'五股科技廠辦', desc:'下午茶與加班宵夜大宗訂單來源！'},
-  {id:'veh_walk', icon:'🚶', name:'雙腿走路切西瓜', desc:'不用怕紅燈、還能直接穿越建築物切西瓜抄近路，但體力扣最快！'},
-  {id:'veh_bike', icon:'🚲', name:'外送小黃腳踏車', desc:'比走路快、75% 機率警察懶得追，鑽進臨停區即可甩開警車！'},
-  {id:'veh_moto', icon:'🛵', name:'二手代步外送機車', desc:'畢業後存滿 NT$ 5,000 購入，速度快且騎車吹風幾乎不扣體力！'},
-  {id:'veh_boar', icon:'🐗', name:'狂暴山豬坐騎', desc:'車庫特殊坐騎，霸氣外露讓街頭野狗完全不敢靠近！'},
-  {id:'veh_dogmount', icon:'🐕‍🦺', name:'閃電台灣黑狗坐騎', desc:'車庫特殊坐騎，極速奔馳且自動免疫一次闖紅燈罰單！'},
-  {id:'veh_plane', icon:'✈️', name:'噴射外送小飛機', desc:'傳說級空中外送座駕，無視紅綠燈、野狗與街區阻礙！'},
-  {id:'item_bag0', icon:'🎁', name:'阿嬤防曬保溫套', desc:'商店 NT$ 0 免費領取的開局神裝，訂單時限與得分 +10%！'},
-  {id:'item_shoe0', icon:'👟', name:'夜市防滑飛毛腿鞋', desc:'商店 NT$ 0 免費領取的開局神裝，移動速度永久提升且跳躍冷卻縮短！'},
-  {id:'item_leg', icon:'🍖', name:'路邊炸雞腿補給', desc:'撿起可補充 2 支雞腿彈藥，餵飽野狗或擊退爆走族必備！'},
-  {id:'item_energy', icon:'⚡', name:'渦輪能量飲料', desc:'喝下後全身爆發藍光，享受數秒極速狂飆快感！'},
-  {id:'item_bento', icon:'🍱', name:'熱騰騰台式便當', desc:'外送員體力救星，吃下立即大幅恢復 35 點體力！'},
-  {id:'stall_hoop', icon:'🏀', name:'五股夜市投籃機', desc:'路邊技巧小遊戲，抓準綠色或金色靶心出手可贏取獎金與衝刺！'},
-  {id:'ped_uncle', icon:'👴', name:'散步阿伯', desc:'斑馬線上的慢郎中，記得在路口前停下禮讓可得 +15 分！'},
-  {id:'ped_stu', icon:'🎒', name:'通勤學生', desc:'邊滑手機邊過馬路的學生，千萬別撞到否則扣分又扣體力！'},
-  {id:'ped_work', icon:'💼', name:'趕打卡上班族', desc:'匆忙過斑馬線的上班族，主動停讓會向你道謝！'},
-  {id:'ped_girl', icon:'💃', name:'逛街辣妹', desc:'行經五工路口的時尚路人，禮讓行人展現模範外送員風範！'},
-  {id:'ped_aunt', icon:'👵', name:'買菜阿姨', desc:'剛從五股市場採買完的阿姨，禮讓她可獲好評加分！'},
-  {id:'car_taxi', icon:'🚕', name:'台灣小黃計程車', desc:'穿梭大街小巷的計程車，與它驚險擦身可觸發 +10 分閃避！'},
-  {id:'car_truck', icon:'🚛', name:'三噸半大貨卡', desc:'五股工業區常見的藍色貨車，車體寬大轉彎時請保持距離！'},
-  {id:'car_speed', icon:'🏎️', name:'紅色超速跑車', desc:'無視速限呼嘯而過的快車，畫面邊緣出現紅色⚠️快車預警時請閃避！'},
-  {id:'car_moto', icon:'🛵', name:'通勤機車族', desc:'車流中靈活穿梭的機車騎士，小心別發生擦撞！'},
-  {id:'car_bike', icon:'🚲', name:'慢車道單車客', desc:'靠道路外側慢行的腳踏車，超車時注意安全間距！'},
-  {id:'rule_light', icon:'🚦', name:'智慧紅綠燈號誌', desc:'紅燈停、綠燈行；夜間部分路口為閃黃燈可謹慎直接通過！'},
-  {id:'rule_bay', icon:'🅿️', name:'橘黃外送臨停區', desc:'店家與顧客門口的虛線安全框，停在裡面等紅燈車陣絕不會撞你！'},
-  {id:'rule_stack', icon:'🍱', name:'順路雙拼夾單', desc:'送餐途中經過其他店家門口可順路多帶一份，額外加時又加薪！'},
-  {id:'rule_rain', icon:'🌧️', name:'突發雨天尖峰', desc:'天降大雨時所有訂單小費與獎金直接 ×1.5 倍！'},
-  {id:'event_grad', icon:'🎓', name:'大學畢業轉職典禮', desc:'學生送滿 4 單正式畢業成為上班族，領 $2,000 禮金並開放買機車！'},
-  {id:'event_win1', icon:'🏆', name:'五股五單制霸獎金', desc:'完成第一關 5 單目標，直接領取 NT$ 2,000 新手過關大紅包！'},
-  {id:'fail_tea', icon:'🍵', name:'派出所泡茶悔過', desc:'單局闖紅燈滿 5 次，會被警察杯杯直接請去派出所喝茶失敗！'},
-  {id:'fail_anger', icon:'😡', name:'客訴停權風暴', desc:'撞爛丟餐或答錯客人記憶考題滿 5 次，客人氣炸會害你被平台停權！'},
-  {id:'fail_cop3', icon:'⛓️', name:'駕照吊銷扣車', desc:'被警察追上且沒能在 5 秒連按 5 下空白鍵掙脫，累計 3 次直接失敗！'}
+  {id:'dog', cat:'person', icon:'🐕', name:'街頭野狗', desc:'聞到外送便當香會追你！按空白鍵或 X 丟雞腿給牠吃就沒事！'},
+  {id:'cust_eng', cat:'person', icon:'👨‍💻', name:'五股工程師', desc:'沁象工程師偷訂雞排怕被抓，規定放 1 樓警衛室、千萬不能外送上樓！'},
+  {id:'mush_black', cat:'food', icon:'🍄⚫', name:'神秘黑蘑菇', desc:'路邊野生黑菇，吃了之後雙腳跟發瘋一樣超高速狂飆 20 秒！'},
+  {id:'mush_green', cat:'food', icon:'🍄🟢', name:'迷幻綠蘑菇', desc:'路邊野生綠菇，吃了之後頭暈目眩上下左右要反著操作 20 秒！'},
+  {id:'mush_white', cat:'food', icon:'🍄⚪', name:'傳說白蘑菇', desc:'稀有白菇，吃了之後超快狂飆＋上下左右反著走 20 秒！'},
+  {id:'mush_yellow', cat:'food', icon:'🍄🟡', name:'黃金無敵蘑菇', desc:'閃耀金菇，吃了之後獲得 10 秒金光無敵護盾，撞什麼都沒事！'},
+  {id:'obs_cone', cat:'event', icon:'🚧', name:'紅白施工護欄', desc:'馬路施工護欄，按 Shift 或 F 跳過去！沒跳過這餐直接撞爛丟失！'},
+  {id:'obs_pothole', cat:'event', icon:'🕳️', name:'柏油大坑洞', desc:'五工路大坑洞，按 Shift 或 F 飛越拿加分，沒跳過餐點直接飛走！'},
+  {id:'obs_barrel', cat:'event', icon:'🛢️', name:'防撞施工路障', desc:'黃黑防撞桶與三角錐，按 Shift 或 F 跳躍跨過可獲渦輪加速！'},
+  {id:'boso', cat:'person', icon:'🔥', name:'五股街頭爆走族', desc:'每關出沒 1 次的惡煞，被追上砸車直接失敗！丟雞腿可擊退他！'},
+  {id:'cop_car', cat:'person', icon:'🚔', name:'五工路巡邏警車', desc:'闖紅燈、逆向或私吞錢包會追你！被抓時 5 秒連按 5 下空白鍵可掙脫！'},
+  {id:'amb_car', cat:'person', icon:'🚑', name:'119 緊急救護車', desc:'聽到後方鳴笛主動靠邊禮讓，可獲 +35 分優良騎士獎勵！'},
+  {id:'wallet', cat:'event', icon:'💼', name:'遺失真皮錢包', desc:'選送警局需 30 秒內送達；逾時或私吞拿 $1,000 會被警察狂追 30 秒！'},
+  {id:'seven_job', cat:'event', icon:'🏪', name:'便利商店兼職打工', desc:'路邊 32px 內觸發雙盾旋轉小遊戲（每關限 1 次），薪資與回血存入主線！'},
+  {id:'seven_laser', cat:'event', icon:'⚡', name:'雙盾雷射覺醒', desc:'便利店打工賺滿 $350 晉級第 2 關，雙光盾自動連發脈衝雷射轟碎貨車！'},
+  {id:'mystery_guest', cat:'person', icon:'🕵️', name:'熱血神祕客', desc:'送完第 2 單突襲登場！幫你補滿體力並強制換騎腳踏車熱血衝刺！'},
+  {id:'star_skip', cat:'event', icon:'🌟', name:'開局無敵星星', desc:'設定頁 10 秒連按 10 下跳過彩蛋，開局 10 秒碰到任何東西都沒關係！'},
+  {id:'order_317', cat:'food', icon:'🕒', name:'凌晨 3:17 神秘單', desc:'都市傳說暗號急單，準時送達直接領 3 倍超高薪資！'},
+  {id:'cust_mom', cat:'person', icon:'🤱', name:'五股地方媽媽', desc:'寶寶剛睡著，備註千叮萬囑到門口時絕對不要按電鈴！'},
+  {id:'cust_boss', cat:'person', icon:'👔', name:'晶冠大樓主管', desc:'開會趕時間，備註要求直接送上 3 樓會議室門口，不要放警衛室！'},
+  {id:'cust_plan', cat:'person', icon:'🧋', name:'沁象遊戲企劃', desc:'珍奶微糖微冰，備註要求掛在大門左邊掛鉤，千萬不要放地上！'},
+  {id:'cust_soup', cat:'person', icon:'🍲', name:'伍股鹹粥熟客', desc:'鹹粥配紅燒肉，備註規定放門口紅色鞋櫃上，不要敲門！'},
+  {id:'shop_custom', cat:'food', icon:'🍗', name:'自訂街角招牌店', desc:'你親手命名的巷口神店，外送員傳奇的起點！'},
+  {id:'shop_thai', cat:'food', icon:'🌶️', name:'蓮花泰式小吃', desc:'五工路人氣排隊泰式美食，酸辣開胃工程師最愛！'},
+  {id:'shop_drink', cat:'food', icon:'🥤', name:'五工路手搖飲', desc:'滿杯封膜手搖飲，小心平穩騎乘別撞破封膜！'},
+  {id:'shop_porridge', cat:'food', icon:'🥣', name:'伍股鹹粥老店', desc:'五股在地 40 年必吃鹹粥配炸紅燒肉！'},
+  {id:'shop_beef', cat:'food', icon:'🍜', name:'新九九牛肉麵', desc:'濃郁紅燒牛肉湯頭，送餐途中小心別灑出來！'},
+  {id:'place_igs', cat:'food', icon:'🎮', name:'沁象遊戲總部', desc:'五股最知名遊戲研發大樓，日夜爆單的黃金地標！'},
+  {id:'place_rd1', cat:'food', icon:'💻', name:'沁象研發一部', desc:'程式設計師聚集地，最愛半夜偷叫雞排配珍奶！'},
+  {id:'place_art', cat:'food', icon:'🎨', name:'沁象美術動畫部', desc:'對細節極度講究，連手搖飲波霸都不能搖亂！'},
+  {id:'place_mrt', cat:'food', icon:'🚇', name:'機捷產業園區站', desc:'新北產業園區高架捷運站，通勤族取餐熱點！'},
+  {id:'place_crown', cat:'food', icon:'🏢', name:'五股晶冠廣場', desc:'結合商場與辦公的五股複合式地標大樓！'},
+  {id:'place_market', cat:'food', icon:'🥟', name:'五股公有市場', desc:'充滿人情味的傳統市場，小心門口貪吃小黑狗！'},
+  {id:'place_police', cat:'event', icon:'🚓', name:'五工路派出所', desc:'拾金不昧 30 秒內送達錢包的正義據點！'},
+  {id:'place_tech', cat:'food', icon:'🏭', name:'五股科技廠辦', desc:'下午茶與加班宵夜大宗訂單來源！'},
+  {id:'veh_walk', cat:'event', icon:'🚶', name:'雙腿走路切西瓜', desc:'不用怕紅燈、還能直接穿越建築物切西瓜抄近路，但體力扣最快！'},
+  {id:'veh_bike', cat:'event', icon:'🚲', name:'外送小黃腳踏車', desc:'比走路快、75% 機率警察懶得追，鑽進臨停區即可甩開警車！'},
+  {id:'veh_moto', cat:'event', icon:'🛵', name:'二手代步外送機車', desc:'畢業後存滿 NT$ 5,000 購入，速度快且騎車吹風幾乎不扣體力！'},
+  {id:'veh_boar', cat:'person', icon:'🐗', name:'狂暴山豬坐騎', desc:'車庫特殊坐騎，霸氣外露讓街頭野狗完全不敢靠近！'},
+  {id:'veh_dogmount', cat:'person', icon:'🐕‍🦺', name:'閃電台灣黑狗坐騎', desc:'車庫特殊坐騎，極速奔馳且自動免疫一次闖紅燈罰單！'},
+  {id:'veh_plane', cat:'event', icon:'✈️', name:'噴射外送小飛機', desc:'傳說級空中外送座駕，無視紅綠燈、野狗與街區阻礙！'},
+  {id:'item_bag0', cat:'food', icon:'🎁', name:'阿嬤防曬保溫套', desc:'商店 NT$ 0 免費領取的開局神裝，訂單時限與得分 +10%！'},
+  {id:'item_shoe0', cat:'food', icon:'👟', name:'夜市防滑飛毛腿鞋', desc:'商店 NT$ 0 免費領取的開局神裝，移動速度永久提升且跳躍冷卻縮短！'},
+  {id:'item_leg', cat:'food', icon:'🍖', name:'路邊炸雞腿補給', desc:'撿起可補充 2 支雞腿彈藥，餵飽野狗或擊退爆走族必備！'},
+  {id:'item_energy', cat:'food', icon:'⚡', name:'渦輪能量飲料', desc:'喝下後全身爆發藍光，享受數秒極速狂飆快感！'},
+  {id:'item_bento', cat:'food', icon:'🍱', name:'熱騰騰台式便當', desc:'外送員體力救星，吃下立即大幅恢復 35 點體力！'},
+  {id:'stall_hoop', cat:'event', icon:'🏀', name:'五股夜市投籃機', desc:'路邊技巧小遊戲，抓準綠色或金色靶心出手可贏取獎金與衝刺！'},
+  {id:'ped_uncle', cat:'person', icon:'👴', name:'散步阿伯', desc:'斑馬線上的慢郎中，記得在路口前停下禮讓可得 +15 分！'},
+  {id:'ped_stu', cat:'person', icon:'🎒', name:'通勤學生', desc:'邊滑手機邊過馬路的學生，千萬別撞到否則扣分又扣體力！'},
+  {id:'ped_work', cat:'person', icon:'💼', name:'趕打卡上班族', desc:'匆忙過斑馬線的上班族，主動停讓會向你道謝！'},
+  {id:'ped_girl', cat:'person', icon:'💃', name:'逛街辣妹', desc:'行經五工路口的時尚路人，禮讓行人展現模範外送員風範！'},
+  {id:'ped_aunt', cat:'person', icon:'👵', name:'買菜阿姨', desc:'剛從五股市場採買完的阿姨，禮讓她可獲好評加分！'},
+  {id:'car_taxi', cat:'person', icon:'🚕', name:'台灣小黃計程車', desc:'穿梭大街小巷的計程車，與它驚險擦身可觸發 +10 分閃避！'},
+  {id:'car_truck', cat:'person', icon:'🚛', name:'三噸半大貨卡', desc:'五股工業區常見的藍色貨車，車體寬大轉彎時請保持距離！'},
+  {id:'car_speed', cat:'person', icon:'🏎️', name:'紅色超速跑車', desc:'無視速限呼嘯而過的快車，畫面邊緣出現紅色⚠️快車預警時請閃避！'},
+  {id:'car_moto', cat:'person', icon:'🛵', name:'通勤機車族', desc:'車流中靈活穿梭的機車騎士，小心別發生擦撞！'},
+  {id:'item_vinyl', cat:'event', icon:'🎵', name:'絕版黑膠唱片', desc:'散落在五股街頭的神秘唱片，撿起可立即切換當前電台背景音樂曲風！'},
+  {id:'rule_light', cat:'event', icon:'🚦', name:'智慧紅綠燈號誌', desc:'紅燈停、綠燈行；夜間部分路口為閃黃燈可謹慎直接通過！'},
+  {id:'rule_bay', cat:'event', icon:'🅿️', name:'橘黃外送臨停區', desc:'店家與顧客門口的虛線安全框，停在裡面等紅燈車陣絕不會撞你！'},
+  {id:'rule_stack', cat:'food', icon:'🍱', name:'順路雙拼夾單', desc:'送餐途中經過其他店家門口可順路多帶一份，額外加時又加薪！'},
+  {id:'rule_rain', cat:'event', icon:'🌧️', name:'突發雨天尖峰', desc:'天降大雨時所有訂單小費與獎金直接 ×1.5 倍！'},
+  {id:'event_grad', cat:'event', icon:'🎓', name:'大學畢業轉職典禮', desc:'學生送滿 4 單正式畢業成為上班族，領 $2,000 禮金並開放買機車！'},
+  {id:'event_win1', cat:'event', icon:'🏆', name:'五股五單制霸獎金', desc:'完成第一關 5 單目標，直接領取 NT$ 2,000 新手過關大紅包！'},
+  {id:'fail_tea', cat:'event', icon:'🍵', name:'派出所泡茶悔過', desc:'單局闖紅燈滿 5 次，會被警察杯杯直接請去派出所喝茶失敗！'},
+  {id:'fail_anger', cat:'event', icon:'😡', name:'客訴停權風暴', desc:'撞爛丟餐或答錯客人記憶考題滿 5 次，客人氣炸會害你被平台停權！'},
+  {id:'event_beggar', cat:'person', icon:'🧎‍♂️', name:'路邊落魄乞丐', desc:'五工路口席地乞討的乞丐，若不慎撞到他會散落遺失隨機零錢（最多歸零，不變負數）！'}
 ];
 const codexSeen = store.get('dug_codex_v1', {});
 let codexReturnState = 'title';
 let howReturnState = 'title';
+let curCodexCat = 'all';
 
 function getCodexCount(){
   let c = 0;
@@ -2265,18 +2420,41 @@ function unlockCodex(id){
   return true;
 }
 
-function renderCodexModal(){
+function renderCodexModal(filterCat){
+  if(filterCat) curCodexCat = filterCat;
   const cnt = getCodexCount();
   if($('cdxBestTxt')) $('cdxBestTxt').textContent = best;
   if($('cdxCoinsTxt')) $('cdxCoinsTxt').textContent = 'NT$' + coins;
   if($('cdxOrdersTxt')) $('cdxOrdersTxt').textContent = life.orders || 0;
   if($('cdxProgTxt')) $('cdxProgTxt').textContent = cnt + ' / ' + CODEX_66_DEFS.length;
+
+  let personCnt = 0, eventCnt = 0, foodCnt = 0;
+  CODEX_66_DEFS.forEach(item => {
+    if(codexSeen[item.id]){
+      if(item.cat === 'person') personCnt++;
+      else if(item.cat === 'event') eventCnt++;
+      else if(item.cat === 'food') foodCnt++;
+    }
+  });
+  if($('cdxCatPerson')) $('cdxCatPerson').textContent = personCnt + '/22';
+  if($('cdxCatEvent')) $('cdxCatEvent').textContent = eventCnt + '/21';
+  if($('cdxCatFood')) $('cdxCatFood').textContent = foodCnt + '/23';
+
+  document.querySelectorAll('#codexTabRow .codexTab').forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('data-cat') === curCodexCat);
+    tab.onclick = () => {
+      ensureAudio(); sfx('click');
+      renderCodexModal(tab.getAttribute('data-cat'));
+    };
+  });
+
   const lobbyBtn = $('codexGoLobbyBtn');
   if(lobbyBtn) lobbyBtn.style.display = (codexReturnState === 'play' || codexReturnState === 'pause') ? 'inline-flex' : 'none';
   const grid = $('codexGrid');
   if(!grid) return;
   grid.innerHTML = '';
   CODEX_66_DEFS.forEach((item, idx) => {
+    if(curCodexCat !== 'all' && item.cat !== curCodexCat) return;
     const ok = !!codexSeen[item.id];
     const div = document.createElement('div');
     div.className = 'codexCell ' + (ok ? 'unlocked' : 'locked');
@@ -2374,124 +2552,463 @@ let skinsOwned=store.get('dug_skins_owned',['yellow']);
 if(!Array.isArray(skinsOwned)) skinsOwned=['yellow'];
 if(!skinsOwned.includes('yellow')) skinsOwned.push('yellow');
 
+let curStoreTab = 'gift';
+let curTransSubTab = 'walk';
+if(!Array.isArray(profile.motosOwned)) profile.motosOwned = ['moto_50'];
+
+function initStoreTabs(){
+  document.querySelectorAll('#storeTabRow .storeTab').forEach(tab => {
+    tab.onclick = () => {
+      ensureAudio(); sfx('click');
+      curStoreTab = tab.getAttribute('data-tab');
+      document.querySelectorAll('#storeTabRow .storeTab').forEach(t => t.classList.toggle('active', t === tab));
+      document.querySelectorAll('.storePane').forEach(p => p.classList.toggle('active', p.id === 'storePane_' + curStoreTab));
+      renderGarage();
+    };
+  });
+  document.querySelectorAll('#storePane_trans .transSubTab').forEach(stab => {
+    stab.onclick = () => {
+      ensureAudio(); sfx('click');
+      curTransSubTab = stab.getAttribute('data-vcat');
+      document.querySelectorAll('#storePane_trans .transSubTab').forEach(t => t.classList.toggle('active', t === stab));
+      renderTransPane();
+    };
+  });
+}
+
 function renderGarage(){
   const ct=$('garageCoinsTxt'); if(ct) ct.textContent=coins;
 
-  // 0 元限時免費神裝區（2 樣 NT$ 0 神裝！）
-  const fGrid=$('freeShopGrid');
-  if(fGrid){
-    fGrid.innerHTML='';
-    const freeItems=[
+  // 1. 禮包分頁
+  const gList=$('storeGiftList');
+  if(gList){
+    gList.innerHTML='';
+    const gifts=[
       {
-        key:'freeBag',
-        name:'⚡ 阿嬤防曬袖套＆開光保溫袋',
-        desc:'鎮店神裝！所有訂單時限 +10%、送達運費收入 +10%！'
+        id:'freeBag', type:'gear', name:'⚡ 阿嬤防曬袖套＆開光保溫袋',
+        cost:0, cond:'新人免費贈送', ok:true,
+        desc:'鎮店神裝！所有訂單時限 +10%、送達運費收入 +10%！',
+        isClaimed:()=>!!(profile&&profile.freeBag),
+        claim:()=>{ profile.freeBag=true; }
       },
       {
-        key:'freeShoes',
-        name:'👟 五股夜市・防滑氣墊飛毛腿布鞋',
-        desc:'超狂氣墊推進！全載具與走路速度永久 +12、跳躍冷卻縮短！'
+        id:'freeShoes', type:'gear', name:'👟 五股夜市・防滑氣墊飛毛腿鞋',
+        cost:0, cond:'新人免費贈送', ok:true,
+        desc:'超狂氣墊推進！全載具與走路速度永久 +12、跳躍冷卻縮短！',
+        isClaimed:()=>!!(profile&&profile.freeShoes),
+        claim:()=>{ profile.freeShoes=true; }
+      },
+      {
+        id:'gift_order1', type:'money', name:'🎁 新手首單慰勞大紅包',
+        reward:300, cond:'累計送達 1 筆訂單',
+        ok:(life.orders||0)>=1,
+        desc:'完成外送員生涯首單！領取公會發放的 NT$ 300 補貼金！',
+        isClaimed:()=>!!(profile&&profile.gift_order1),
+        claim:()=>{ profile.gift_order1=true; addCoins(300); }
+      },
+      {
+        id:'gift_score50', type:'money', name:'🎁 50 分熟手騎士獎勵',
+        reward:500, cond:'最高紀錄達到 50 分',
+        ok:best>=50,
+        desc:'外送技巧漸入佳境！領取 NT$ 500 現金獎勵！',
+        isClaimed:()=>!!(profile&&profile.gift_score50),
+        claim:()=>{ profile.gift_score50=true; addCoins(500); }
+      },
+      {
+        id:'gift_score120', type:'money', name:'🎁 120 分外送精英禮包',
+        reward:1200, cond:'最高紀錄達到 120 分',
+        ok:best>=120,
+        desc:'五工路穿梭自如！獎勵 NT$ 1,200 購車補助基金！',
+        isClaimed:()=>!!(profile&&profile.gift_score120),
+        claim:()=>{ profile.gift_score120=true; addCoins(1200); }
+      },
+      {
+        id:'gift_score250', type:'money', name:'🎁 250 分制霸車神大禮包',
+        reward:3000, cond:'最高紀錄達到 250 分',
+        ok:best>=250,
+        desc:'傳奇外送之神！狂暴頒發 NT$ 3,000 尊榮獎金！',
+        isClaimed:()=>!!(profile&&profile.gift_score250),
+        claim:()=>{ profile.gift_score250=true; addCoins(3000); }
       }
     ];
-    freeItems.forEach(it=>{
-      const owned = !!(profile && profile[it.key]);
+
+    gifts.forEach(g=>{
+      const claimed = g.isClaimed();
       const card = document.createElement('div');
-      card.className = 'freeItemCard';
-      card.innerHTML = '<div class="freeItemTop"><span>'+it.name+'</span><span style="background:'+(owned?'#065f46':'#f59e0b')+';color:'+(owned?'#a7f3d0':'#1a1204')+';padding:2px 8px;border-radius:999px;font-size:12px;">'+(owned?'✔ 已裝備':'NT$ 0 免費')+'</span></div><div class="freeItemDesc">'+it.desc+'</div>';
-      const btnEl = document.createElement('button');
-      btnEl.className = 'upgBuy';
-      btnEl.style.marginTop = '4px';
-      if(owned){
-        btnEl.textContent = '✔ 已免費領取並裝備中';
-        btnEl.disabled = true;
+      card.className = 'storeGiftCard';
+      card.style.cssText = 'background:#0f172a;border:1.5px solid '+(claimed?'#334155':(g.ok?'#10b981':'#475569'))+';border-radius:10px;padding:10px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;';
+      const statusBadge = claimed ? '<span style="background:#065f46;color:#a7f3d0;padding:2px 8px;border-radius:999px;font-size:11.5px;">✔ 已領取</span>'
+        : (g.ok ? '<span style="background:#047857;color:#fff;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:900;">🎁 可免費領取</span>'
+        : '<span style="background:#334155;color:#94a3b8;padding:2px 8px;border-radius:999px;font-size:11.5px;">🔒 未達成</span>');
+
+      card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">'
+        + '<b style="color:#fde047;font-size:13.5px;">'+g.name+'</b>'+statusBadge+'</div>'
+        + '<div style="font-size:12px;color:#94a3b8;margin-bottom:4px;">門檻：'+g.cond+'</div>'
+        + '<div style="font-size:12.5px;color:#cbd5e1;line-height:1.45;margin-bottom:8px;">'+g.desc+'</div>';
+
+      const btn = document.createElement('button');
+      btn.className = 'upgBuy';
+      btn.style.width = '100%';
+      if(claimed){
+        btn.textContent = '✔ 已領取完畢';
+        btn.disabled = true;
+      } else if(!g.ok){
+        btn.textContent = '🔒 尚未達成條件';
+        btn.disabled = true;
       } else {
-        btnEl.textContent = '🎁 NT$ 0 免費領取裝備！';
-        btnEl.addEventListener('click',()=>{
-          ensureAudio();
-          profile[it.key] = true;
+        btn.textContent = '🎁 免費領取禮包！';
+        btn.addEventListener('click', ()=>{
+          ensureAudio(); sfx('level');
+          g.claim();
           saveProfile();
-          sfx('level');
           renderGarage();
         });
       }
-      card.appendChild(btnEl);
-      fGrid.appendChild(card);
+      card.appendChild(btn);
+      gList.appendChild(card);
     });
   }
 
-  // 車輛與傳奇特殊坐騎購買／切換區（二手代步外送機車真實價格 NT$ 5,000！）
-  const vTitle=$('garageVehTitle'), vSub=$('garageVehSub'), vBtns=$('garageVehBtns');
-  if(vTitle && vSub && vBtns){
-    vBtns.innerHTML='';
-    if(!Array.isArray(profile.mountsOwned)) profile.mountsOwned=[];
-    const vehMap={
-      walk:{title:'🚶 目前方式：雙腿走路（可切西瓜穿建築！）', sub:'速度 132 px/s・不怕紅燈、可直接切西瓜穿越建築物！但體力扣最快（每秒 -3~4.5）！'},
-      bike:{title:'🚲 目前座駕：外送腳踏車', sub:'速度 172 px/s・比走路快且不太會被警察追！踩踏體力扣較快（每秒 -1.8）！'},
-      moto:{title:'🛵 目前座駕：二手代步外送機車', sub:'速度 230 px/s・直線衝刺超快、夜間大燈照明，且騎車幾乎不扣體力（每秒僅 -0.3）！'},
-      boar:{title:'🐗 目前坐騎：阿里山狂暴山豬王', sub:'速度 215 px/s・野性霸氣震懾全場，巷口野狗看到山豬自動嚇跑不敢追！'},
-      dogmount:{title:'🐕 目前坐騎：閃電黑狗兄坐騎', sub:'速度 230 px/s・靈活嬌小鑽車縫神器！'},
-      plane:{title:'✈️ 目前坐騎：渦輪低空噴射小飛機', sub:'速度 270 px/s・傳奇神級飛行器！低空略過無視野狗撕咬！'}
-    };
-    const curV=vehMap[vehicleType]||vehMap.bike;
-    vTitle.innerHTML=curV.title;
-    vSub.textContent=curV.sub;
+  // 2. 交通分頁渲染
+  renderTransPane();
 
-    const mountCatalog=[
-      {id:'walk', label:'🚶 走路(切西瓜)', price:0, free:true},
-      {id:'bike', label:'🚲 腳踏車', price:0, free:true},
-      {id:'moto', label:'🛵 二手機車', price:5000, free:motoUnlocked},
-      {id:'boar', label:'🐗 狂暴山豬', price:6800, free:profile.mountsOwned.includes('boar')},
-      {id:'dogmount', label:'🐕 閃電黑狗', price:8500, free:profile.mountsOwned.includes('dogmount')},
-      {id:'plane', label:'✈️ 噴射飛機', price:15000, free:profile.mountsOwned.includes('plane')}
+  // 3. 配件分頁渲染
+  renderPartsPane();
+
+  // 4. 其他分頁渲染
+  renderMorePane();
+}
+
+function renderTransPane(){
+  const box = $('storeTransContent');
+  if(!box) return;
+  box.innerHTML = '';
+
+  if(!Array.isArray(profile.mountsOwned)) profile.mountsOwned=[];
+  if(!Array.isArray(profile.motosOwned)) profile.motosOwned=['moto_50'];
+
+  if(curTransSubTab === 'walk'){
+    const card = document.createElement('div');
+    card.style.cssText = 'background:#0f172a;border:1.5px solid #38bdf8;border-radius:12px;padding:14px;text-align:left;';
+    const isCur = vehicleType === 'walk';
+    card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+      + '<b style="color:#7dd3fc;font-size:16px;">🚶 雙腿徒步走路（小巷切西瓜抄捷徑）</b>'
+      + (isCur ? '<span style="background:#065f46;color:#a7f3d0;padding:2px 8px;border-radius:999px;font-size:12px;">✔ 使用中</span>' : '')
+      + '</div>'
+      + '<div style="font-size:13px;color:#cbd5e1;line-height:1.6;margin-bottom:12px;">'
+      + '• <b>速度</b>：132 px/s<br>'
+      + '• <b>特色</b>：不受紅綠燈限制、直接穿透建築物切西瓜抄近路！<br>'
+      + '• <b>代價</b>：長途奔跑體力消耗最快（每秒 -3~4.5 HP）！<br>'
+      + '💡 提示：送完 2 單會自動升級為腳踏車；若想換回走路，隨時回到地圖起點【🏡 溫馨老家】即可換裝！'
+      + '</div>';
+    const btn = document.createElement('button');
+    btn.className = 'upgBuy';
+    btn.style.width = '100%';
+    btn.textContent = isCur ? '✔ 目前使用中' : '切換為 🚶 雙腿走路';
+    btn.disabled = isCur;
+    btn.addEventListener('click', ()=>{
+      vehicleType = 'walk';
+      store.set('dug_vehicle', 'walk');
+      sfx('click'); applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true }); renderGarage();
+    });
+    card.appendChild(btn);
+    box.appendChild(card);
+  } else if(curTransSubTab === 'bike'){
+    const card = document.createElement('div');
+    card.style.cssText = 'background:#0f172a;border:1.5px solid #fbbf24;border-radius:12px;padding:14px;text-align:left;';
+    const isCur = vehicleType === 'bike';
+    card.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">'
+      + '<b style="color:#fde047;font-size:16px;">🚲 特製外送小黃腳踏車</b>'
+      + (isCur ? '<span style="background:#065f46;color:#a7f3d0;padding:2px 8px;border-radius:999px;font-size:12px;">✔ 使用中</span>' : '')
+      + '</div>'
+      + '<div style="font-size:13px;color:#cbd5e1;line-height:1.6;margin-bottom:12px;">'
+      + '• <b>速度</b>：172 px/s（比走路快 30%）<br>'
+      + '• <b>特色</b>：車身輕便鑽車縫極度順暢、75% 機率警察懶得追！鑽進臨停區立即甩開警車！<br>'
+      + '• <b>解鎖</b>：開局送滿 2 單神祕客免費親手配發！'
+      + '</div>';
+    const btn = document.createElement('button');
+    btn.className = 'upgBuy';
+    btn.style.width = '100%';
+    btn.textContent = isCur ? '✔ 目前使用中' : '切換為 🚲 外送腳踏車';
+    btn.disabled = isCur;
+    btn.addEventListener('click', ()=>{
+      vehicleType = 'bike';
+      store.set('dug_vehicle', 'bike');
+      sfx('bell'); applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true }); renderGarage();
+    });
+    card.appendChild(btn);
+    box.appendChild(card);
+  } else if(curTransSubTab === 'moto'){
+    const motoGrid = document.createElement('div');
+    motoGrid.className = 'storeMotoGrid';
+    const motoModels = [
+      {
+        id:'moto_50', name:'🛵 二手小五十 (50cc)', price:2500, spd:200,
+        desc:'老牌二行程代步小機車，輕巧省油，幾乎不耗外送員體力！'
+      },
+      {
+        id:'moto_125', name:'🛵 勁戰白牌 125', price:5000, spd:230,
+        desc:'外送界經典國民神車！直線加速平穩、過彎靈活、夜間大燈超亮！'
+      },
+      {
+        id:'moto_158', name:'🛵 油電旗艦 158', price:8800, spd:255,
+        desc:'水冷頂規旗艦！極速超越警車，直線油門一拜甩開一切追逐！'
+      },
+      {
+        id:'moto_650', name:'🏍️ 紅牌巡弋重機 650', price:15000, spd:275,
+        desc:'雙缸轟鳴霸氣巡弋！全場焦點，外送界最高殿堂至尊座駕！'
+      }
     ];
-    mountCatalog.forEach(m=>{
-      const b=document.createElement('button');
-      b.className='upgBuy';
-      b.style.margin='3px';
-      if(vehicleType===m.id){
-        b.textContent='✔ '+m.label+' (使用中)';
-        b.disabled=true;
-      } else if(m.free){
-        b.textContent='切換 '+m.label;
-        b.addEventListener('click',()=>{
-          vehicleType=m.id;
-          store.set('dug_vehicle',vehicleType);
-          sfx(m.id==='bike'?'bell':(m.id==='walk'?'jump':'click'));
-          applyDeviceUI();
-          renderGarage();
-        });
-      } else if(m.id==='moto'){
-        const canBuyMoto = profile.graduated && coins >= m.price;
-        b.textContent = !profile.graduated
-          ? ('🔒 🛵 二手機車 (需送滿3單畢業＋NT$' + m.price + ')')
-          : ('購買 🛵 二手機車 (NT$ ' + m.price + ')');
-        b.disabled = !canBuyMoto;
-        b.addEventListener('click',()=>{
-          if(!profile.graduated || coins<m.price) return;
-          coins-=m.price; motoUnlocked=true; vehicleType='moto';
-          store.set('dug_coins',coins); store.set('dug_moto_unlocked',true); store.set('dug_vehicle','moto');
-          const cTitle=$('coinsTitle'); if(cTitle) cTitle.textContent=coins;
-          sfx('level'); applyDeviceUI(); renderGarage();
+
+    motoModels.forEach(m => {
+      const owned = motoUnlocked && (profile.motosOwned.includes(m.id) || (m.id==='moto_125'&&motoUnlocked));
+      const isCur = vehicleType === 'moto' && (profile.curMotoModel || 'moto_125') === m.id;
+      const mCard = document.createElement('div');
+      mCard.className = 'storeMotoCard';
+      mCard.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">'
+        + '<b style="color:#fde047;font-size:13.5px;">'+m.name+'</b>'
+        + '<span style="font-size:12px;color:#38bdf8;">極速 '+m.spd+'</span>'
+        + '</div>'
+        + '<div style="font-size:12px;color:#cbd5e1;line-height:1.4;margin-bottom:8px;">'+m.desc+'</div>';
+
+      const btn = document.createElement('button');
+      btn.className = 'upgBuy';
+      btn.style.width = '100%';
+      if(isCur){
+        btn.textContent = '✔ 騎乘中';
+        btn.disabled = true;
+      } else if(owned){
+        btn.textContent = '騎乘此機車';
+        btn.addEventListener('click', ()=>{
+          vehicleType = 'moto';
+          profile.curMotoModel = m.id;
+          store.set('dug_vehicle', 'moto');
+          saveProfile();
+          sfx('level'); applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true }); renderGarage();
         });
       } else {
-        b.textContent='購買 '+m.label+' (NT$ '+m.price+')';
-        b.disabled=coins<m.price;
-        b.addEventListener('click',()=>{
-          if(coins<m.price) return;
-          coins-=m.price;
-          profile.mountsOwned.push(m.id);
+        const canBuy = coins >= m.price;
+        btn.textContent = '購買 NT$ ' + m.price;
+        btn.disabled = !canBuy;
+        btn.addEventListener('click', ()=>{
+          if(coins < m.price) return;
+          coins -= m.price;
+          motoUnlocked = true;
+          vehicleType = 'moto';
+          profile.curMotoModel = m.id;
+          if(!profile.motosOwned.includes(m.id)) profile.motosOwned.push(m.id);
+          store.set('dug_coins', coins);
+          store.set('dug_moto_unlocked', true);
+          store.set('dug_vehicle', 'moto');
           saveProfile();
-          vehicleType=m.id;
-          store.set('dug_coins',coins); store.set('dug_vehicle',vehicleType);
-          const cTitle=$('coinsTitle'); if(cTitle) cTitle.textContent=coins;
-          sfx('level'); applyDeviceUI(); renderGarage();
+          sfx('level'); applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true }); renderGarage();
         });
       }
-      vBtns.appendChild(b);
+      mCard.appendChild(btn);
+      motoGrid.appendChild(mCard);
     });
+    box.appendChild(motoGrid);
+  } else if(curTransSubTab === 'mount'){
+    const mGrid = document.createElement('div');
+    mGrid.className = 'storeMotoGrid';
+    const mounts = [
+      { id:'boar', name:'🐗 阿里山狂暴山豬', price:6800, spd:215, desc:'霸氣外露野性衝撞！巷口野狗看到山豬自動嚇跑不敢靠近！' },
+      { id:'dogmount', name:'🐕 閃電台灣黑狗坐騎', price:8500, spd:230, desc:'嬌小靈活鑽車縫神器！自動免疫一次闖紅燈警察攔檢！' },
+      { id:'plane', name:'✈️ 噴射外送小飛機', price:15000, spd:270, desc:'傳奇神級飛行器！低空掠過無視地面野狗與路障撕咬！' }
+    ];
+    mounts.forEach(m => {
+      const owned = profile.mountsOwned.includes(m.id);
+      const isCur = vehicleType === m.id;
+      const mCard = document.createElement('div');
+      mCard.className = 'storeMotoCard';
+      mCard.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">'
+        + '<b style="color:#fde047;font-size:13.5px;">'+m.name+'</b>'
+        + '<span style="font-size:12px;color:#38bdf8;">極速 '+m.spd+'</span>'
+        + '</div>'
+        + '<div style="font-size:12px;color:#cbd5e1;line-height:1.4;margin-bottom:8px;">'+m.desc+'</div>';
+
+      const btn = document.createElement('button');
+      btn.className = 'upgBuy';
+      btn.style.width = '100%';
+      if(isCur){
+        btn.textContent = '✔ 駕馭中';
+        btn.disabled = true;
+      } else if(owned){
+        btn.textContent = '更換坐騎';
+        btn.addEventListener('click', ()=>{
+          vehicleType = m.id;
+          store.set('dug_vehicle', m.id);
+          sfx('click'); applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true }); renderGarage();
+        });
+      } else {
+        btn.textContent = '購買 NT$ ' + m.price;
+        btn.disabled = coins < m.price;
+        btn.addEventListener('click', ()=>{
+          if(coins < m.price) return;
+          coins -= m.price;
+          profile.mountsOwned.push(m.id);
+          vehicleType = m.id;
+          store.set('dug_coins', coins);
+          store.set('dug_vehicle', vehicleType);
+          saveProfile();
+          sfx('level'); applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true }); renderGarage();
+        });
+      }
+      mCard.appendChild(btn);
+      mGrid.appendChild(mCard);
+    });
+    box.appendChild(mGrid);
+  }
+}
+
+function renderPartsPane(){
+  // 零件升級
+  const grid=$('upgGrid');
+  if(grid){
+    grid.innerHTML='';
+    for(const u of UPG_DEFS){
+      const lv=upg[u.key]||0;
+      const isMax=lv>=u.max;
+      const cost=isMax?0:u.costs[lv];
+      const card=document.createElement('div');
+      card.className='upgCard';
+      const top=document.createElement('div');
+      top.className='upgTop';
+      top.innerHTML='<span>'+u.icon+' '+u.name+'</span><span class="upgLv">Lv.'+lv+'/'+u.max+'</span>';
+      const desc=document.createElement('div');
+      desc.className='upgDesc';
+      desc.textContent=u.desc(lv);
+      const btnEl=document.createElement('button');
+      btnEl.className='upgBuy';
+      btnEl.textContent=isMax?'✔ 已滿級':('購買升級 (NT$ '+cost+')');
+      btnEl.disabled=isMax || coins<cost;
+      btnEl.addEventListener('click',()=>{ensureAudio();sfx('click');buyUpgrade(u.key);});
+      card.appendChild(top); card.appendChild(desc); card.appendChild(btnEl);
+      grid.appendChild(card);
+    }
   }
 
-  // 保溫箱塗裝選擇區
+  // 保溫箱塗裝
   const sBox=$('skinGrid');
   if(sBox){
     sBox.innerHTML='';
@@ -2500,19 +3017,14 @@ function renderGarage(){
       const isCur=(curSkin===s.id);
       const card=document.createElement('div');
       card.className='skinCard'+(isCur?' active':'');
-
       const prev=document.createElement('div');
       prev.className='skinPreview';
       prev.style.background='linear-gradient(135deg, '+s.col1+', '+s.col2+')';
       prev.textContent=isCur?'✔ 裝備':'BOX';
-
       const nm=document.createElement('div');
       nm.className='skinName';
       nm.textContent=s.name;
-
-      card.appendChild(prev);
-      card.appendChild(nm);
-
+      card.appendChild(prev); card.appendChild(nm);
       if(isCur){
         const st=document.createElement('div');
         st.className='skinStatus';
@@ -2526,15 +3038,10 @@ function renderGarage(){
         b.style.color='#e2e8f0';
         b.textContent='更換';
         b.addEventListener('click',(e)=>{
-          e.stopPropagation();
-          curSkin=s.id; store.set('dug_skin',curSkin);
+          e.stopPropagation(); curSkin=s.id; store.set('dug_skin',curSkin);
           sfx('click'); renderGarage();
         });
         card.appendChild(b);
-        card.addEventListener('click',()=>{
-          curSkin=s.id; store.set('dug_skin',curSkin);
-          sfx('click'); renderGarage();
-        });
       } else {
         const b=document.createElement('button');
         b.className='skinBuyBtn';
@@ -2543,44 +3050,45 @@ function renderGarage(){
         b.addEventListener('click',(e)=>{
           e.stopPropagation();
           if(coins<s.price) return;
-          coins-=s.price;
-          skinsOwned.push(s.id);
-          curSkin=s.id;
-          store.set('dug_coins',coins);
-          store.set('dug_skins_owned',skinsOwned);
-          store.set('dug_skin',curSkin);
-          sfx('level');
-          const ct=$('coinsTitle'); if(ct) ct.textContent=coins;
-          renderGarage();
+          coins-=s.price; skinsOwned.push(s.id); curSkin=s.id;
+          store.set('dug_coins',coins); store.set('dug_skins_owned',skinsOwned); store.set('dug_skin',curSkin);
+          sfx('level'); renderGarage();
         });
         card.appendChild(b);
       }
       sBox.appendChild(card);
     }
   }
+}
 
-  const grid=$('upgGrid'); if(!grid) return;
-  grid.innerHTML='';
-  for(const u of UPG_DEFS){
-    const lv=upg[u.key]||0;
-    const isMax=lv>=u.max;
-    const cost=isMax?0:u.costs[lv];
-    const card=document.createElement('div');
-    card.className='upgCard';
-    const top=document.createElement('div');
-    top.className='upgTop';
-    top.innerHTML='<span>'+u.icon+' '+u.name+'</span><span class="upgLv">Lv.'+lv+'/'+u.max+'</span>';
-    const desc=document.createElement('div');
-    desc.className='upgDesc';
-    desc.textContent=u.desc(lv);
-    const btnEl=document.createElement('button');
-    btnEl.className='upgBuy';
-    btnEl.textContent=isMax?'✔ 已滿級':('購買升級 (NT$ '+cost+')');
-    btnEl.disabled=isMax || coins<cost;
-    btnEl.addEventListener('click',()=>{ensureAudio();sfx('click');buyUpgrade(u.key);});
-    card.appendChild(top); card.appendChild(desc); card.appendChild(btnEl);
-    grid.appendChild(card);
-  }
+function renderMorePane(){
+  const moreBox = $('storeMoreContent');
+  if(!moreBox) return;
+  moreBox.innerHTML = '';
+  const talent = getBirthTalent();
+  moreBox.innerHTML = '<div style="background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:12px;line-height:1.6;font-size:13px;color:#cbd5e1;">'
+    + '<b style="color:#fde047;">🎂 主角生日年齡天賦</b><br>'
+    + '• 生日設定：' + (profile.birthYear||2000) + ' 年 ' + (profile.birthMonth||6) + ' 月 ' + (profile.birthDay||15) + ' 日<br>'
+    + '• 目前天賦：<span style="color:#6ee7b7;font-weight:900;">' + talent.label + '</span>'
+    + '</div>'
+    + '<div style="background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:12px;line-height:1.6;font-size:13px;color:#cbd5e1;">'
+    + '<b style="color:#38bdf8;">📳 震動反饋設定（手機專用）</b><br>'
+    + (typeof navigator!=='undefined'&&typeof navigator.vibrate==='function' ? '✅ 本裝置支援真實震動觸感！已預設全面開啟。' : 'ℹ️ 本瀏覽器或環境未提供震動 API。')
+    + '<div style="margin-top:6px;"><button type="button" class="btn" id="btnTestVibe" style="padding:6px 12px;font-size:12.5px;">📳 測試震動 0.1 秒</button></div>'
+    + '</div>'
+    + '<div style="background:#0f172a;border:1.5px solid #334155;border-radius:10px;padding:12px;display:flex;gap:8px;">'
+    + '<button type="button" class="btn" id="storeResetProfileBtn" style="flex:1;background:#7f1d1d;border-color:#ef4444;color:#fee2e2;font-size:13px;">🗑️ 重新選擇生日／重開新檔</button>'
+    + '</div>';
+
+  const tv = $('btnTestVibe');
+  if(tv) tv.onclick = () => { vibrate([80, 40, 80]); sfx('click'); };
+  const rp = $('storeResetProfileBtn');
+  if(rp) rp.onclick = () => {
+    if(confirm('確定要重新設定生日與新角色存檔嗎？')){
+      profile.talentGranted = false;
+      openProfileModal(false);
+    }
+  };
 }
 function buyUpgrade(key){
   const def=UPG_DEFS.find(x=>x.key===key);
@@ -2600,6 +3108,7 @@ let bosozoku=null, bosoSpawned=false; // 每關出現 1 次的街頭爆走族惡
 let lostWallet=null, walletSpawned=false, policeStationDoor=null; // 撿到遺失錢包與派出所座標
 let streetStall=null, qteState=null; // 街邊技巧挑戰攤位與指針 QTE 狀態
 let sevenSpot=null, sevenGame=null; // 🏪 便利商店深夜補貨兼職駐點（每關限玩1次；跳過則5分鐘後重置最後1次）與雙盾旋轉小遊戲狀態
+let homeSpot=null; // 🏡 溫馨老家整備站（回老家神秘入口即可換回走路切西瓜！）
 let copEscapeQte=null, copFrenzyT=0; // 🚔 被警察抓 5 秒連按 5 下空白鍵掙脫 QTE ＆ 錢包私吞/逾時 30 秒警察暴走狂追
 let confetti=[]; // 單關刷新最高分歡呼彩帶特效
 let roadObstacles=[]; // 道路施工三角錐、坑洞、路障（可按跳躍飛越！）
@@ -2901,6 +3410,29 @@ function initTrafficSystem(){
       }
     }
   }
+  // 🧎‍♂️ 路邊落魄乞丐（席地乞討，撞到隨機遺失金幣，最多歸零！）
+  if(H_SEGS.length > 0){
+    const s1 = H_SEGS[0];
+    peds.push({
+      hy: s1.y, seg: s1, rowTls: [],
+      x: clamp(s1.x0 + 95, s1.x0 + 35, s1.x1 - 35),
+      y: s1.y - HALF - 9,
+      dir: 1, speed: 0, state: 'beggar', waitTl: null,
+      role: '落魄乞丐', isBeggar: true, color: '#78716c',
+      isCrossing: false, warned: false, praised: false, hitCool: 0
+    });
+    if(H_SEGS.length > 1){
+      const s2 = H_SEGS[1];
+      peds.push({
+        hy: s2.y, seg: s2, rowTls: [],
+        x: clamp(s2.x1 - 95, s2.x0 + 35, s2.x1 - 35),
+        y: s2.y - HALF - 9,
+        dir: -1, speed: 0, state: 'beggar', waitTl: null,
+        role: '落魄乞丐', isBeggar: true, color: '#78716c',
+        isCrossing: false, warned: false, praised: false, hitCool: 0
+      });
+    }
+  }
 }
 
 // 關卡主題設定（每 3 單通關晉級，各關專屬難度與突發事件）
@@ -2942,7 +3474,10 @@ function resetGame(){
     profile.starSkipBonus = false;
     saveProfile();
   }
-  P={x:spawnX,y:spawnY,r:14,angle:spawnAng,steer:0,fx:spawnFx,fy:spawnFy,hp:getMaxHp(),ammo:Math.min(getMaxAmmo(),4+(upg.box||0)),inv:hasStarSkip?13.5:3.5,starSkipActive:hasStarSkip,forcedBikeByMystery:false,moving:false,boost:hasStarSkip?4.0:0,stopT:0,wrongWayT:0,jumpT:0,jumpCool:0,madSpeedT:0,reverseT:0}; // 開場給予倒數無敵（若連按10下跳過則直接給 10 秒無敵星星！）
+  vehicleType = 'walk';
+  store.set('dug_vehicle', 'walk');
+  homeSpot = { x: spawnX, y: spawnY, r: 42, name: '🏡 溫馨老家整備站' };
+  P={x:spawnX,y:spawnY,r:14,angle:spawnAng,steer:0,fx:spawnFx,fy:spawnFy,hp:getMaxHp(),ammo:Math.min(getMaxAmmo(),4+(upg.box||0)),inv:hasStarSkip?13.5:3.5,starSkipActive:hasStarSkip,forcedBikeByMystery:false,moving:false,boost:hasStarSkip?4.0:0,stopT:0,wrongWayT:0,jumpT:0,jumpCool:0,madSpeedT:0,reverseT:0,homeCool:0};
   cars=[];dogs=[];shots=[];items=[];pops=[];confetti=[];mushrooms=[];mushroomTimer=5.5;
   bosozoku=null; bosoSpawned=false;
   lostWallet=null; walletSpawned=false;
@@ -3200,6 +3735,23 @@ function updateTrafficAndPeds(dt){
 
     // 與玩家互動判定（僅在實際遊戲中，且玩家真正轉向／切入斑馬線區域時才判定禮讓與撞擊，避免平行綠燈直行誤判）
     const dPed=dist(ped, P);
+    if(ped.isBeggar){
+      if(ped.hitCool > 0) ped.hitCool -= dt;
+      if(!devGhost && G.state==='play' && countdown<=0 && dPed<24 && (!ped.hitCool || ped.hitCool<=0)){
+        ped.hitCool = 3.5;
+        const lost = Math.min(coins, Math.floor(rand(25, 120)));
+        coins = Math.max(0, coins - lost);
+        store.set('dug_coins', coins);
+        updateProfileUI();
+        vibrate([60, 40, 80]);
+        sfx('hit');
+        shake = 0.25;
+        pop(P.x, P.y-34, '💸 撞到乞丐！零錢掉落 -NT$' + lost, '#f87171', 20);
+        showBanner('🧎‍♂️ 撞到路邊落魄乞丐！', '身上零錢散落一地！遺失 NT$ ' + lost + '（剩餘 NT$ ' + coins + '）', '#f87171');
+        unlockCodex('event_beggar');
+      }
+      continue;
+    }
     if(!devGhost && G.state==='play' && countdown<=0 && ped.isCrossing){
       if(dPed < 115) triggerTut('ped', '🚶 行人過斑馬線！在路口前停等禮讓可獲【+15 分】獎勵！', '#6ee7b7');
       const crossingPath = (Math.abs(P.y - ped.y) < 22) || (Math.abs(P.fy) > 0.45 && Math.abs(P.x - ped.x) < 30);
@@ -3487,7 +4039,7 @@ function syncKbMenuFocus(){
   btns[kbMenuIdx].classList.add('kbFocus');
 }
 function showOnly(id){
-  ['title','mapSel','story','howto','garageModal','achModal','pause','tutModal','devModal','over','exitModal','profileModal','walletModal','miniGameModal','custQuizModal','sevenAskModal','sevenGameModal','copQteModal','codexModal','npcNameModal'].forEach(o=>{
+  ['title','mapSel','story','howto','garageModal','achModal','pause','tutModal','devModal','over','exitModal','profileModal','walletModal','miniGameModal','custQuizModal','sevenAskModal','sevenGameModal','copQteModal','codexModal','npcNameModal','downloadModal'].forEach(o=>{
     const el=$(o);
     if(el) el.classList.toggle('show',o===id);
   });
@@ -3505,12 +4057,29 @@ function getStorySteps(){
   const jobTag=getJobLabel(job);
   const charName=heroNm+'（'+jobTag+'）';
 
-  // 主大廳點擊【📜 故事】：一句話爆笑對話（3則網路神梗，強制換行易讀性極佳！）
+  // 主大廳點擊【📜 故事／小遊戲】：起承轉合4幕外送傳奇物語
   if(isTitleStory){
     return [
-      {ava:'😂', speaker:'死黨【'+f1+'】vs '+heroNm, text:'死黨【'+f1+'】：「外送員最討厭哪個朝代？『遼代』，因為全都是契丹（棄單）人！」\n\n我（'+heroNm+'）：「滾！！！！少廢話，我去【🏪 '+shopNm+'】接單賺外快了！」'},
-      {ava:'💔', speaker:'老鳥【'+f2+'】的奇葩客訴', text:'客人備註：「請跟他說這是可愛未婚妻買給他的❤️（結果選：現金到付 NT$ 350）」\n\n我（'+heroNm+'）：「這叫我請客、你出錢吧！！」'},
-      {ava:'🎮', speaker:'五股【沁象遊戲公司】爆單傳說', text:'熟客【'+f3+'】：「五工路【🎮 沁象遊戲總部】工程師半夜 3:17 狂叫宵夜，跳過施工路障準時送到直接領 3 倍獎金！」\n\n我（'+heroNm+'）：「衝啊！存滿 NT$ 5,000 買外送機車！」'}
+      {
+        ava:'🏚️',
+        speaker:'【起・生存危機】房東張太太奪命催租',
+        text:'房東張太太：「喂！這個月底房租要是再繳不出來，就準備把你所有的家當丟去五工路邊吹風！」\n\n看著空空如也的錢包與只剩幾十塊的餘額，我（'+heroNm+'）深吸一口氣拉緊鞋帶——這條命是靠雙腿外送搏出來的，絕不能在這裡認輸！'
+      },
+      {
+        ava:'🎮',
+        speaker:'【承・深夜急委託】五股【沁象遊戲總部】急單',
+        text:'【叮咚！平台爆出超高額急單】五工路【沁象遊戲研發大樓】工程師半夜 3:17 狂暴加班，點名要【'+shopNm+'】熱騰騰炸雞排與大杯珍奶！\n\n備註：「只要 15 分鐘內閃電送達，小費直接翻倍塞爆你錢包！」'
+      },
+      {
+        ava:'⚡',
+        speaker:'【轉・街頭試煉】五工路極限生存考驗',
+        text:'但是五股街頭危機四伏：\n• 馬路上的【🚧 施工護欄與🕳️ 大坑洞】考驗飛越彈跳！\n• 聞香成群狂追的【🐕 街頭野狗】隨時準備撕咬！\n• 還有呼嘯而過的巡邏警車與路邊落魄乞丐！慢一步，餐點就涼了！'
+      },
+      {
+        ava:charAva,
+        speaker:'【合・傳奇覺醒】'+heroNm+'（覺醒外送魂）',
+        text:'「沒有我送不到的單，只有不敢踩的油門！」\n\n抓起保溫箱、戴緊安全帽，今天我就是五工路最瘋狂的傳奇外送員！跨上座駕，即刻出發！'
+      }
     ];
   }
 
@@ -3708,7 +4277,7 @@ function renderStory(){
   $('storyText').textContent=st.text;
   $('storySkip').textContent=storyFromBtn?'✕ 關閉':'略過 ⏭';
   $('storyBack').style.display=storyFromBtn?'inline-flex':'none';
-  $('storyNext').textContent=storyIdx===steps.length-1 ? (isTitleStory ? '🛵 跨上座駕，出發！' : '🚀 跨上機車出發！') : '下一句 ▶';
+  $('storyNext').textContent=storyIdx===steps.length-1 ? '🛵 跨上座駕・即刻出發 ▶' : '下一句 ▶';
   $('storyDots').innerHTML=steps.map((_,i)=>'<span class="'+(i===storyIdx?'on':'')+'"></span>').join('');
 }
 function openStory(fromBtn){
@@ -3716,13 +4285,14 @@ function openStory(fromBtn){
   G.state='story'; setBodyState('title'); showOnly('story'); renderStory();
 }
 function finishStory(cancelled){
+  if(cancelled && storyFromBtn){ isTitleStory = false; goTitle(); return; }
   if(isTitleStory){
     isTitleStory = false;
-    goTitle();
+    startGame();
     return;
   }
-  store.set('dug_story_seen_'+curMap.id,true);
-  if(cancelled && storyFromBtn){ goTitle(); return; }
+  const mid = (curMap && curMap.id) || (MAPS[selectedMapIdx] && MAPS[selectedMapIdx].id) || 'stage_wugu';
+  store.set('dug_story_seen_'+mid,true);
   startGame();
 }
 function nextStory(){
@@ -3766,11 +4336,16 @@ function renderMapSel(){
     if(unlocked){
       card.addEventListener('click',()=>{
         ensureAudio(); sfx('click');
-        selectedMapIdx=i; store.set('dug_map',i);
-        resetGame();
-        if(isTouch) toggleFullScreen();
-        if(!store.get('dug_story_seen_'+m.id,false)){ openStory(false); }
-        else startGame();
+        try {
+          selectedMapIdx=i; store.set('dug_map',i);
+          resetGame();
+          if(isTouch) toggleFullScreen();
+          if(!store.get('dug_story_seen_'+m.id,false)){ openStory(false); }
+          else startGame();
+        } catch(err) {
+          console.error(err);
+          startGame();
+        }
       });
     }
     grid.appendChild(card);
@@ -4312,6 +4887,26 @@ function deliver(){
     store.set('dug_vehicle', 'bike');
     P.hp = getMaxHp();
     applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true });
     sfx('order317');
     delete tutSeen['mystery_bike'];
     triggerTut('mystery_bike', '🕵️ 【突發事件：神祕客現身！】\n神祕客：「同學！看你骨骼驚奇，刚送完 2 單還在慢慢晃？\n這台【🚲 特製外送腳踏車】強制交給你騎（已幫你補滿 100 體力）！\n接下來的單全面鎖定騎腳踏車熱血衝刺，送滿 5 單過關直接領 NT$ 2,000 新手獎金！」', '#fde047');
@@ -5370,6 +5965,44 @@ function update(dt){
   if(P.inv>0) P.inv-=dt;
   checkWrongWay(dt);
 
+  // 🏡 溫馨老家整備站（回老家神秘入口即可換回走路切西瓜！）
+  if(homeSpot && dist(P, homeSpot) < 46){
+    if(vehicleType !== 'walk'){
+      if(!P.homeCool || P.homeCool <= 0){
+        vehicleType = 'walk';
+        store.set('dug_vehicle', 'walk');
+        P.hp = getMaxHp();
+        P.homeCool = 4.0;
+        sfx('item');
+        vibrate([30, 20, 40]);
+        showBanner('🏡 回到溫馨老家！', '神秘入口整備完畢：切換回【🚶 徒步走路】（小巷自由穿梭切西瓜）！', '#22c55e');
+        pop(P.x, P.y-30, '🏡 老家換裝：🚶 走路模式', '#22c55e', 22);
+        applyDeviceUI();
+initStoreTabs();
+
+// 自動全螢幕：手機或電腦瀏覽器任意點擊第一下自動申請全螢幕體驗
+let hasTriedAutoFullscreen = false;
+function attemptAutoFullscreen(){
+  if(hasTriedAutoFullscreen) return;
+  hasTriedAutoFullscreen = true;
+  try {
+    const el = document.documentElement;
+    if(!document.fullscreenElement && !document.webkitFullscreenElement){
+      if(el.requestFullscreen){
+        el.requestFullscreen().catch(()=>{});
+      } else if(el.webkitRequestFullscreen){
+        el.webkitRequestFullscreen().catch(()=>{});
+      }
+    }
+  } catch(e){}
+}
+document.addEventListener('pointerdown', attemptAutoFullscreen, { once: true, passive: true });
+document.addEventListener('click', attemptAutoFullscreen, { once: true, passive: true });
+      }
+    }
+  }
+  if(P && P.homeCool > 0) P.homeCool -= dt;
+
   // 車輛碰撞與驚險閃過（等紅燈靜止且位於臨停區內的車輛不扣血，避免停等車陣誤傷外送員）
   const inDeliveryBay = places.some(pl => dist(P, pl.door) < 62);
   for(const c of cars){
@@ -5676,8 +6309,8 @@ function update(dt){
     if(items.length<4){
       const p=randomRoadPoint(180);
       const rVal=Math.random();
-      const eP=curMap.energyRatio||0.3;
-      const iType=rVal<eP?'energy':(rVal<eP+(1-eP)*0.55?'leg':'bento');
+      const eP=curMap.energyRatio||0.25;
+      const iType=rVal<eP?'energy':(rVal<eP+(1-eP)*0.45?'leg':(rVal<eP+(1-eP)*0.78?'bento':'vinyl'));
       items.push({x:p.x,y:p.y,type:iType,life:22});
     }
   }
@@ -5694,6 +6327,25 @@ function update(dt){
         unlockCodex('item_leg');
         P.ammo=Math.min(getMaxAmmo(),P.ammo+2); updateAmmo(); sfx('item');
         pop(it.x,it.y-20,'🍗 雞腿 +2','#fde68a',16);
+      } else if(it.type==='vinyl'){
+        unlockCodex('item_vinyl');
+        const vinylThemes = [
+          {key:'jiufen', name:'九份燈籠山城・夜雨民謠'},
+          {key:'kenting', name:'墾丁南國大道・陽光雷鬼'},
+          {key:'anping', name:'台南安平古堡・廟口節奏'},
+          {key:'tamsui', name:'淡水金色河岸・夕陽Chill'},
+          {key:'gaomei', name:'高美濕地・清爽木管'},
+          {key:'dadaocheng', name:'大稻埕老街・懷舊Swing'}
+        ];
+        const curIdx = vinylThemes.findIndex(t => t.key === curVinylTheme);
+        const nextTh = vinylThemes[(curIdx + 1) % vinylThemes.length];
+        curVinylTheme = nextTh.key;
+        stopMusic();
+        startMusic();
+        vibrate([40, 30, 60]);
+        sfx('level');
+        pop(it.x, it.y-24, '🎵 撿到唱片！換曲：'+nextTh.name, '#38bdf8', 18);
+        showBanner('🎵 撿到絕版黑膠唱片！', '背景音樂切換為：【'+nextTh.name+'】！', '#38bdf8');
       } else {
         unlockCodex('item_bento');
         P.hp=Math.min(getMaxHp(),P.hp+35); sfx('item');
@@ -6819,6 +7471,17 @@ function drawWorld(now){
     ctx.beginPath(); ctx.arc(3.6,-1.4,0.75,0,Math.PI*2); ctx.arc(3.6,1.4,0.75,0,Math.PI*2); ctx.fill();
     ctx.restore();
 
+    if(ped.isBeggar){
+      ctx.fillStyle = '#fde047';
+      ctx.font = '900 11px system-ui,sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('🧎‍♂️ 乞丐', 0, -14);
+      // 乞討破碗
+      ctx.fillStyle = '#475569';
+      ctx.beginPath(); ctx.arc(10, 4, 3.5, 0, Math.PI); ctx.fill();
+      ctx.fillStyle = '#f59e0b';
+      ctx.beginPath(); ctx.arc(10, 3, 1.5, 0, Math.PI*2); ctx.fill();
+    }
     // 過馬路提示🚶
     if(ped.isCrossing){
       ctx.font='12px system-ui,sans-serif';
@@ -7101,15 +7764,17 @@ function renderPlaceNPC(ctx, p, now, active, isPickup, prepT){
     const bounce=Math.sin(now/180+it.x)*6;
     const pulse=Math.sin(now/150)*4;
 
+    const isVinyl=it.type==='vinyl';
+
     // 地面外圈擴散波紋光環
-    ctx.strokeStyle=isEnergy?'rgba(56,189,248,0.85)':(isLeg?'rgba(245,158,11,0.8)':'rgba(34,197,94,0.8)');
+    ctx.strokeStyle=isVinyl?'rgba(168,85,247,0.85)':(isEnergy?'rgba(56,189,248,0.85)':(isLeg?'rgba(245,158,11,0.8)':'rgba(34,197,94,0.8)'));
     ctx.lineWidth=2.5;
     ctx.beginPath();
     ctx.arc(it.x, it.y, 22+pulse, 0, Math.PI*2);
     ctx.stroke();
 
     // 內層實心發光底盤
-    ctx.fillStyle=isEnergy?'#0284c7':(isLeg?'#b45309':'#15803d');
+    ctx.fillStyle=isVinyl?'#581c87':(isEnergy?'#0284c7':(isLeg?'#b45309':'#15803d'));
     ctx.beginPath();
     ctx.arc(it.x, it.y+bounce*0.4, 18, 0, Math.PI*2);
     ctx.fill();
@@ -7118,7 +7783,7 @@ function renderPlaceNPC(ctx, p, now, active, isPickup, prepT){
     ctx.stroke();
 
     // 向上升起的小光芒束
-    ctx.fillStyle=isEnergy?'rgba(56,189,248,0.35)':(isLeg?'rgba(251,191,36,0.3)':'rgba(74,222,128,0.3)');
+    ctx.fillStyle=isVinyl?'rgba(168,85,247,0.35)':(isEnergy?'rgba(56,189,248,0.35)':(isLeg?'rgba(251,191,36,0.3)':'rgba(74,222,128,0.3)'));
     ctx.beginPath();
     ctx.moveTo(it.x-14, it.y);
     ctx.lineTo(it.x+14, it.y);
@@ -7131,12 +7796,12 @@ function renderPlaceNPC(ctx, p, now, active, isPickup, prepT){
     ctx.font='28px system-ui,sans-serif';
     ctx.textAlign='center';
     ctx.textBaseline='middle';
-    ctx.fillText(isEnergy?'⚡':(isLeg?'🍗':'🍱'), it.x, it.y+bounce-3);
+    ctx.fillText(isVinyl?'🎵':(isEnergy?'⚡':(isLeg?'🍗':'🍱')), it.x, it.y+bounce-3);
 
     // 頂部小標籤
     ctx.font='bold 11px system-ui,sans-serif';
-    ctx.fillStyle=isEnergy?'#bae6fd':(isLeg?'#fef08a':'#bbf7d0');
-    ctx.fillText(isEnergy?'+衝刺':(isLeg?'+雞腿':'+體力'), it.x, it.y-22+bounce);
+    ctx.fillStyle=isVinyl?'#d8b4fe':(isEnergy?'#bae6fd':(isLeg?'#fef08a':'#bbf7d0'));
+    ctx.fillText(isVinyl?'🎵唱片':(isEnergy?'+衝刺':(isLeg?'+雞腿':'+體力')), it.x, it.y-22+bounce);
   }
   // 7.8 邊界／北向隧道口即將駛入車輛預警（提前投射遠光燈光束與警示箭頭，讓邊界來車不突兀）
   const edgePulse=0.55+0.45*Math.sin(now/110);
@@ -7689,6 +8354,26 @@ function renderPlaceNPC(ctx, p, now, active, isPickup, prepT){
     ctx.fillText(ready ? '🎪 投籃挑戰' : ('冷卻 '+Math.ceil(streetStall.cool)+'s'), sx, sy-24);
     ctx.restore();
   }
+  // 🏡 溫馨老家整備站（回老家神秘入口即可換回走路切西瓜！）
+  if(homeSpot && inView(homeSpot.x-60, homeSpot.y-60, 120, 120)){
+    const hx = homeSpot.x, hy = homeSpot.y;
+    ctx.save();
+    const hPulse = 26 + Math.sin(now/120)*3.5;
+    ctx.fillStyle = 'rgba(34,197,94,0.22)';
+    ctx.beginPath(); ctx.arc(hx, hy, hPulse, 0, Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 2; ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.arc(hx, hy, 38, 0, Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = '#064e3b';
+    rrc(ctx, hx-20, hy-16, 40, 32, 8); ctx.fill();
+    ctx.strokeStyle = '#6ee7b7'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.font = '20px system-ui,sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText('🏡', hx, hy);
+    ctx.font = '900 11.5px system-ui,sans-serif';
+    ctx.fillStyle = '#6ee7b7';
+    ctx.fillText('🏡 溫馨老家整備站', hx, hy-24 + Math.sin(now/100)*2);
+    ctx.restore();
+  }
+
   // 🏪 路邊「遍地商店 兼職打工」發光駐點（距離 32px 內觸發，每關限玩 1 次；選先不則 5 分鐘後重置 1 次）
   if(sevenSpot && !sevenSpot.played && inView(sevenSpot.x-60, sevenSpot.y-60, 120, 120)){
     const sx = sevenSpot.x, sy = sevenSpot.y;
@@ -8715,7 +9400,7 @@ function drawCharPreviews(now){
       c.beginPath(); c.moveTo(Math.max(66,sx),sy); c.lineTo(Math.max(66,sx+20),sy); c.stroke();
     });
 
-    // 2. 右側：實機外送機車動態巡航
+    // 2. 右側：實機外送機車動態巡航（主頁預覽卡展示專屬帥氣座駕與車頭燈光暈）
     const bikeX=133, bikeY=56;
     const cruiseLean=Math.sin(now/780+(isF?1.5:0))*0.22;
     const spot=c.createRadialGradient(bikeX,bikeY,6,bikeX,bikeY,52);
@@ -8726,14 +9411,16 @@ function drawCharPreviews(now){
     c.save();
     c.translate(bikeX, bikeY+cruiseLean*3);
     c.rotate(-0.14+cruiseLean*0.09);
-    if(vehicleType==='moto'){
-      const cone=c.createLinearGradient(16,0,62,0);
-      cone.addColorStop(0,'rgba(254,240,138,0.38)');
-      cone.addColorStop(1,'rgba(254,240,138,0)');
-      c.fillStyle=cone;
-      c.beginPath(); c.moveTo(18,-4); c.lineTo(64,-20); c.lineTo(64,20); c.lineTo(18,4); c.closePath(); c.fill();
-    }
+    const cone=c.createLinearGradient(16,0,62,0);
+    cone.addColorStop(0,'rgba(254,240,138,0.38)');
+    cone.addColorStop(1,'rgba(254,240,138,0)');
+    c.fillStyle=cone;
+    c.beginPath(); c.moveTo(18,-4); c.lineTo(64,-20); c.lineTo(64,20); c.lineTo(18,4); c.closePath(); c.fill();
+    const prevVeh = (vehicleType === 'walk') ? 'moto' : vehicleType;
+    const oldVeh = vehicleType;
+    vehicleType = prevVeh;
     renderRider(c,g,now,true,isSel,1.42,isSel,cruiseLean);
+    vehicleType = oldVeh;
     c.restore();
 
     // 3. 左側專屬「車手證件斜切框」＋精緻大頭立繪（不壓在柏油路上）
@@ -9494,13 +10181,15 @@ btn('storyBox',nextStory);
 btn('storyBack',()=>finishStory(true));
 btn('storySkip',()=>finishStory(true));
 btn('howBtn',()=>showOnly('howto'));
-if($('dlHtmlBtn')) btn('dlHtmlBtn',()=>{
+if($('dlHtmlBtn')) btn('dlHtmlBtn', ()=>{ showOnly('downloadModal'); });
+if($('dlCloseBtn')) btn('dlCloseBtn', ()=>{ showOnly('title'); });
+if($('btnDownloadSingleHtml')) btn('btnDownloadSingleHtml', ()=>{
   const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
   const blob = new Blob([htmlContent], {type:'text/html;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = '外送大叔的逆襲_v1.5.3單機完整版.html';
+  a.download = '瘋狂外送員_v1.5.8單機版.html';
   document.body.appendChild(a);
   a.click();
   setTimeout(()=>{ document.body.removeChild(a); URL.revokeObjectURL(url); }, 300);
@@ -9804,6 +10493,31 @@ function endSevenGame(reason){
   }
 }
 
+function quitSevenGameDirectly(){
+  if(!sevenGame) return;
+  const wasMap = sevenGame.fromMap;
+  const earned = sevenGame.money;
+  const healed = Math.round(sevenGame.healedHp);
+  sevenGame = null;
+  const ov = $('sevenResultOverlay');
+  if(ov) ov.style.display = 'none';
+  if(wasMap){
+    if(earned > 0) addCoins(earned);
+    if(P && healed > 0){
+      P.hp = Math.min(getMaxHp(), P.hp + healed);
+    }
+    showOnly(null);
+    G.state = 'play';
+    setBodyState('play');
+    lastFrame = performance.now();
+    sfx('praise');
+    pop(P.x, P.y-38, '🏪 打工結算！+NT$'+earned+(healed>0?(' ❤️回血+'+healed):''), '#34d399', 20);
+    showBanner('🏪 遍地商店兼職打工結算！', '已入帳 +NT$ '+earned+'，外送員體力恢復 +'+healed+' HP！返回地圖繼續送餐！', '#34d399');
+  } else {
+    goTitle();
+  }
+}
+
 function finishSevenGame(){
   if(!sevenGame) return;
   const wasMap = sevenGame.fromMap;
@@ -9877,8 +10591,9 @@ function updateSevenGame(dt){
     syncSevenHUD();
   }
 
-  // 第 2 關：雙光刃自動向前連發高頻脈衝雷射
-  if(sg.stage >= 2){
+  // 雙光刃高頻脈衝雷射（吃到子彈道具維持 5 秒，不設無限子彈）
+  if(sg.laserTimer > 0){
+    sg.laserTimer -= dt;
     sg.laserCool -= dt;
     if(sg.laserCool <= 0){
       sg.laserCool = 0.16;
@@ -9999,8 +10714,8 @@ function updateSevenGame(dt){
   if(sg.pickupTimer <= 0){
     sg.pickupTimer = rand(1.6, 2.4);
     const pr = Math.random();
-    if(pr < 0.42){
-      const reward = pick(['cash', 'cash', 'leg', 'bento']);
+    if(pr < 0.55){
+      const reward = pick(['bullet', 'cash', 'leg', 'bento']);
       sg.pickups.push({
         kind: 'angleToken',
         reward,
@@ -10050,7 +10765,12 @@ function updateSevenGame(dt){
         const matched = angDiffModPi(sg.angle, pk.targetAng) <= 0.55;
         if(matched){
           addSevenParticles(pk.x, pk.y, '#fde047', 16, 150);
-          if(pk.reward === 'leg'){
+          if(pk.reward === 'bullet'){
+            sg.laserTimer = 5.0;
+            playOrbitSfx('laser');
+            vibrate([40, 30, 40]);
+            addSevenFloat(pk.x, pk.y - 14, '⚡ 角度配對成功！獲得 5 秒極速子彈！', '#38bdf8');
+          } else if(pk.reward === 'leg'){
             sg.hp = Math.min(sg.maxHp, sg.hp + 30);
             sg.healedHp += 30;
             const pay = 45 * sg.combo;
@@ -10071,7 +10791,9 @@ function updateSevenGame(dt){
             addSevenFloat(pk.x, pk.y - 14, '✨角度完美配對！💵+NT$'+pay, '#4ade80');
           }
         } else {
-          if(pk.reward === 'leg'){
+          if(pk.reward === 'bullet'){
+            addSevenFloat(pk.x, pk.y - 14, '角度未對準！未獲得子彈', '#94a3b8');
+          } else if(pk.reward === 'leg'){
             sg.hp = Math.min(sg.maxHp, sg.hp + 10);
             sg.healedHp += 10;
             sg.money += 15;
@@ -10333,10 +11055,10 @@ function drawSevenGame(now){
       c.lineWidth = 4;
       c.beginPath(); c.moveTo(pk.x - dx, pk.y - dy); c.lineTo(pk.x + dx, pk.y + dy); c.stroke();
       c.font = '20px system-ui,sans-serif';
-      c.fillText(pk.reward === 'leg' ? '🍗' : (pk.reward === 'bento' ? '🍱' : '💵'), pk.x, pk.y);
+      c.fillText(pk.reward === 'bullet' ? '⚡' : (pk.reward === 'leg' ? '🍗' : (pk.reward === 'bento' ? '🍱' : '💵')), pk.x, pk.y);
       c.font = '900 10.5px system-ui,sans-serif';
       c.fillStyle = ok ? '#86efac' : '#fde68a';
-      c.fillText((ok ? '✓ 對齊! ' : '轉') + sevenAngLabel(pk.targetAng), pk.x, pk.y - 34);
+      c.fillText((ok ? (pk.reward==='bullet'?'⚡5s子彈!':'✓ 對齊! ') : '對準角度 ') + sevenAngLabel(pk.targetAng), pk.x, pk.y - 34);
     } else if(pk.kind === 'mush'){
       const mc = pk.mKind === 'black' ? '#e2e8f0' : (pk.mKind === 'green' ? '#4ade80' : '#fde047');
       c.fillStyle = pk.mKind === 'black' ? 'rgba(15,23,42,0.85)' : (pk.mKind === 'green' ? 'rgba(6,78,59,0.75)' : 'rgba(113,63,18,0.75)');
@@ -10582,7 +11304,7 @@ if($('sevenLobbyBtn')) btn('sevenLobbyBtn', ()=>startSevenGame(false));
 if($('storySevenBtn')) btn('storySevenBtn', ()=>startSevenGame(false));
 if($('sevenEnterMapBtn')) btn('sevenEnterMapBtn', ()=>startSevenGame(true));
 if($('sevenSkipMapBtn')) btn('sevenSkipMapBtn', skipSevenFromMap);
-if($('sevenQuitBtn')) btn('sevenQuitBtn', ()=>endSevenGame('🚪 已手動結算收工！'));
+if($('sevenQuitBtn')) btn('sevenQuitBtn', quitSevenGameDirectly);
 if($('sevenFinishBtn')) btn('sevenFinishBtn', finishSevenGame);
 if($('copQteTapBtn')) $('copQteTapBtn').addEventListener('pointerdown', e=>{ e.preventDefault(); ensureAudio(); tapCopEscapeQte(); });
 
